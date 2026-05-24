@@ -1,0 +1,1132 @@
+{% comment %}
+  Section:  sorein-hero-power.liquid
+  Brand:    Sorein — Premium Scandinavian Energy-Tech
+  Purpose:  Homepage hero — high-converting, futuristic, premium energy-tech
+  Skills:   sorein-brand-system · shopify-theme-engineer · ecommerce-cro-ux
+            futuristic-motion-3d-system · premium-visual-taste
+            shopify-section-generator · sorein-copywriting-conversion
+            performance-accessibility-qa
+
+  Rules enforced:
+  - No Liquid inside schema defaults
+  - Section ID scoping on all CSS and keyframes
+  - Mobile-first responsive grid
+  - prefers-reduced-motion support
+  - IntersectionObserver reveal (JS fallback to visible)
+  - Accessible markup: semantic H1, role="list", focus-visible
+  - Product image: eager + fetchpriority=high (LCP candidate)
+  - Stat cards below fold: lazy JS reveal via IntersectionObserver
+{% endcomment %}
+
+{%- liquid
+  assign has_image = false
+  if section.settings.hero_image != blank
+    assign has_image = true
+  endif
+  assign stat_blocks = section.blocks | where: 'type', 'stat'
+  assign sid = section.id
+-%}
+
+<section
+  id="sorein-hero-{{ sid }}"
+  class="sorein-hero{% if section.settings.layout_reversed %} sorein-hero--reversed{% endif %}"
+  data-section-id="{{ sid }}"
+  data-section-type="sorein-hero-power"
+  aria-label="{{ section.settings.heading | strip_html | truncate: 60 | escape }}"
+>
+
+  {%- comment -%}────────────────────────────── Background ──{%- endcomment -%}
+  <div class="sorein-hero__bg" aria-hidden="true">
+    <div class="sorein-hero__grid-lines"></div>
+    <div class="sorein-hero__glow sorein-hero__glow--tl"></div>
+    <div class="sorein-hero__glow sorein-hero__glow--br"></div>
+  </div>
+
+  {%- comment -%}────────────────────────────── Main grid ───{%- endcomment -%}
+  <div class="sorein-hero__inner">
+
+    {%- comment -%}── Left: Content column ──{%- endcomment -%}
+    <div class="sorein-hero__content" data-sorein-reveal data-reveal-delay="0">
+
+      {%- if section.settings.eyebrow != blank -%}
+      <p class="sorein-hero__eyebrow">
+        <span class="sorein-hero__eyebrow-pulse" aria-hidden="true"></span>
+        {{- section.settings.eyebrow -}}
+      </p>
+      {%- endif -%}
+
+      <h1 class="sorein-hero__heading">
+        {%- if section.settings.heading_highlight != blank
+            and section.settings.heading contains section.settings.heading_highlight -%}
+          {%- assign hl = section.settings.heading_highlight -%}
+          {%- assign parts = section.settings.heading | split: hl -%}
+          {{- parts[0] -}}<em class="sorein-hero__heading-hl">{{- hl -}}</em>
+          {%- for p in parts -%}
+            {%- unless forloop.first -%}{{- p -}}{%- endunless -%}
+          {%- endfor -%}
+        {%- else -%}
+          {{- section.settings.heading -}}
+        {%- endif -%}
+      </h1>
+
+      {%- if section.settings.subheading != blank -%}
+      <p class="sorein-hero__subheading">
+        {{- section.settings.subheading -}}
+      </p>
+      {%- endif -%}
+
+      {%- comment -%}── CTAs ──{%- endcomment -%}
+      <div class="sorein-hero__ctas">
+        {%- if section.settings.cta_primary_label != blank -%}
+        <a
+          href="{{ section.settings.cta_primary_url | default: '#' }}"
+          class="sorein-btn sorein-btn--primary"
+          {%- if section.settings.cta_primary_url == blank %} aria-disabled="true"{%- endif -%}
+        >
+          <span>{{- section.settings.cta_primary_label -}}</span>
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true" focusable="false">
+            <path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        {%- endif -%}
+
+        {%- if section.settings.cta_secondary_label != blank -%}
+        <a
+          href="{{ section.settings.cta_secondary_url | default: '#' }}"
+          class="sorein-btn sorein-btn--ghost"
+          {%- if section.settings.cta_secondary_url == blank %} aria-disabled="true"{%- endif -%}
+        >
+          {{- section.settings.cta_secondary_label -}}
+        </a>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%}── Trust row ──{%- endcomment -%}
+      {%- if section.settings.show_trust_row -%}
+      <ul class="sorein-hero__trust" role="list" aria-label="Trust indicators">
+        <li class="sorein-hero__trust-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span>{{- section.settings.trust_1 | default: 'Secure Checkout' -}}</span>
+        </li>
+        <li class="sorein-hero__trust-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M1 3h4l2.7 13.4a2 2 0 001.96 1.6h9.68a2 2 0 001.96-1.6L23 8H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="9" cy="21" r="1" fill="currentColor"/>
+            <circle cx="20" cy="21" r="1" fill="currentColor"/>
+          </svg>
+          <span>{{- section.settings.trust_2 | default: 'Free Delivery' -}}</span>
+        </li>
+        <li class="sorein-hero__trust-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>{{- section.settings.trust_3 | default: '5-Year Warranty' -}}</span>
+        </li>
+        <li class="sorein-hero__trust-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2A19.8 19.8 0 013.1 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72c.127.96.36 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.34 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+          <span>{{- section.settings.trust_4 | default: 'Expert Support' -}}</span>
+        </li>
+      </ul>
+      {%- endif -%}
+
+    </div>
+
+    {%- comment -%}── Right: Visual column ──{%- endcomment -%}
+    <div class="sorein-hero__visual" data-sorein-reveal data-reveal-delay="160">
+      <div class="sorein-hero__visual-frame">
+
+        <div class="sorein-hero__ring sorein-hero__ring--outer" aria-hidden="true"></div>
+        <div class="sorein-hero__ring sorein-hero__ring--inner" aria-hidden="true"></div>
+
+        {%- if has_image -%}
+          {%- assign img = section.settings.hero_image -%}
+          {{
+            img
+            | image_url: width: 900
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              class: 'sorein-hero__img',
+              alt: section.settings.hero_image_alt | default: img.alt | escape,
+              sizes: '(min-width: 990px) 46vw, 90vw',
+              widths: '400,500,600,750,900'
+          }}
+        {%- else -%}
+          <div class="sorein-hero__img-placeholder" aria-label="Product image — upload in theme editor">
+            {{ 'product-1' | placeholder_svg_tag: 'sorein-hero__placeholder-svg' }}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}Corner brackets — futuristic framing detail{%- endcomment -%}
+        <div class="sorein-hero__bracket sorein-hero__bracket--tl" aria-hidden="true"></div>
+        <div class="sorein-hero__bracket sorein-hero__bracket--tr" aria-hidden="true"></div>
+        <div class="sorein-hero__bracket sorein-hero__bracket--bl" aria-hidden="true"></div>
+        <div class="sorein-hero__bracket sorein-hero__bracket--br" aria-hidden="true"></div>
+
+        {%- comment -%}Scan line — energy scan animation{%- endcomment -%}
+        <div class="sorein-hero__scan" aria-hidden="true"></div>
+
+      </div>
+
+      {%- if section.settings.visual_badge != blank -%}
+      <div class="sorein-hero__badge" aria-hidden="true">
+        <span class="sorein-hero__badge-dot"></span>
+        {{- section.settings.visual_badge -}}
+      </div>
+      {%- endif -%}
+    </div>
+
+  </div>{%- comment -%}/.sorein-hero__inner{%- endcomment -%}
+
+  {%- comment -%}────────────────────────────── Stat strip ──{%- endcomment -%}
+  {%- if section.settings.show_stats -%}
+  <div class="sorein-hero__stats-wrap">
+    <div class="sorein-hero__stats-inner">
+      <div class="sorein-hero__stats" role="list" aria-label="Key specifications">
+        {%- for block in stat_blocks -%}
+        <div
+          class="sorein-hero__stat"
+          role="listitem"
+          data-sorein-stat="{{ forloop.index0 }}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.icon != blank -%}
+          <span class="sorein-hero__stat-icon" aria-hidden="true">{{- block.settings.icon -}}</span>
+          {%- endif -%}
+          <strong class="sorein-hero__stat-value">{{- block.settings.value -}}</strong>
+          <span class="sorein-hero__stat-label">{{- block.settings.label -}}</span>
+          {%- if block.settings.note != blank -%}
+          <span class="sorein-hero__stat-note">{{- block.settings.note -}}</span>
+          {%- endif -%}
+        </div>
+        {%- else -%}
+        {%- comment -%}Fallback static stats — shown until merchant adds blocks{%- endcomment -%}
+        <div class="sorein-hero__stat" role="listitem" data-sorein-stat="0">
+          <span class="sorein-hero__stat-icon" aria-hidden="true">⚡</span>
+          <strong class="sorein-hero__stat-value">2 200 W</strong>
+          <span class="sorein-hero__stat-label">Continuous Output</span>
+          <span class="sorein-hero__stat-note">Peak 4 800 W</span>
+        </div>
+        <div class="sorein-hero__stat" role="listitem" data-sorein-stat="1">
+          <span class="sorein-hero__stat-icon" aria-hidden="true">🔋</span>
+          <strong class="sorein-hero__stat-value">1 037 Wh</strong>
+          <span class="sorein-hero__stat-label">Base Capacity</span>
+          <span class="sorein-hero__stat-note">Expandable to 9 677 Wh</span>
+        </div>
+        <div class="sorein-hero__stat" role="listitem" data-sorein-stat="2">
+          <span class="sorein-hero__stat-icon" aria-hidden="true">♻️</span>
+          <strong class="sorein-hero__stat-value">3 500+</strong>
+          <span class="sorein-hero__stat-label">LiFePO4 Cycles</span>
+          <span class="sorein-hero__stat-note">≈10-year battery life</span>
+        </div>
+        <div class="sorein-hero__stat" role="listitem" data-sorein-stat="3">
+          <span class="sorein-hero__stat-icon" aria-hidden="true">☀️</span>
+          <strong class="sorein-hero__stat-value">1 200 W</strong>
+          <span class="sorein-hero__stat-label">Max Solar Input</span>
+          <span class="sorein-hero__stat-note">Recharge in ~1 hour</span>
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+</section>
+
+{%- comment -%}──────────────────────────────────────────────────────────────
+  Scoped CSS — keyed to section.id to prevent multi-instance collisions.
+  Uses inline style tag (not Shopify style tag) to support @keyframes safely.
+──────────────────────────────────────────────────────────────────────────{%- endcomment -%}
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Sorein Hero Power — Section {{ sid }}
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Design tokens (scoped) ──────────────────────────────────────────────── */
+#sorein-hero-{{ sid }} {
+  --sh-bg:            #090b0f;
+  --sh-bg-card:       rgba(255,255,255,0.04);
+  --sh-bg-card-hov:   rgba(255,255,255,0.07);
+  --sh-border:        rgba(255,255,255,0.08);
+  --sh-border-accent: rgba(34,211,238,0.22);
+  --sh-text:          #f4f6fa;
+  --sh-text-sub:      rgba(244,246,250,0.58);
+  --sh-text-muted:    rgba(244,246,250,0.34);
+  --sh-cyan:          #22d3ee;
+  --sh-blue:          #0ea5e9;
+  --sh-teal:          #14b8a6;
+  --sh-glow-sm:       rgba(34,211,238,0.10);
+  --sh-glow-md:       rgba(34,211,238,0.20);
+  --sh-glow-lg:       rgba(34,211,238,0.32);
+  --sh-r-btn:         10px;
+  --sh-r-card:        18px;
+  --sh-ease:          cubic-bezier(0.22,1,0.36,1);
+  --sh-t:             220ms;
+  --sh-py:            clamp(64px, 9vw, 116px);
+  --sh-px:            clamp(20px, 5vw, 60px);
+  --sh-max:           1280px;
+  --sh-gap:           clamp(40px, 6vw, 88px);
+}
+
+/* ── Section wrapper ─────────────────────────────────────────────────────── */
+#sorein-hero-{{ sid }} {
+  position: relative;
+  background-color: var(--sh-bg);
+  overflow: hidden;
+  color: var(--sh-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Background layers ───────────────────────────────────────────────────── */
+#sorein-hero-{{ sid }} .sorein-hero__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Blueprint grid — fine technical lines */
+#sorein-hero-{{ sid }} .sorein-hero__grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(14,165,233,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14,165,233,0.055) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 100% 80% at 65% 35%, black 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 100% 80% at 65% 35%, black 0%, transparent 75%);
+}
+
+/* Ambient glow blobs */
+#sorein-hero-{{ sid }} .sorein-hero__glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+#sorein-hero-{{ sid }} .sorein-hero__glow--tl {
+  width: clamp(320px, 45vw, 640px);
+  aspect-ratio: 1;
+  top: -20%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(14,165,233,0.07) 0%, transparent 68%);
+  filter: blur(40px);
+}
+#sorein-hero-{{ sid }} .sorein-hero__glow--br {
+  width: clamp(280px, 55vw, 760px);
+  aspect-ratio: 1;
+  bottom: -25%;
+  right: -12%;
+  background: radial-gradient(circle, rgba(34,211,238,0.08) 0%, transparent 65%);
+  filter: blur(40px);
+}
+
+/* ── Inner grid ──────────────────────────────────────────────────────────── */
+#sorein-hero-{{ sid }} .sorein-hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--sh-max);
+  margin: 0 auto;
+  padding: var(--sh-py) var(--sh-px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sh-gap);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  #sorein-hero-{{ sid }} .sorein-hero__inner {
+    grid-template-columns: 54% 1fr;
+  }
+  #sorein-hero-{{ sid }}.sorein-hero--reversed .sorein-hero__content { order: 2; }
+  #sorein-hero-{{ sid }}.sorein-hero--reversed .sorein-hero__visual  { order: 1; }
+}
+
+@media (min-width: 1100px) {
+  #sorein-hero-{{ sid }} .sorein-hero__inner {
+    grid-template-columns: 52% 48%;
+  }
+}
+
+/* ── Content column ──────────────────────────────────────────────────────── */
+#sorein-hero-{{ sid }} .sorein-hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Eyebrow pill */
+#sorein-hero-{{ sid }} .sorein-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--sh-cyan);
+  margin: 0;
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__eyebrow-pulse {
+  flex-shrink: 0;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sh-cyan);
+  box-shadow: 0 0 0 0 rgba(34,211,238,0.55);
+  animation: sh-pulse-{{ sid }} 2.6s ease-in-out infinite;
+}
+
+@keyframes sh-pulse-{{ sid }} {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34,211,238,0.55); }
+  55%       { box-shadow: 0 0 0 7px rgba(34,211,238,0); }
+}
+
+/* Headline */
+#sorein-hero-{{ sid }} .sorein-hero__heading {
+  font-size: clamp(30px, 4.5vw, 62px);
+  font-weight: 700;
+  line-height: 1.07;
+  letter-spacing: -0.028em;
+  color: var(--sh-text);
+  margin: 0;
+}
+
+/* Gradient highlight on keyword */
+#sorein-hero-{{ sid }} .sorein-hero__heading-hl {
+  font-style: normal;
+  background: linear-gradient(128deg, var(--sh-cyan) 0%, var(--sh-blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subheading */
+#sorein-hero-{{ sid }} .sorein-hero__subheading {
+  font-size: clamp(15px, 1.75vw, 18.5px);
+  line-height: 1.68;
+  color: var(--sh-text-sub);
+  max-width: 50ch;
+  margin: 0;
+}
+
+/* ── CTA buttons ─────────────────────────────────────────────────────────── */
+#sorein-hero-{{ sid }} .sorein-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+#sorein-hero-{{ sid }} .sorein-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border-radius: var(--sh-r-btn);
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--sh-t) var(--sh-ease),
+    box-shadow var(--sh-t) var(--sh-ease),
+    background var(--sh-t) var(--sh-ease),
+    border-color var(--sh-t) var(--sh-ease);
+}
+
+#sorein-hero-{{ sid }} .sorein-btn:focus-visible {
+  outline: 2px solid var(--sh-cyan);
+  outline-offset: 3px;
+}
+
+/* Primary — cyan/blue gradient with glow */
+#sorein-hero-{{ sid }} .sorein-btn--primary {
+  background: linear-gradient(128deg, var(--sh-cyan) 0%, var(--sh-blue) 100%);
+  color: #07090d;
+  font-weight: 700;
+  box-shadow: 0 2px 20px var(--sh-glow-md);
+}
+
+#sorein-hero-{{ sid }} .sorein-btn--primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(128deg, rgba(255,255,255,0.2) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity var(--sh-t) var(--sh-ease);
+  pointer-events: none;
+}
+
+#sorein-hero-{{ sid }} .sorein-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 32px var(--sh-glow-lg), 0 0 0 6px var(--sh-glow-sm);
+}
+
+#sorein-hero-{{ sid }} .sorein-btn--primary:hover::before { opacity: 1; }
+
+#sorein-hero-{{ sid }} .sorein-btn--primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 16px var(--sh-glow-md);
+}
+
+/* Arrow nudge */
+#sorein-hero-{{ sid }} .sorein-btn--primary svg {
+  transition: transform var(--sh-t) var(--sh-ease);
+}
+#sorein-hero-{{ sid }} .sorein-btn--primary:hover svg {
+  transform: translateX(3px);
+}
+
+/* Ghost */
+#sorein-hero-{{ sid }} .sorein-btn--ghost {
+  background: transparent;
+  color: var(--sh-text);
+  border-color: var(--sh-border);
+}
+
+#sorein-hero-{{ sid }} .sorein-btn--ghost:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.18);
+  transform: translateY(-2px);
+}
+
+/* ── Trust row ───────────────────────────────────────────────────────────── */
+#sorein-hero-{{ sid }} .sorein-hero__trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  list-style: none;
+  padding: 14px 0 0;
+  margin: 2px 0 0;
+  border-top: 1px solid var(--sh-border);
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sh-text-muted);
+  letter-spacing: 0.01em;
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__trust-item svg {
+  flex-shrink: 0;
+  color: var(--sh-teal);
+}
+
+/* ── Visual column ───────────────────────────────────────────────────────── */
+#sorein-hero-{{ sid }} .sorein-hero__visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__visual-frame {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Glow rings — pulse on outer, counter on inner */
+#sorein-hero-{{ sid }} .sorein-hero__ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__ring--outer {
+  inset: -6%;
+  border: 1px solid var(--sh-border-accent);
+  animation: sh-ring-a-{{ sid }} 5.5s ease-in-out infinite;
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__ring--inner {
+  inset: 10%;
+  border: 1px solid rgba(34,211,238,0.10);
+  animation: sh-ring-a-{{ sid }} 3.8s ease-in-out infinite reverse;
+}
+
+@keyframes sh-ring-a-{{ sid }} {
+  0%, 100% { transform: scale(1);     opacity: 0.6; }
+  50%       { transform: scale(1.03); opacity: 1;   }
+}
+
+/* Product image */
+#sorein-hero-{{ sid }} .sorein-hero__img {
+  position: relative;
+  z-index: 1;
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 8px 48px rgba(34,211,238,0.16)) drop-shadow(0 0 1px rgba(34,211,238,0.1));
+  transition: filter 320ms var(--sh-ease);
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__visual:hover .sorein-hero__img {
+  filter: drop-shadow(0 12px 64px rgba(34,211,238,0.28)) drop-shadow(0 0 1px rgba(34,211,238,0.2));
+}
+
+/* Placeholder (no image uploaded) */
+#sorein-hero-{{ sid }} .sorein-hero__img-placeholder {
+  width: 72%;
+  height: 72%;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__placeholder-svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.18;
+  color: var(--sh-cyan);
+}
+
+/* Corner bracket decorations */
+#sorein-hero-{{ sid }} .sorein-hero__bracket {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 300ms var(--sh-ease);
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__visual:hover .sorein-hero__bracket { opacity: 0.9; }
+
+#sorein-hero-{{ sid }} .sorein-hero__bracket--tl {
+  top: 3%; left: 3%;
+  border-top: 1.5px solid var(--sh-cyan);
+  border-left: 1.5px solid var(--sh-cyan);
+}
+#sorein-hero-{{ sid }} .sorein-hero__bracket--tr {
+  top: 3%; right: 3%;
+  border-top: 1.5px solid var(--sh-cyan);
+  border-right: 1.5px solid var(--sh-cyan);
+}
+#sorein-hero-{{ sid }} .sorein-hero__bracket--bl {
+  bottom: 3%; left: 3%;
+  border-bottom: 1.5px solid var(--sh-cyan);
+  border-left: 1.5px solid var(--sh-cyan);
+}
+#sorein-hero-{{ sid }} .sorein-hero__bracket--br {
+  bottom: 3%; right: 3%;
+  border-bottom: 1.5px solid var(--sh-cyan);
+  border-right: 1.5px solid var(--sh-cyan);
+}
+
+/* Scan line — futuristic energy scan */
+#sorein-hero-{{ sid }} .sorein-hero__scan {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(34,211,238,0.7) 35%,
+    rgba(34,211,238,0.9) 50%,
+    rgba(34,211,238,0.7) 65%,
+    transparent 100%
+  );
+  box-shadow: 0 0 8px rgba(34,211,238,0.5);
+  z-index: 3;
+  pointer-events: none;
+  animation: sh-scan-{{ sid }} 3.8s ease-in-out infinite;
+}
+
+@keyframes sh-scan-{{ sid }} {
+  0%   { top: 4%;  opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { top: 96%; opacity: 0; }
+}
+
+/* Floating badge */
+#sorein-hero-{{ sid }} .sorein-hero__badge {
+  position: absolute;
+  bottom: -4px;
+  right: 6%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 40px;
+  background: rgba(14,165,233,0.10);
+  border: 1px solid rgba(14,165,233,0.28);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--sh-blue);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  white-space: nowrap;
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--sh-cyan);
+  flex-shrink: 0;
+  animation: sh-pulse-{{ sid }} 2s infinite;
+}
+
+/* ── Stat cards strip ────────────────────────────────────────────────────── */
+#sorein-hero-{{ sid }} .sorein-hero__stats-wrap {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--sh-border);
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__stats-inner {
+  max-width: var(--sh-max);
+  margin: 0 auto;
+  padding: 0 var(--sh-px);
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 640px) {
+  #sorein-hero-{{ sid }} .sorein-hero__stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: clamp(20px, 3vw, 34px) clamp(16px, 2.5vw, 30px);
+  border-right: 1px solid var(--sh-border);
+  transition: background var(--sh-t) var(--sh-ease);
+  cursor: default;
+}
+
+/* Remove right border on last in each row */
+#sorein-hero-{{ sid }} .sorein-hero__stat:last-child {
+  border-right: none;
+}
+
+@media (max-width: 639px) {
+  /* 2-col on mobile: items 2 and 4 lose right border; items 1+2 get bottom border */
+  #sorein-hero-{{ sid }} .sorein-hero__stat:nth-child(2),
+  #sorein-hero-{{ sid }} .sorein-hero__stat:nth-child(4) {
+    border-right: none;
+  }
+  #sorein-hero-{{ sid }} .sorein-hero__stat:nth-child(1),
+  #sorein-hero-{{ sid }} .sorein-hero__stat:nth-child(2) {
+    border-bottom: 1px solid var(--sh-border);
+  }
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__stat:hover {
+  background: var(--sh-bg-card);
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__stat-icon {
+  font-size: 17px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__stat-value {
+  font-size: clamp(20px, 2.6vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  color: var(--sh-text);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sh-text-sub);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+#sorein-hero-{{ sid }} .sorein-hero__stat-note {
+  font-size: 11px;
+  color: var(--sh-text-muted);
+  margin-top: 1px;
+}
+
+/* ── Reveal animation helpers ────────────────────────────────────────────── */
+#sorein-hero-{{ sid }} [data-sorein-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 640ms var(--sh-ease),
+    transform 640ms var(--sh-ease);
+}
+#sorein-hero-{{ sid }} [data-sorein-reveal][data-reveal-delay="160"] {
+  transition-delay: 160ms;
+}
+#sorein-hero-{{ sid }} [data-sorein-reveal].sorein-visible {
+  opacity: 1;
+  transform: none;
+}
+
+#sorein-hero-{{ sid }} [data-sorein-stat] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 380ms var(--sh-ease),
+    transform 380ms var(--sh-ease);
+}
+#sorein-hero-{{ sid }} [data-sorein-stat].sorein-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Reduced motion — all animation/transition overrides ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #sorein-hero-{{ sid }} .sorein-hero__eyebrow-pulse,
+  #sorein-hero-{{ sid }} .sorein-hero__ring--outer,
+  #sorein-hero-{{ sid }} .sorein-hero__ring--inner,
+  #sorein-hero-{{ sid }} .sorein-hero__scan,
+  #sorein-hero-{{ sid }} .sorein-hero__badge-dot {
+    animation: none !important;
+  }
+
+  #sorein-hero-{{ sid }} [data-sorein-reveal],
+  #sorein-hero-{{ sid }} [data-sorein-stat] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  #sorein-hero-{{ sid }} .sorein-btn--primary:hover,
+  #sorein-hero-{{ sid }} .sorein-btn--ghost:hover {
+    transform: none !important;
+  }
+
+  #sorein-hero-{{ sid }} .sorein-btn--primary svg {
+    transition: none !important;
+  }
+}
+
+/* ── Mobile refinements ──────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Visual first on mobile for immediate product impression */
+  #sorein-hero-{{ sid }} .sorein-hero__content { order: 2; }
+  #sorein-hero-{{ sid }} .sorein-hero__visual  { order: 1; max-width: 300px; width: 100%; margin: 0 auto; }
+
+  #sorein-hero-{{ sid }} .sorein-hero__ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #sorein-hero-{{ sid }} .sorein-hero__badge {
+    display: none; /* Too cramped on small screens */
+  }
+}
+</style>
+
+<script>
+/* Sorein Hero Power — Section {{ sid }}
+   Reveal animations via IntersectionObserver.
+   Scoped IIFE — no global namespace pollution. */
+(function () {
+  'use strict';
+
+  var ROOT = document.getElementById('sorein-hero-{{ sid }}');
+  if (!ROOT) return;
+
+  /* Respect prefers-reduced-motion — CSS handles static state, JS can bail */
+  var reducedMotion =
+    window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion) return;
+
+  /* ── Utility: observe a NodeList, fire callback when each enters viewport ── */
+  function observe(els, cb, opts) {
+    if (!els || !els.length) return;
+    if (!('IntersectionObserver' in window)) {
+      /* Fallback: immediately visible */
+      for (var i = 0; i < els.length; i++) cb(els[i], 0);
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          cb(entry.target, parseInt(entry.target.getAttribute('data-sorein-stat') || '0', 10));
+          io.unobserve(entry.target);
+        }
+      });
+    }, opts || { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    for (var j = 0; j < els.length; j++) io.observe(els[j]);
+  }
+
+  /* ── Content columns — fade up on enter ─────────────────────────────────── */
+  var revealEls = ROOT.querySelectorAll('[data-sorein-reveal]');
+  observe(revealEls, function (el) {
+    el.classList.add('sorein-visible');
+  });
+
+  /* ── Stat cards — staggered fade up ─────────────────────────────────────── */
+  var statEls = ROOT.querySelectorAll('[data-sorein-stat]');
+  observe(
+    statEls,
+    function (el, idx) {
+      setTimeout(function () {
+        el.classList.add('sorein-visible');
+      }, idx * 75);
+    },
+    { threshold: 0.15, rootMargin: '0px 0px -20px 0px' }
+  );
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Sorein Hero",
+  "tag": "section",
+  "class": "sorein-section sorein-section--hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Headline & copy"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Premium Energy Technology"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Headline",
+      "default": "Power your home when the grid stops."
+    },
+    {
+      "type": "text",
+      "id": "heading_highlight",
+      "label": "Highlighted phrase",
+      "info": "Must match a phrase in the headline exactly. Renders it in cyan gradient. Leave blank to disable.",
+      "default": "grid stops"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Modular backup energy for cabins, homes, and off-grid life. Built on LiFePO4 chemistry for 3 500+ cycles and real energy independence."
+    },
+    {
+      "type": "header",
+      "content": "Primary CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Button label",
+      "default": "Build your system"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Secondary CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Button label",
+      "default": "See what it powers"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Product visual"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Product image",
+      "info": "Recommended: PNG with transparent background, min 900×900px"
+    },
+    {
+      "type": "text",
+      "id": "hero_image_alt",
+      "label": "Image alt text",
+      "info": "Describe the product for accessibility and SEO. E.g. 'Sorein A6 Pro portable power station 2200W'"
+    },
+    {
+      "type": "text",
+      "id": "visual_badge",
+      "label": "Floating badge text",
+      "info": "Short label shown near the product image. E.g. 'LiFePO4 · 3 500 cycles'",
+      "default": "LiFePO4 · 3 500 cycles"
+    },
+    {
+      "type": "header",
+      "content": "Trust row"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_row",
+      "label": "Show trust row",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Trust item 1",
+      "default": "Secure Checkout"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Trust item 2",
+      "default": "Free Delivery"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Trust item 3",
+      "default": "5-Year Warranty"
+    },
+    {
+      "type": "text",
+      "id": "trust_4",
+      "label": "Trust item 4",
+      "default": "Expert Support"
+    },
+    {
+      "type": "header",
+      "content": "Stat cards"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show stat cards strip",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "layout_reversed",
+      "label": "Reverse layout on desktop",
+      "info": "When enabled: visual left, content right.",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat card",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "2 200 W"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Continuous Output"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Small note (optional)",
+          "info": "E.g. 'Peak 4 800 W'",
+          "default": "Peak 4 800 W"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon emoji (optional)",
+          "info": "E.g. ⚡  ☀️  🔋  ♻️ — paste an emoji or leave blank"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sorein Hero",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "value": "2 200 W",
+            "label": "Continuous Output",
+            "note": "Peak 4 800 W",
+            "icon": "⚡"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "value": "1 037 Wh",
+            "label": "Base Capacity",
+            "note": "Expandable to 9 677 Wh",
+            "icon": "🔋"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "value": "3 500+",
+            "label": "LiFePO4 Cycles",
+            "note": "≈10-year battery life",
+            "icon": "♻️"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "value": "1 200 W",
+            "label": "Max Solar Input",
+            "note": "Recharge in ~1 hour",
+            "icon": "☀️"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
