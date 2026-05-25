@@ -1009,11 +1009,7 @@
 }
 .srn-a6-sticky-bar__btn.is-loading .srn-a6-sticky-bar__spinner { display: block; }
 
-/* ─── Animations ────────────────────────────────────────────── */
-@keyframes srn-a6-spin-{{ sid }} {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
+/* ─── Animations: see <style> block after endstyle ──────────── */
 
 /* ─── Responsive ────────────────────────────────────────────── */
 @media (max-width: 899px) {
@@ -1069,6 +1065,13 @@
   }
 }
 {%- endstyle -%}
+
+<style>
+  @keyframes srn-a6-spin-{{ sid }} {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+</style>
 
 <div id="srn-a6builder-{{ sid }}">
 

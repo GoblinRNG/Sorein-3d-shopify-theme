@@ -1,9 +1,5 @@
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "contact": {
       "type": "sorein-page-contact",
       "settings": {
@@ -15,11 +11,9 @@
       },
       "blocks": {},
       "block_order": []
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
-  "order": ["header", "contact", "footer"]
+  "order": [
+    "contact"
+  ]
 }

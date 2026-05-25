@@ -1,9 +1,5 @@
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "about-hero": {
       "type": "sorein-page-about",
       "settings": {
@@ -21,11 +17,10 @@
       },
       "blocks": {},
       "block_order": []
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
-  "order": ["header", "about-hero", "sorein-trust", "footer"]
+  "order": [
+    "about-hero",
+    "sorein-trust"
+  ]
 }

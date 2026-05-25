@@ -1,16 +1,12 @@
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "sorein-hero": {
       "type": "sorein-hero-power",
       "settings": {
         "eyebrow": "Premium Energy Technology",
         "heading": "Power your home when the grid stops.",
         "heading_highlight": "grid stops",
-        "subheading": "Modular backup energy for cabins, homes, and off-grid life. Built on LiFePO4 chemistry for 3 500+ cycles and real energy independence.",
+        "subheading": "Modular backup energy for cabins, homes, and off-grid life. EV-grade LFP chemistry, 4 000+ cycles, and real energy independence.",
         "cta_primary_label": "Build your system",
         "cta_secondary_label": "Shop power stations",
         "show_trust_row": true,
@@ -19,47 +15,52 @@
         "trust_3": "5-Year Warranty",
         "trust_4": "Expert Support",
         "show_stats": true,
-        "visual_badge": "LiFePO4 · 3 500 cycles"
+        "visual_badge": "EV-grade LFP · 4 000+ cycles"
       },
       "blocks": {
         "stat-output": {
           "type": "stat",
           "settings": {
-            "value": "2 200 W",
+            "value": "3 600 W",
             "label": "Continuous Output",
-            "note": "Peak 4 800 W",
+            "note": "Up to 36 kW with stacking",
             "icon": "⚡"
           }
         },
         "stat-capacity": {
           "type": "stat",
           "settings": {
-            "value": "1 037 Wh",
-            "label": "Base Capacity",
-            "note": "Expandable to 9 677 Wh",
+            "value": "2–100 kWh",
+            "label": "Scalable Capacity",
+            "note": "2 400 Wh per EB240 module",
             "icon": "🔋"
           }
         },
         "stat-cycles": {
           "type": "stat",
           "settings": {
-            "value": "3 500+",
-            "label": "LiFePO4 Cycles",
-            "note": "≥10-year battery life",
+            "value": "4 000+",
+            "label": "LFP Cycles",
+            "note": "EV-grade chemistry · ~10-year life",
             "icon": "♻️"
           }
         },
         "stat-solar": {
           "type": "stat",
           "settings": {
-            "value": "1 200 W",
+            "value": "1 000 W",
             "label": "Max Solar Input",
-            "note": "Recharge in ~1 hour",
+            "note": "100 V / 20 A · built-in MPPT",
             "icon": "☀️"
           }
         }
       },
-      "block_order": ["stat-output", "stat-capacity", "stat-cycles", "stat-solar"]
+      "block_order": [
+        "stat-output",
+        "stat-capacity",
+        "stat-cycles",
+        "stat-solar"
+      ]
     },
     "sorein-use-cases": {
       "type": "sorein-use-cases",
@@ -94,7 +95,7 @@
       "type": "sorein-modular-system",
       "settings": {
         "heading": "Build the system your life needs",
-        "subheading": "Start with the A6 Pro base. Add batteries. Add inverters. Expand when you need more.",
+        "subheading": "Start with the Main Base 3600. Stack EB240 batteries for capacity. Add AC300 inverters for power. Expand when you need more.",
         "cta_label": "Build your system"
       },
       "blocks": {},
@@ -104,7 +105,7 @@
       "type": "sorein-solar-ready",
       "settings": {
         "heading": "Charge from the sun. Anywhere.",
-        "subheading": "Connect up to 1 200W of solar panels. Recharge in as little as 1 hour. Designed for cabins, RVs, and off-grid life."
+        "subheading": "Connect up to 1 000 W of solar panels (100 V / 20 A). Built-in MPPT controller. Designed for cabins, RVs, and off-grid life."
       },
       "blocks": {},
       "block_order": []
@@ -122,10 +123,10 @@
       "type": "sorein-builder-cta",
       "settings": {
         "heading": "Configure your perfect power setup",
-        "subheading": "Choose your base, add batteries and inverters, and build the exact system your home, cabin, or RV needs.",
-        "eyebrow": "Flagship system",
+        "subheading": "Choose your base, add EB240 batteries and AC300 inverters, and build the exact system your home, cabin, or RV needs.",
+        "eyebrow": "Flagship modular system",
         "cta_primary_label": "Build your system",
-        "cta_secondary_label": "View A6 Pro specs"
+        "cta_secondary_label": "View system specs"
       },
       "blocks": {},
       "block_order": []
@@ -143,21 +144,16 @@
       "type": "sorein-final-cta",
       "settings": {
         "heading": "Your backup power is one click away.",
-        "subheading": "Join thousands of homeowners, cabin owners, and off-grid enthusiasts who trust Sorein.",
+        "subheading": "Join homeowners, cabin owners, and off-grid enthusiasts who trust Sorein for real energy independence.",
         "cta_primary_label": "Build your system",
         "cta_secondary_label": "Browse all products",
-        "trust_text": "Free delivery · 5-year warranty · LiFePO4 safety · Expert support"
+        "trust_text": "Free delivery · 5-year warranty · EV-grade LFP · Expert support"
       },
       "blocks": {},
       "block_order": []
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
   "order": [
-    "header",
     "sorein-hero",
     "sorein-use-cases",
     "sorein-featured",
@@ -167,7 +163,6 @@
     "sorein-trust",
     "sorein-builder-cta",
     "sorein-faq",
-    "sorein-final-cta",
-    "footer"
+    "sorein-final-cta"
   ]
 }

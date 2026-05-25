@@ -1,9 +1,5 @@
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "not-found": {
       "type": "sorein-page-404",
       "settings": {
@@ -12,11 +8,9 @@
       },
       "blocks": {},
       "block_order": []
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
-  "order": ["header", "not-found", "footer"]
+  "order": [
+    "not-found"
+  ]
 }

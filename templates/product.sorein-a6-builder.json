@@ -1,9 +1,5 @@
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "a6-builder": {
       "type": "sorein-a6-builder",
       "settings": {
@@ -30,16 +26,10 @@
       },
       "blocks": {},
       "block_order": []
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
   "order": [
-    "header",
     "a6-builder",
-    "sorein-faq",
-    "footer"
+    "sorein-faq"
   ]
 }

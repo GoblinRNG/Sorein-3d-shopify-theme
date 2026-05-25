@@ -1,19 +1,13 @@
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "page-content": {
       "type": "main-page",
       "settings": {},
       "blocks": {},
       "block_order": []
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
-  "order": ["header", "page-content", "footer"]
+  "order": [
+    "page-content"
+  ]
 }

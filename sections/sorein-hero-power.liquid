@@ -132,6 +132,14 @@
           </svg>
           <span>{{- section.settings.trust_4 | default: 'Expert Support' -}}</span>
         </li>
+        <li class="sorein-hero__trust-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>{{- section.settings.trust_5 | default: 'Trusted by 100 000+ customers' -}}</span>
+        </li>
       </ul>
       {%- endif -%}
 
@@ -158,9 +166,15 @@
               widths: '400,500,600,750,900'
           }}
         {%- else -%}
-          <div class="sorein-hero__img-placeholder" aria-label="Product image — upload in theme editor">
-            {{ 'product-1' | placeholder_svg_tag: 'sorein-hero__placeholder-svg' }}
-          </div>
+          <img
+            src="{{ 'sorein-a6-hero.png' | asset_url }}"
+            alt="Sorein A6 portable power station — 6394Wh, 6600W LFP"
+            class="sorein-hero__img"
+            loading="eager"
+            fetchpriority="high"
+            width="900"
+            height="900"
+          >
         {%- endif -%}
 
         {%- comment -%}Corner brackets — futuristic framing detail{%- endcomment -%}
@@ -209,27 +223,27 @@
         {%- comment -%}Fallback static stats — shown until merchant adds blocks{%- endcomment -%}
         <div class="sorein-hero__stat" role="listitem" data-sorein-stat="0">
           <span class="sorein-hero__stat-icon" aria-hidden="true">⚡</span>
-          <strong class="sorein-hero__stat-value">3 600 W</strong>
+          <strong class="sorein-hero__stat-value">6 600 W</strong>
           <span class="sorein-hero__stat-label">Continuous Output</span>
-          <span class="sorein-hero__stat-note">Up to 36 kW with stacking</span>
+          <span class="sorein-hero__stat-note">Peak 13 200 W</span>
         </div>
         <div class="sorein-hero__stat" role="listitem" data-sorein-stat="1">
           <span class="sorein-hero__stat-icon" aria-hidden="true">🔋</span>
-          <strong class="sorein-hero__stat-value">2–100 kWh</strong>
-          <span class="sorein-hero__stat-label">Scalable Capacity</span>
-          <span class="sorein-hero__stat-note">2 400 Wh per EB240 module</span>
+          <strong class="sorein-hero__stat-value">6 394 Wh</strong>
+          <span class="sorein-hero__stat-label">Base Capacity</span>
+          <span class="sorein-hero__stat-note">Expandable to 100 kWh</span>
         </div>
         <div class="sorein-hero__stat" role="listitem" data-sorein-stat="2">
           <span class="sorein-hero__stat-icon" aria-hidden="true">♻️</span>
-          <strong class="sorein-hero__stat-value">4 000+</strong>
+          <strong class="sorein-hero__stat-value">6 000+</strong>
           <span class="sorein-hero__stat-label">LFP Cycles</span>
-          <span class="sorein-hero__stat-note">EV-grade chemistry, ~10-year life</span>
+          <span class="sorein-hero__stat-note">≈10-year battery life</span>
         </div>
         <div class="sorein-hero__stat" role="listitem" data-sorein-stat="3">
           <span class="sorein-hero__stat-icon" aria-hidden="true">☀️</span>
-          <strong class="sorein-hero__stat-value">1 000 W</strong>
+          <strong class="sorein-hero__stat-value">1 200 W</strong>
           <span class="sorein-hero__stat-label">Max Solar Input</span>
-          <span class="sorein-hero__stat-note">100 V / 20 A, built-in MPPT</span>
+          <span class="sorein-hero__stat-note">Recharge in ~1 hour</span>
         </div>
         {%- endfor -%}
       </div>
@@ -993,7 +1007,7 @@
       "id": "visual_badge",
       "label": "Floating badge text",
       "info": "Short label shown near the product image. E.g. 'LiFePO4 · 3 500 cycles'",
-      "default": "LiFePO4 · 3 500 cycles"
+      "default": "LFP · 6 000+ Cycles · Up to 100 kWh"
     },
     {
       "type": "header",
@@ -1028,6 +1042,12 @@
       "id": "trust_4",
       "label": "Trust item 4",
       "default": "Expert Support"
+    },
+    {
+      "type": "text",
+      "id": "trust_5",
+      "label": "Trust item 5",
+      "default": "Trusted by 100 000+ customers"
     },
     {
       "type": "header",

@@ -1,9 +1,5 @@
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "cart-page": {
       "type": "sorein-cart-page",
       "settings": {
@@ -13,11 +9,9 @@
       },
       "blocks": {},
       "block_order": []
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
-  "order": ["header", "cart-page", "footer"]
+  "order": [
+    "cart-page"
+  ]
 }
