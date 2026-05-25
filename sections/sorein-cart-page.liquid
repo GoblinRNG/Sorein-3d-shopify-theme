@@ -43,7 +43,7 @@
 <div class="srn-cart__inner">
   {%- if cart.item_count > 0 -%}
   <div>
-    <h1>Your cart ({{ cart.item_count }} item{{ cart.item_count | plural: '', 's' }})</h1>
+    <h1>Your cart ({{ cart.item_count }} item{% if cart.item_count != 1 %}s{% endif %})</h1>
     <div class="srn-cart__items" id="srn-cart-items-{{ sid }}">
       {%- for item in cart.items -%}
       <div class="srn-cart__item" data-key="{{ item.key }}" data-variant="{{ item.variant_id }}">
@@ -75,7 +75,7 @@
     <div class="srn-cart__summary-row"><span>Subtotal</span><span id="srn-cart-subtotal-{{ sid }}">{{ cart.total_price | money }}</span></div>
     <div class="srn-cart__summary-row"><span>Shipping</span><span>{{ section.settings.delivery_text | default: 'Free' }}</span></div>
     <div class="srn-cart__total-row"><span>Total</span><span id="srn-cart-total-{{ sid }}">{{ cart.total_price | money }}</span></div>
-    <a href="{{ routes.checkout }}" class="srn-cart__checkout">Proceed to checkout</a>
+    <a href="{{ routes.checkout_url }}" class="srn-cart__checkout">Proceed to checkout</a>
     <a href="{{ routes.all_products_collection_url }}" class="srn-cart__continue">Continue shopping</a>
     {%- if section.settings.show_note -%}
     <button class="srn-cart__note-toggle" type="button" onclick="this.nextElementSibling.classList.toggle('is-open')">+ Add a note</button>

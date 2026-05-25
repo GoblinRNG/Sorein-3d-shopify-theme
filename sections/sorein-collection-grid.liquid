@@ -25,7 +25,7 @@
 <div class="srn-collgrid__inner">
   {%- if section.settings.show_sort -%}
   <div class="srn-collgrid__toolbar">
-    <span class="srn-collgrid__count">{{ collection.products_count }} product{{ collection.products_count | plural: '', 's' }}</span>
+    <span class="srn-collgrid__count">{{ collection.products_count }} product{% if collection.products_count != 1 %}s{% endif %}</span>
     <select class="srn-collgrid__sort" onchange="window.location = '?sort_by=' + this.value" aria-label="Sort products">
       <option value="manual"{% if collection.sort_by == 'manual' %} selected{% endif %}>Featured</option>
       <option value="price-ascending"{% if collection.sort_by == 'price-ascending' %} selected{% endif %}>Price: Low to High</option>

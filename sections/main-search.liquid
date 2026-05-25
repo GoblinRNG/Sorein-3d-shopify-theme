@@ -96,7 +96,7 @@
     {%- if search.performed -%}
       {%- if search.results_count > 0 -%}
         <p class="srn-search__results-count">
-          {{ search.results_count }} result{{ search.results_count | plural: '', 's' }} for &ldquo;{{ search.terms | escape }}&rdquo;
+          {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for &ldquo;{{ search.terms | escape }}&rdquo;
         </p>
         <div class="srn-search__grid">
           {%- for result in search.results -%}
