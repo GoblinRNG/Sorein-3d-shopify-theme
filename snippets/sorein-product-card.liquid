@@ -1,0 +1,276 @@
+{%- comment -%}
+  Sorein Product Card Snippet
+  Usage:
+    {% render 'sorein-product-card',
+       product: product,
+       badge_text: 'Best Seller',
+       custom_desc: 'Custom description',
+       capacity_wh: '1024Wh',
+       output_w: '2000W'
+    %}
+{%- endcomment -%}
+
+{%- liquid
+  assign card_product = product
+  assign has_badge = false
+  if badge_text and badge_text != blank
+    assign has_badge = true
+  endif
+  assign has_specs = false
+  if capacity_wh and capacity_wh != blank
+    assign has_specs = true
+  endif
+  if output_w and output_w != blank
+    assign has_specs = true
+  endif
+  assign show_compare = false
+  if card_product.compare_at_price > card_product.price
+    assign show_compare = true
+  endif
+  assign card_desc = custom_desc
+  if card_desc == blank
+    assign card_desc = card_product.description | strip_html | truncate: 120
+  endif
+-%}
+
+<article class="srn-product-card" data-product-id="{{ card_product.id }}">
+  <a href="{{ card_product.url }}" class="srn-product-card__image-link" tabindex="-1" aria-hidden="true">
+    <div class="srn-product-card__image-wrap">
+      {%- if has_badge -%}
+        <span class="srn-product-card__badge">{{ badge_text }}</span>
+      {%- endif -%}
+
+      {%- if card_product.featured_image -%}
+        {{
+          card_product.featured_image
+          | image_url: width: 640
+          | image_tag:
+            loading: 'lazy',
+            alt: card_product.featured_image.alt | default: card_product.title,
+            class: 'srn-product-card__img',
+            widths: '320, 480, 640',
+            sizes: '(min-width: 1200px) 400px, (min-width: 768px) 33vw, 100vw'
+        }}
+      {%- else -%}
+        <div class="srn-product-card__img-placeholder">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="srn-product-card__body">
+    {%- if card_product.type != blank -%}
+      <p class="srn-product-card__type srn-eyebrow">{{ card_product.type }}</p>
+    {%- endif -%}
+
+    <h3 class="srn-product-card__title">
+      <a href="{{ card_product.url }}" class="srn-product-card__title-link">{{ card_product.title }}</a>
+    </h3>
+
+    {%- if has_specs -%}
+      <div class="srn-product-card__specs" aria-label="Key specifications">
+        {%- if capacity_wh and capacity_wh != blank -%}
+          <span class="srn-product-card__spec">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="1" y="6" width="18" height="12" rx="2"/><line x1="23" y1="13" x2="23" y2="11"/></svg>
+            {{ capacity_wh }}
+          </span>
+        {%- endif -%}
+        {%- if output_w and output_w != blank -%}
+          <span class="srn-product-card__spec">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            {{ output_w }}
+          </span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if card_desc != blank -%}
+      <p class="srn-product-card__desc">{{ card_desc }}</p>
+    {%- endif -%}
+
+    <div class="srn-product-card__price-row">
+      <div class="srn-product-card__price">
+        {%- if show_compare -%}
+          <s class="srn-product-card__compare-price" aria-label="Original price">{{ card_product.compare_at_price | money }}</s>
+        {%- endif -%}
+        <span class="srn-product-card__current-price{% if show_compare %} srn-product-card__current-price--sale{% endif %}" aria-label="Current price">
+          {{ card_product.price | money }}
+        </span>
+        {%- if show_compare -%}
+          {%- assign savings = card_product.compare_at_price | minus: card_product.price -%}
+          {%- assign save_pct = savings | times: 100 | divided_by: card_product.compare_at_price -%}
+          <span class="srn-product-card__save-badge">-{{ save_pct }}%</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <a href="{{ card_product.url }}" class="srn-btn srn-btn--ghost srn-product-card__cta" aria-label="View {{ card_product.title }}">
+      View Details
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</article>
+
+<style>
+  .srn-product-card {
+    background: #fff;
+    border: 1px solid rgba(17,19,24,0.09);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.28s cubic-bezier(0.22,1,0.36,1), transform 0.28s cubic-bezier(0.22,1,0.36,1);
+  }
+  .srn-product-card:hover {
+    box-shadow: 0 12px 40px rgba(17,19,24,0.12);
+    transform: translateY(-3px);
+  }
+  .srn-product-card__image-link {
+    display: block;
+    text-decoration: none;
+  }
+  .srn-product-card__image-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: #f0f2f5;
+    overflow: hidden;
+  }
+  .srn-product-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
+    display: block;
+  }
+  .srn-product-card:hover .srn-product-card__img {
+    transform: scale(1.04);
+  }
+  .srn-product-card__img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f2f5;
+    color: #111318;
+  }
+  .srn-product-card__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    background: #22d3ee;
+    color: #0a0c10;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    line-height: 1;
+  }
+  .srn-product-card__body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .srn-product-card__type {
+    font-size: 11px;
+    color: rgba(17,19,24,0.45);
+  }
+  .srn-product-card__title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111318;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+  .srn-product-card__title-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .srn-product-card__title-link:hover {
+    color: #0ea5e9;
+  }
+  .srn-product-card__specs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .srn-product-card__spec {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0ea5e9;
+    background: rgba(14,165,233,0.08);
+    border: 1px solid rgba(14,165,233,0.15);
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+  .srn-product-card__desc {
+    font-size: 13px;
+    color: rgba(17,19,24,0.60);
+    line-height: 1.5;
+    flex: 1;
+  }
+  .srn-product-card__price-row {
+    margin-top: 4px;
+  }
+  .srn-product-card__price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .srn-product-card__compare-price {
+    font-size: 14px;
+    color: rgba(17,19,24,0.40);
+    text-decoration: line-through;
+  }
+  .srn-product-card__current-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111318;
+    letter-spacing: -0.02em;
+  }
+  .srn-product-card__current-price--sale {
+    color: #0ea5e9;
+  }
+  .srn-product-card__save-badge {
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(34,211,238,0.12);
+    color: #0ea5e9;
+    border-radius: 6px;
+    padding: 2px 7px;
+  }
+  .srn-product-card__cta {
+    margin-top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    justify-content: center;
+    border-color: rgba(17,19,24,0.15);
+    color: #111318;
+  }
+  .srn-product-card__cta:hover {
+    border-color: #0ea5e9;
+    color: #0ea5e9;
+    background: rgba(14,165,233,0.05);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .srn-product-card,
+    .srn-product-card__img {
+      transition: none;
+    }
+  }
+</style>

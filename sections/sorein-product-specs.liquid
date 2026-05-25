@@ -1,0 +1,71 @@
+{% comment %}Section: sorein-product-specs.liquid — Technical specs table + highlight cards{% endcomment %}
+{%- liquid assign sid = section.id -%}
+<section id="srn-prodspecs-{{ sid }}" class="srn-prodspecs">
+<style>
+#srn-prodspecs-{{ sid }} { background:#f8f9fb; padding:clamp(56px,8vw,96px) clamp(20px,5vw,60px); }
+#srn-prodspecs-{{ sid }} .srn-prodspecs__inner { max-width:1280px; margin:0 auto; }
+#srn-prodspecs-{{ sid }} .srn-prodspecs__heading { font-size:clamp(22px,3vw,36px); font-weight:700; letter-spacing:-0.022em; color:#111318; margin:0 0 40px; }
+#srn-prodspecs-{{ sid }} .srn-prodspecs__grid { display:grid; grid-template-columns:1fr; gap:32px; }
+@media(min-width:768px){ #srn-prodspecs-{{ sid }} .srn-prodspecs__grid { grid-template-columns:1fr 1fr; gap:40px; } }
+#srn-prodspecs-{{ sid }} table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; border:1px solid rgba(17,19,24,0.08); }
+#srn-prodspecs-{{ sid }} tr:nth-child(even) td { background:rgba(17,19,24,0.02); }
+#srn-prodspecs-{{ sid }} td { padding:12px 16px; font-size:14px; color:#111318; border-bottom:1px solid rgba(17,19,24,0.07); vertical-align:top; }
+#srn-prodspecs-{{ sid }} td:first-child { font-weight:600; color:rgba(17,19,24,0.65); width:40%; white-space:nowrap; }
+#srn-prodspecs-{{ sid }} td:last-child { font-family:'SF Mono',Consolas,monospace; }
+#srn-prodspecs-{{ sid }} tr:last-child td { border-bottom:none; }
+#srn-prodspecs-{{ sid }} .srn-prodspecs__highlights { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+#srn-prodspecs-{{ sid }} .srn-prodspecs__card { background:#fff; border-radius:12px; border:1px solid rgba(17,19,24,0.08); padding:20px; }
+#srn-prodspecs-{{ sid }} .srn-prodspecs__card-value { font-size:clamp(20px,2.5vw,26px); font-weight:700; color:#111318; letter-spacing:-0.02em; }
+#srn-prodspecs-{{ sid }} .srn-prodspecs__card-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:rgba(17,19,24,0.45); margin-top:4px; }
+#srn-prodspecs-{{ sid }} .srn-prodspecs__chemistry { background:#090b0f; border-radius:16px; padding:28px; color:#f4f6fa; margin-top:32px; }
+#srn-prodspecs-{{ sid }} .srn-prodspecs__chemistry h3 { font-size:18px; font-weight:700; color:#22d3ee; margin:0 0 10px; }
+#srn-prodspecs-{{ sid }} .srn-prodspecs__chemistry p { font-size:14px; line-height:1.7; color:rgba(244,246,250,0.68); margin:0; }
+</style>
+<div class="srn-prodspecs__inner">
+  <h2 class="srn-prodspecs__heading">{{ section.settings.heading }}</h2>
+  <div class="srn-prodspecs__grid">
+    <table aria-label="Technical specifications">
+      <tbody>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'spec_row' -%}
+          <tr {{ block.shopify_attributes }}>
+            <td>{{ block.settings.label }}</td>
+            <td>{{ block.settings.value }}</td>
+          </tr>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if section.blocks.size == 0 -%}
+        <tr><td>AC output</td><td>3 600 W continuous (pure sine wave)</td></tr>
+        <tr><td>Base capacity</td><td>Built-in LFP cell module</td></tr>
+        <tr><td>Max expansion</td><td>Up to 5× EB240 (2 400 Wh each)</td></tr>
+        <tr><td>Battery type</td><td>EV-grade LFP (LiFePO4)</td></tr>
+        <tr><td>Cycle life</td><td>4 000+ cycles to 80% capacity</td></tr>
+        <tr><td>Solar input</td><td>1 000 W max (100 V / 20 A, MPPT)</td></tr>
+        <tr><td>AC input</td><td>2 200 W max (220–240 V grid)</td></tr>
+        <tr><td>UPS switching</td><td>0ms (with AC300) / ≤20ms bypass</td></tr>
+        <tr><td>USB-C output</td><td>100 W × 2</td></tr>
+        <tr><td>USB-A output</td><td>18 W × 2</td></tr>
+        <tr><td>Base weight</td><td>9.5 kg</td></tr>
+        <tr><td>Base dimensions</td><td>480 × 306 × 225 mm</td></tr>
+        <tr><td>Charging temp</td><td>0°C to +45°C</td></tr>
+        <tr><td>Operating temp</td><td>–20°C to +45°C</td></tr>
+        <tr><td>Connectivity</td><td>Bluetooth (45 m) + 2.4 GHz Wi-Fi</td></tr>
+        {%- endif -%}
+      </tbody>
+    </table>
+    <div>
+      <div class="srn-prodspecs__highlights">
+        <div class="srn-prodspecs__card"><div class="srn-prodspecs__card-value">{{ section.settings.h1_value | default: '3 600 W' }}</div><div class="srn-prodspecs__card-label">{{ section.settings.h1_label | default: 'AC Output' }}</div></div>
+        <div class="srn-prodspecs__card"><div class="srn-prodspecs__card-value">{{ section.settings.h2_value | default: '2 400 Wh' }}</div><div class="srn-prodspecs__card-label">{{ section.settings.h2_label | default: 'Per Battery' }}</div></div>
+        <div class="srn-prodspecs__card"><div class="srn-prodspecs__card-value">{{ section.settings.h3_value | default: '4 000+' }}</div><div class="srn-prodspecs__card-label">{{ section.settings.h3_label | default: 'Cycles' }}</div></div>
+        <div class="srn-prodspecs__card"><div class="srn-prodspecs__card-value">{{ section.settings.h4_value | default: '1 000 W' }}</div><div class="srn-prodspecs__card-label">{{ section.settings.h4_label | default: 'Solar Max' }}</div></div>
+      </div>
+      <div class="srn-prodspecs__chemistry">
+        <h3>EV-grade LFP — the safer chemistry</h3>
+        <p>Sorein uses EV-grade LFP (LiFePO4) cells — the same chemistry trusted in electric vehicles. Thermally stable, non-toxic, and rated for 4 000+ charge cycles to 80% capacity. It does not produce harmful gases, making it fully safe for indoor home backup, cabins, and enclosed spaces. Protected by 18+ BMS algorithms and an active cooling system: 10 DC brushless fans + 8 aluminium heat sinks.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+{% schema %}{"name":"Product Specs","tag":"section","settings":[{"type":"text","id":"heading","label":"Heading","default":"Technical specifications"},{"type":"header","content":"Highlight cards"},{"type":"text","id":"h1_value","label":"Highlight 1 value","default":"3 600 W"},{"type":"text","id":"h1_label","label":"Highlight 1 label","default":"AC Output"},{"type":"text","id":"h2_value","label":"Highlight 2 value","default":"2 400 Wh"},{"type":"text","id":"h2_label","label":"Highlight 2 label","default":"Per Battery"},{"type":"text","id":"h3_value","label":"Highlight 3 value","default":"4 000+"},{"type":"text","id":"h3_label","label":"Highlight 3 label","default":"Cycles"},{"type":"text","id":"h4_value","label":"Highlight 4 value","default":"1 000 W"},{"type":"text","id":"h4_label","label":"Highlight 4 label","default":"Solar Max"}],"blocks":[{"type":"spec_row","name":"Spec row","settings":[{"type":"text","id":"label","label":"Specification","default":"AC output"},{"type":"text","id":"value","label":"Value","default":"3 600 W continuous"}]}],"presets":[{"name":"Product Specs"}]}{% endschema %}

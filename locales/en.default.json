@@ -1,0 +1,380 @@
+{
+  "general": {
+    "search": {
+      "default": "Search"
+    },
+    "cart": {
+      "default": "Cart"
+    },
+    "close": {
+      "default": "Close"
+    },
+    "menu": {
+      "default": "Menu"
+    },
+    "back": {
+      "default": "Back"
+    },
+    "loading": {
+      "default": "Loading..."
+    },
+    "or": {
+      "default": "or"
+    },
+    "page_not_found": {
+      "default": "Page not found"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": {
+      "default": "Skip to content"
+    },
+    "close_modal": {
+      "default": "Close dialog"
+    },
+    "open_menu": {
+      "default": "Open navigation menu"
+    },
+    "close_menu": {
+      "default": "Close navigation menu"
+    },
+    "open_cart": {
+      "default": "Open cart"
+    },
+    "loading": {
+      "default": "Loading"
+    },
+    "pagination_label": {
+      "default": "Pagination"
+    },
+    "next_page": {
+      "default": "Next page"
+    },
+    "previous_page": {
+      "default": "Previous page"
+    },
+    "image_number": {
+      "default": "Image {{ number }} of {{ count }}"
+    }
+  },
+  "cart": {
+    "title": {
+      "default": "Cart"
+    },
+    "empty": {
+      "default": "Your cart is empty"
+    },
+    "checkout": {
+      "default": "Proceed to checkout"
+    },
+    "subtotal": {
+      "default": "Subtotal"
+    },
+    "continue_shopping": {
+      "default": "Continue shopping"
+    },
+    "add_note": {
+      "default": "Add order note"
+    },
+    "note": {
+      "default": "Order note"
+    },
+    "remove": {
+      "default": "Remove"
+    },
+    "remove_item": {
+      "default": "Remove {{ title }} from cart"
+    },
+    "increase_quantity": {
+      "default": "Increase quantity for {{ title }}"
+    },
+    "decrease_quantity": {
+      "default": "Decrease quantity for {{ title }}"
+    },
+    "items_count": {
+      "one": "{{ count }} item",
+      "other": "{{ count }} items"
+    },
+    "price": {
+      "default": "Price"
+    },
+    "quantity": {
+      "default": "Quantity"
+    },
+    "total": {
+      "default": "Total"
+    },
+    "taxes_and_shipping_at_checkout": {
+      "default": "Taxes and shipping calculated at checkout"
+    },
+    "added": {
+      "default": "Added to cart"
+    },
+    "error": {
+      "default": "Error adding to cart. Please try again."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": {
+        "default": "Add to cart"
+      },
+      "sold_out": {
+        "default": "Sold out"
+      },
+      "unavailable": {
+        "default": "Unavailable"
+      },
+      "price": {
+        "default": "Price"
+      },
+      "compare_at_price": {
+        "default": "Regular price"
+      },
+      "sale_badge": {
+        "default": "Sale"
+      },
+      "new_badge": {
+        "default": "New"
+      },
+      "quantity": {
+        "default": "Quantity"
+      },
+      "increase_quantity": {
+        "default": "Increase quantity"
+      },
+      "decrease_quantity": {
+        "default": "Decrease quantity"
+      },
+      "choose_option": {
+        "default": "Choose {{ option }}"
+      },
+      "view_product": {
+        "default": "View product"
+      },
+      "media": {
+        "open_media": {
+          "default": "Open media {{ index }} in modal"
+        },
+        "play_video": {
+          "default": "Play video"
+        }
+      },
+      "description": {
+        "default": "Description"
+      },
+      "specifications": {
+        "default": "Specifications"
+      },
+      "in_the_box": {
+        "default": "In the box"
+      },
+      "shipping_weight": {
+        "default": "Shipping weight"
+      },
+      "sku": {
+        "default": "SKU"
+      },
+      "availability": {
+        "default": "Availability"
+      },
+      "in_stock": {
+        "default": "In stock"
+      },
+      "out_of_stock": {
+        "default": "Out of stock"
+      }
+    }
+  },
+  "collections": {
+    "general": {
+      "title": {
+        "default": "Collections"
+      },
+      "items_with_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      },
+      "from_price": {
+        "default": "From {{ price }}"
+      },
+      "view_all": {
+        "default": "View all"
+      },
+      "filter_and_sort": {
+        "default": "Filter and sort"
+      },
+      "filter_by": {
+        "default": "Filter by"
+      },
+      "sort_by": {
+        "default": "Sort by"
+      },
+      "clear_filters": {
+        "default": "Clear filters"
+      },
+      "apply_filters": {
+        "default": "Apply"
+      },
+      "no_results": {
+        "default": "No products found"
+      },
+      "empty": {
+        "default": "This collection is empty"
+      }
+    },
+    "sorting": {
+      "featured": {
+        "default": "Featured"
+      },
+      "best_selling": {
+        "default": "Best selling"
+      },
+      "alphabetical_asc": {
+        "default": "A–Z"
+      },
+      "alphabetical_desc": {
+        "default": "Z–A"
+      },
+      "price_asc": {
+        "default": "Price: Low to high"
+      },
+      "price_desc": {
+        "default": "Price: High to low"
+      },
+      "date_desc": {
+        "default": "Newest first"
+      },
+      "date_asc": {
+        "default": "Oldest first"
+      }
+    }
+  },
+  "customer": {
+    "login": {
+      "title": {
+        "default": "Login"
+      },
+      "email": {
+        "default": "Email"
+      },
+      "password": {
+        "default": "Password"
+      },
+      "submit": {
+        "default": "Sign in"
+      },
+      "forgot_password": {
+        "default": "Forgot password?"
+      },
+      "no_account": {
+        "default": "Don't have an account?"
+      },
+      "create_account": {
+        "default": "Create account"
+      }
+    },
+    "orders": {
+      "title": {
+        "default": "My orders"
+      },
+      "order_number": {
+        "default": "Order"
+      },
+      "date": {
+        "default": "Date"
+      },
+      "payment_status": {
+        "default": "Payment"
+      },
+      "fulfillment_status": {
+        "default": "Fulfillment"
+      },
+      "total": {
+        "default": "Total"
+      },
+      "none": {
+        "default": "No orders yet"
+      }
+    },
+    "account": {
+      "title": {
+        "default": "My account"
+      },
+      "details": {
+        "default": "Account details"
+      },
+      "logout": {
+        "default": "Sign out"
+      }
+    },
+    "addresses": {
+      "title": {
+        "default": "My addresses"
+      },
+      "add_new": {
+        "default": "Add new address"
+      },
+      "edit_address": {
+        "default": "Edit address"
+      },
+      "delete": {
+        "default": "Delete"
+      },
+      "default_badge": {
+        "default": "Default"
+      }
+    },
+    "recover_password": {
+      "title": {
+        "default": "Reset password"
+      },
+      "subtext": {
+        "default": "We'll send you an email to reset your password."
+      },
+      "submit": {
+        "default": "Submit"
+      },
+      "cancel": {
+        "default": "Cancel"
+      },
+      "success": {
+        "default": "We've sent you an email with a link to update your password."
+      }
+    }
+  },
+  "trust": {
+    "delivery": {
+      "default": "Free Delivery"
+    },
+    "warranty": {
+      "default": "5-Year Warranty"
+    },
+    "support": {
+      "default": "Expert Support"
+    },
+    "checkout": {
+      "default": "Secure Checkout"
+    }
+  },
+  "sections": {
+    "header": {
+      "heading": {
+        "default": "Header"
+      }
+    },
+    "footer": {
+      "heading": {
+        "default": "Footer"
+      }
+    }
+  },
+  "errors": {
+    "server_error": {
+      "default": "Something went wrong. Please try again."
+    },
+    "not_found": {
+      "default": "Page not found."
+    }
+  }
+}

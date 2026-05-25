@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "contact": {
+      "type": "sorein-page-contact",
+      "settings": {
+        "heading": "Get in touch",
+        "subheading": "Our energy experts are here to help you choose the right system.",
+        "email": "support@sorein.com",
+        "phone": "+46 8 XXX XX XX",
+        "hours": "Monday–Friday: 09:00–17:00 CET"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": ["header", "contact", "footer"]
+}

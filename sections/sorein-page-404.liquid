@@ -1,0 +1,278 @@
+<style>
+  #srn-404-{{ section.id }} {
+    min-height: 80vh;
+    background: #07090d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 80px clamp(20px, 5vw, 60px);
+  }
+
+  #srn-404-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(34,211,238,0.10) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(14,165,233,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__code {
+    font-size: clamp(7rem, 18vw, 12rem);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    line-height: 1;
+    background: linear-gradient(135deg, rgba(34,211,238,0.25) 0%, rgba(34,211,238,0.08) 50%, rgba(14,165,233,0.15) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    user-select: none;
+    margin: 0 0 8px;
+    display: block;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(34,211,238,0.10);
+    border: 1px solid rgba(34,211,238,0.20);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    color: #22d3ee;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__icon svg {
+    width: 26px;
+    height: 26px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__heading {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #fff;
+    margin: 0 0 16px;
+    line-height: 1.15;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__sub {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.50);
+    margin: 0 0 40px;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 56px;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: linear-gradient(128deg, #22d3ee 0%, #0ea5e9 100%);
+    color: #07090d;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__btn-primary:hover {
+    opacity: 0.90;
+    transform: translateY(-1px);
+  }
+
+  #srn-404-{{ section.id }} .srn-404__btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.80);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__btn-ghost:hover {
+    background: rgba(255,255,255,0.10);
+    border-color: rgba(255,255,255,0.20);
+  }
+
+  /* Quick links */
+  #srn-404-{{ section.id }} .srn-404__links-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.30);
+    margin: 0 0 20px;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.55);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+
+  #srn-404-{{ section.id }} .srn-404__link:hover {
+    color: #22d3ee;
+    border-color: rgba(34,211,238,0.30);
+    background: rgba(34,211,238,0.06);
+  }
+
+  #srn-404-{{ section.id }} .srn-404__link svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  /* Grid background decoration */
+  #srn-404-{{ section.id }} .srn-404__grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #srn-404-{{ section.id }} .srn-404__btn-primary,
+    #srn-404-{{ section.id }} .srn-404__btn-ghost,
+    #srn-404-{{ section.id }} .srn-404__link {
+      transition: none;
+    }
+  }
+</style>
+
+<section id="srn-404-{{ section.id }}" aria-labelledby="srn-404-h1-{{ section.id }}">
+  <div class="srn-404__grid-bg" aria-hidden="true"></div>
+
+  <div class="srn-404__inner">
+
+    <div class="srn-404__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+
+    <span class="srn-404__code" aria-hidden="true">404</span>
+
+    <h1 class="srn-404__heading" id="srn-404-h1-{{ section.id }}">{{ section.settings.heading }}</h1>
+    <p class="srn-404__sub">{{ section.settings.subheading }}</p>
+
+    <div class="srn-404__actions">
+      <a href="{{ routes.root_url }}" class="srn-404__btn-primary">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Back to homepage
+      </a>
+      <a href="{{ routes.all_products_collection_url }}" class="srn-404__btn-ghost">
+        View all products
+      </a>
+    </div>
+
+    <p class="srn-404__links-title">Quick links</p>
+    <div class="srn-404__links">
+      <a href="{{ routes.root_url }}" class="srn-404__link">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </a>
+      <a href="{{ routes.all_products_collection_url }}" class="srn-404__link">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 00-4 0v2M8 7V5a2 2 0 00-4 0v2"/></svg>
+        Products
+      </a>
+      <a href="{{ routes.search_url }}" class="srn-404__link">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Search
+      </a>
+      <a href="/pages/contact" class="srn-404__link">
+        <svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Contact
+      </a>
+      <a href="{{ routes.cart_url }}" class="srn-404__link">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        Cart
+      </a>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "404 Page",
+  "tag": "section",
+  "class": "srn-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Page not found"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "The page you're looking for has moved or doesn't exist. Try searching, or navigate to a page below."
+    }
+  ],
+  "presets": [
+    {
+      "name": "404 Page"
+    }
+  ]
+}
+{% endschema %}

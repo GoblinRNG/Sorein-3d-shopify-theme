@@ -1,0 +1,538 @@
+<style>
+  #srn-modular-{{ section.id }} {
+    background: #f8f9fb;
+    padding: 88px 0 100px;
+    overflow: hidden;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 64px;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__h2 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #111318;
+    margin: 12px 0 16px;
+    line-height: 1.15;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__sub {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: rgba(17,19,24,0.60);
+    margin: 0;
+  }
+
+  /* Steps layout */
+  #srn-modular-{{ section.id }} .srn-modular__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    margin-bottom: 56px;
+  }
+
+  /* Connector line on desktop */
+  @media (min-width: 900px) {
+    #srn-modular-{{ section.id }} .srn-modular__steps {
+      flex-direction: row;
+      gap: 0;
+      align-items: stretch;
+    }
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    opacity: 0;
+    transform: translateY(28px);
+    position: relative;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step.srn-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
+                transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  /* Connector line between steps */
+  #srn-modular-{{ section.id }} .srn-modular__step:not(:last-of-type)::after {
+    content: '';
+    position: absolute;
+    display: block;
+  }
+
+  /* Mobile: vertical connector */
+  #srn-modular-{{ section.id }} .srn-modular__step:not(:last-of-type)::after {
+    left: 28px;
+    top: 100%;
+    width: 2px;
+    height: 32px;
+    background: linear-gradient(180deg, rgba(34,211,238,0.40), rgba(34,211,238,0.10));
+  }
+
+  @media (min-width: 900px) {
+    #srn-modular-{{ section.id }} .srn-modular__step:not(:last-of-type)::after {
+      top: 28px;
+      left: 100%;
+      width: 32px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(34,211,238,0.40), rgba(34,211,238,0.10));
+    }
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-inner {
+    background: #ffffff;
+    border: 1px solid rgba(17,19,24,0.09);
+    border-radius: 16px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 32px;
+  }
+
+  @media (min-width: 900px) {
+    #srn-modular-{{ section.id }} .srn-modular__step-inner {
+      margin: 0 16px 0 0;
+    }
+
+    #srn-modular-{{ section.id }} .srn-modular__step:last-of-type .srn-modular__step-inner {
+      margin-right: 0;
+    }
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-img {
+    aspect-ratio: 16/9;
+    background: #e8edf3;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: rgba(17,19,24,0.15);
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #22d3ee;
+    color: #090b0f;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-body {
+    padding: 20px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #111318;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-desc {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgba(17,19,24,0.60);
+    margin: 0;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 4px;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-spec {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #14b8a6;
+    letter-spacing: 0.03em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__step-spec::before {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    background: #22d3ee;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Total system callout */
+  #srn-modular-{{ section.id }} .srn-modular__total {
+    background: #090b0f;
+    border: 1px solid rgba(34,211,238,0.22);
+    border-radius: 20px;
+    padding: 36px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  @media (min-width: 768px) {
+    #srn-modular-{{ section.id }} .srn-modular__total {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__total-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #22d3ee;
+    margin: 0 0 8px;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__total-title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #f4f6fa;
+    margin: 0 0 4px;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__total-sub {
+    font-size: 0.875rem;
+    color: rgba(244,246,250,0.55);
+    margin: 0;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__total-stats {
+    display: flex;
+    gap: 32px;
+    flex-shrink: 0;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__total-stat {
+    text-align: center;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__total-stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #22d3ee;
+    letter-spacing: -0.04em;
+    display: block;
+    line-height: 1;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__total-stat-label {
+    font-size: 0.72rem;
+    color: rgba(244,246,250,0.50);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 600;
+    margin-top: 4px;
+    display: block;
+  }
+
+  #srn-modular-{{ section.id }} .srn-modular__cta {
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #srn-modular-{{ section.id }} .srn-modular__step {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<section id="srn-modular-{{ section.id }}" aria-labelledby="srn-modular-h2-{{ section.id }}">
+  <div class="srn-container">
+    <div class="srn-modular__header">
+      {% if section.settings.eyebrow != blank %}
+        <p class="srn-eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      <h2 class="srn-modular__h2" id="srn-modular-h2-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {% if section.settings.subheading != blank %}
+        <p class="srn-modular__sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <div class="srn-modular__steps">
+      {% assign step_images = section.settings.step1_image, section.settings.step2_image, section.settings.step3_image %}
+      {% assign step_titles = section.settings.step1_title, section.settings.step2_title, section.settings.step3_title %}
+      {% assign step_descs = section.settings.step1_desc, section.settings.step2_desc, section.settings.step3_desc %}
+      {% assign step_specs = "3600W AC output · 2200W AC input · 1000W solar|+2400Wh per module · Up to 5× EB240|+3600W per inverter · Up to 2× AC300" | split: "|" %}
+      {% assign step_icons = "⚡|🔋|🔌" | split: "|" %}
+
+      {% for i in (1..3) %}
+        {% assign idx = forloop.index0 %}
+        {% assign s_img_key = 'step' | append: forloop.index | append: '_image' %}
+        {% assign s_title_key = 'step' | append: forloop.index | append: '_title' %}
+        {% assign s_desc_key = 'step' | append: forloop.index | append: '_desc' %}
+        {% assign step_img = section.settings[s_img_key] %}
+        {% assign step_title = section.settings[s_title_key] %}
+        {% assign step_desc = section.settings[s_desc_key] %}
+        {% assign spec = step_specs[idx] %}
+        {% assign step_icon = step_icons[idx] %}
+
+        <div class="srn-modular__step" data-step="{{ forloop.index }}">
+          <div class="srn-modular__step-inner">
+            <div class="srn-modular__step-img">
+              {% if step_img != blank %}
+                <img
+                  src="{{ step_img | image_url: width: 600 }}"
+                  alt="{{ step_img.alt | escape | default: step_title | escape }}"
+                  width="600"
+                  height="338"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="srn-modular__step-img-placeholder" aria-hidden="true">{{ step_icon }}</div>
+              {% endif %}
+            </div>
+            <div class="srn-modular__step-body">
+              <div class="srn-modular__step-header">
+                <span class="srn-modular__step-number" aria-hidden="true">{{ forloop.index }}</span>
+                <h3 class="srn-modular__step-title">{{ step_title }}</h3>
+              </div>
+              {% if step_desc != blank %}
+                <p class="srn-modular__step-desc">{{ step_desc }}</p>
+              {% endif %}
+              {% if spec != blank %}
+                <div class="srn-modular__step-specs">
+                  {% assign spec_parts = spec | split: ' · ' %}
+                  {% for sp in spec_parts %}
+                    <div class="srn-modular__step-spec">{{ sp }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="srn-modular__total" aria-label="Total system capacity">
+      <div>
+        <p class="srn-modular__total-label">Maximum full system</p>
+        <h3 class="srn-modular__total-title">Main Base 3600 + 5× EB240 + 2× AC300</h3>
+        <p class="srn-modular__total-sub">Start small. Scale as your needs grow.</p>
+      </div>
+      <div class="srn-modular__total-stats">
+        <div class="srn-modular__total-stat">
+          <span class="srn-modular__total-stat-value">{{ section.settings.system_max_wh }}</span>
+          <span class="srn-modular__total-stat-label">Capacity</span>
+        </div>
+        <div class="srn-modular__total-stat">
+          <span class="srn-modular__total-stat-value">{{ section.settings.system_max_w }}</span>
+          <span class="srn-modular__total-stat-label">Output</span>
+        </div>
+      </div>
+    </div>
+
+    {% if section.settings.cta_label != blank %}
+      <div class="srn-modular__cta">
+        <a href="{{ section.settings.cta_url | default: '#' }}" class="srn-btn srn-btn--primary">
+          {{ section.settings.cta_label }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+(function() {
+  var section = document.getElementById('srn-modular-{{ section.id }}');
+  if (!section) return;
+
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  var steps = section.querySelectorAll('.srn-modular__step');
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('srn-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  steps.forEach(function(step, i) {
+    step.style.transitionDelay = (i * 130) + 'ms';
+    observer.observe(step);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Modular System",
+  "tag": "section",
+  "class": "srn-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Designed to grow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Build the system your life needs"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Start with the Main Base 3600. Stack EB240 batteries for capacity. Add AC300 inverters for power. Expand when you need more."
+    },
+    {
+      "type": "header",
+      "content": "Step 1 — Base"
+    },
+    {
+      "type": "image_picker",
+      "id": "step1_image",
+      "label": "Step 1 image"
+    },
+    {
+      "type": "text",
+      "id": "step1_title",
+      "label": "Step 1 title",
+      "default": "Start with the Base"
+    },
+    {
+      "type": "textarea",
+      "id": "step1_desc",
+      "label": "Step 1 description",
+      "default": "The Main Base 3600 is your power hub. 3600W AC continuous output, 1000W solar input, and 2200W AC charging. Ready out of the box."
+    },
+    {
+      "type": "header",
+      "content": "Step 2 — Batteries"
+    },
+    {
+      "type": "image_picker",
+      "id": "step2_image",
+      "label": "Step 2 image"
+    },
+    {
+      "type": "text",
+      "id": "step2_title",
+      "label": "Step 2 title",
+      "default": "Add Extra Batteries"
+    },
+    {
+      "type": "textarea",
+      "id": "step2_desc",
+      "label": "Step 2 description",
+      "default": "Each EB240 adds 2400Wh of capacity. Stack up to 5 units for a total of 12000Wh per system."
+    },
+    {
+      "type": "header",
+      "content": "Step 3 — Inverters"
+    },
+    {
+      "type": "image_picker",
+      "id": "step3_image",
+      "label": "Step 3 image"
+    },
+    {
+      "type": "text",
+      "id": "step3_title",
+      "label": "Step 3 title",
+      "default": "Expand Your Output"
+    },
+    {
+      "type": "textarea",
+      "id": "step3_desc",
+      "label": "Step 3 description",
+      "default": "Each AC300 inverter adds an independent 3600W AC output circuit. True 0ms UPS switching when combined with the Main Base."
+    },
+    {
+      "type": "header",
+      "content": "Total System"
+    },
+    {
+      "type": "text",
+      "id": "system_max_wh",
+      "label": "Max capacity",
+      "default": "9 677 Wh"
+    },
+    {
+      "type": "text",
+      "id": "system_max_w",
+      "label": "Max output",
+      "default": "8 800 W"
+    },
+    {
+      "type": "header",
+      "content": "CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "Build your system"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Modular System"
+    }
+  ]
+}
+{% endschema %}

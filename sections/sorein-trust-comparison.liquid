@@ -1,0 +1,497 @@
+<style>
+  #srn-trust-{{ section.id }} {
+    background: #ffffff;
+    padding: 88px 0 100px;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 56px;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__h2 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #111318;
+    margin: 12px 0 16px;
+    line-height: 1.15;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__sub {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: rgba(17,19,24,0.60);
+    margin: 0;
+  }
+
+  /* Pillars grid */
+  #srn-trust-{{ section.id }} .srn-trust__pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 64px;
+  }
+
+  @media (min-width: 900px) {
+    #srn-trust-{{ section.id }} .srn-trust__pillars {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__pillar {
+    background: #f8f9fb;
+    border: 1px solid rgba(17,19,24,0.09);
+    border-radius: 16px;
+    padding: 28px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: border-color 0.25s ease, box-shadow 0.3s ease;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__pillar.srn-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1),
+                transform 0.55s cubic-bezier(0.22,1,0.36,1),
+                border-color 0.25s ease,
+                box-shadow 0.3s ease;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__pillar:hover {
+    border-color: rgba(34,211,238,0.30);
+    box-shadow: 0 8px 32px rgba(34,211,238,0.07);
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__pillar-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(34,211,238,0.10);
+    border: 1px solid rgba(34,211,238,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #22d3ee;
+    flex-shrink: 0;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__pillar-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__pillar-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111318;
+    margin: 0;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__pillar-desc {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgba(17,19,24,0.60);
+    margin: 0;
+  }
+
+  /* Comparison table */
+  #srn-trust-{{ section.id }} .srn-trust__comparison {
+    background: #f8f9fb;
+    border: 1px solid rgba(17,19,24,0.09);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__comparison-title {
+    padding: 20px 28px 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(17,19,24,0.40);
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table thead th {
+    padding: 18px 20px 14px;
+    text-align: left;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: rgba(17,19,24,0.50);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(17,19,24,0.09);
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table thead th.srn-trust__table-highlight {
+    background: rgba(34,211,238,0.06);
+    color: #0ea5e9;
+    border-bottom-color: rgba(34,211,238,0.20);
+    position: relative;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table thead th.srn-trust__table-highlight::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #22d3ee, #0ea5e9);
+    border-radius: 0 0 2px 2px;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table tbody tr {
+    border-bottom: 1px solid rgba(17,19,24,0.07);
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table tbody td {
+    padding: 14px 20px;
+    font-size: 0.875rem;
+    color: rgba(17,19,24,0.70);
+    vertical-align: middle;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table tbody td:first-child {
+    font-weight: 600;
+    color: #111318;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table tbody td.srn-trust__table-highlight {
+    background: rgba(34,211,238,0.04);
+    color: #111318;
+    font-weight: 600;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: rgba(16,185,129,0.12);
+    border-radius: 50%;
+    color: #10b981;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table-check svg {
+    width: 11px;
+    height: 11px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #srn-trust-{{ section.id }} .srn-trust__table-cross {
+    color: rgba(17,19,24,0.28);
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #srn-trust-{{ section.id }} .srn-trust__pillar {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+{% comment %} Inline SVG icon helper — rendered per block type {% endcomment %}
+{% capture icon_shield %}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+{% endcapture %}
+{% capture icon_award %}
+<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+{% endcapture %}
+{% capture icon_headphones %}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
+{% endcapture %}
+{% capture icon_truck %}
+<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+{% endcapture %}
+{% capture icon_bolt %}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+{% endcapture %}
+{% capture icon_check %}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+{% endcapture %}
+
+<section id="srn-trust-{{ section.id }}" aria-labelledby="srn-trust-h2-{{ section.id }}">
+  <div class="srn-container">
+    <div class="srn-trust__header">
+      {% if section.settings.eyebrow != blank %}
+        <p class="srn-eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      <h2 class="srn-trust__h2" id="srn-trust-h2-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {% if section.settings.subheading != blank %}
+        <p class="srn-trust__sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="srn-trust__pillars" role="list">
+        {% for block in section.blocks %}
+          {% if block.type == 'pillar' %}
+            <div class="srn-trust__pillar" role="listitem" {{ block.shopify_attributes }}>
+              <div class="srn-trust__pillar-icon" aria-hidden="true">
+                {% case block.settings.icon_name %}
+                  {% when 'shield' %}{{ icon_shield }}
+                  {% when 'award' %}{{ icon_award }}
+                  {% when 'headphones' %}{{ icon_headphones }}
+                  {% when 'truck' %}{{ icon_truck }}
+                  {% when 'bolt' %}{{ icon_bolt }}
+                  {% else %}{{ icon_check }}
+                {% endcase %}
+              </div>
+              <h3 class="srn-trust__pillar-title">{{ block.settings.title }}</h3>
+              {% if block.settings.description != blank %}
+                <p class="srn-trust__pillar-desc">{{ block.settings.description }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_comparison %}
+      <div class="srn-trust__comparison" aria-label="Product comparison table">
+        <p class="srn-trust__comparison-title">How Sorein compares</p>
+        <div class="srn-trust__table-wrap">
+          <table class="srn-trust__table">
+            <thead>
+              <tr>
+                <th scope="col">Feature</th>
+                <th scope="col" class="srn-trust__table-highlight">Sorein A6 Pro</th>
+                <th scope="col">{{ section.settings.competitor1 }}</th>
+                <th scope="col">{{ section.settings.competitor2 }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cycle life</td>
+                <td class="srn-trust__table-highlight">3 500+ cycles</td>
+                <td>~1 000 cycles</td>
+                <td>~300 cycles</td>
+              </tr>
+              <tr>
+                <td>Chemistry</td>
+                <td class="srn-trust__table-highlight">LiFePO4 (safe)</td>
+                <td>NMC Lithium</td>
+                <td>Lead-acid</td>
+              </tr>
+              <tr>
+                <td>AC output</td>
+                <td class="srn-trust__table-highlight">2200W (8800W max)</td>
+                <td>Up to 3600W</td>
+                <td>Up to 1500W</td>
+              </tr>
+              <tr>
+                <td>Solar input</td>
+                <td class="srn-trust__table-highlight">1200W MPPT</td>
+                <td>800W MPPT</td>
+                <td>None</td>
+              </tr>
+              <tr>
+                <td>Warranty</td>
+                <td class="srn-trust__table-highlight">5 years</td>
+                <td>2 years</td>
+                <td>1 year</td>
+              </tr>
+              <tr>
+                <td>Expandable</td>
+                <td class="srn-trust__table-highlight">
+                  <span class="srn-trust__table-check">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+                  </span>
+                </td>
+                <td><span class="srn-trust__table-cross" aria-label="No">–</span></td>
+                <td><span class="srn-trust__table-cross" aria-label="No">–</span></td>
+              </tr>
+              <tr>
+                <td>Stackable weight</td>
+                <td class="srn-trust__table-highlight">Modular design</td>
+                <td>Single unit</td>
+                <td>Heavy single unit</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+(function() {
+  var section = document.getElementById('srn-trust-{{ section.id }}');
+  if (!section) return;
+
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  var pillars = section.querySelectorAll('.srn-trust__pillar');
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('srn-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  pillars.forEach(function(pillar, i) {
+    pillar.style.transitionDelay = (i * 90) + 'ms';
+    observer.observe(pillar);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Trust & Comparison",
+  "tag": "section",
+  "class": "srn-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Why Sorein"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Built for serious energy independence"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Every Sorein product is engineered to be safe, long-lasting, and ready for whatever comes next."
+    },
+    {
+      "type": "header",
+      "content": "Comparison Table"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_comparison",
+      "label": "Show comparison table",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "competitor1",
+      "label": "Competitor 1 name",
+      "default": "Generic competitor"
+    },
+    {
+      "type": "text",
+      "id": "competitor2",
+      "label": "Competitor 2 name",
+      "default": "Lead-acid backup"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Trust Pillar",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_name",
+          "label": "Icon",
+          "options": [
+            { "value": "shield", "label": "Shield" },
+            { "value": "award", "label": "Award" },
+            { "value": "headphones", "label": "Headphones" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "bolt", "label": "Bolt" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "shield"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Trust Pillar"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Short description of this trust feature."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust & Comparison",
+      "blocks": [
+        {
+          "type": "pillar",
+          "settings": {
+            "icon_name": "shield",
+            "title": "LiFePO4 Battery",
+            "description": "3 500+ charge cycles. Safe chemistry. 10-year lifespan."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "icon_name": "award",
+            "title": "5-Year Warranty",
+            "description": "Full coverage on all Sorein products."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "icon_name": "headphones",
+            "title": "Swedish Support",
+            "description": "Expert energy support in your language."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "icon_name": "truck",
+            "title": "Free Delivery",
+            "description": "On all orders to Sweden and Nordic countries."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

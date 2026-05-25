@@ -1,0 +1,55 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "product-hero": {
+      "type": "sorein-product-hero",
+      "settings": {
+        "show_klarna": true,
+        "klarna_text": "Split payments available with Klarna",
+        "delivery_text": "Free delivery — estimated 5–7 business days",
+        "show_trust_row": true,
+        "show_quantity": true
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "product-specs": {
+      "type": "sorein-product-specs",
+      "settings": {
+        "heading": "Technical specifications"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "product-tabs": {
+      "type": "sorein-product-tabs",
+      "settings": {},
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-faq": {
+      "type": "sorein-faq",
+      "settings": {
+        "heading": "Product questions",
+        "layout": "single-column"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "product-hero",
+    "product-specs",
+    "product-tabs",
+    "sorein-faq",
+    "footer"
+  ]
+}

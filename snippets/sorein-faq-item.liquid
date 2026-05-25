@@ -1,0 +1,32 @@
+{% comment %}
+  Snippet: sorein-faq-item.liquid
+  Used by: sorein-faq.liquid
+  Variables: block (block object), sid (section.id string)
+{% endcomment %}
+
+{%- assign item_id = 'srn-faq-answer-' | append: block.id -%}
+
+<div class="srn-faq__item" {{ block.shopify_attributes }}>
+  <button
+    class="srn-faq__btn"
+    aria-expanded="false"
+    aria-controls="{{ item_id }}"
+    id="srn-faq-btn-{{ block.id }}"
+  >
+    <span>{{ block.settings.question }}</span>
+    <svg class="srn-faq__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+      <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <div
+    class="srn-faq__answer"
+    id="{{ item_id }}"
+    role="region"
+    aria-labelledby="srn-faq-btn-{{ block.id }}"
+    style="max-height: 0;"
+  >
+    <div class="srn-faq__answer-inner">
+      {{ block.settings.answer }}
+    </div>
+  </div>
+</div>

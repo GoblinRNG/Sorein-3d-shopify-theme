@@ -1,0 +1,108 @@
+{%- comment -%}
+  Sorein Spec Table Snippet
+  Usage with blocks passed as array variable:
+    {% render 'sorein-spec-table', specs: section.blocks, table_id: 'unique-id' %}
+  Each block should have: block.settings.label, block.settings.value
+
+  Or usage with a static specs array (array of hashes):
+    {% assign my_specs = 'Capacity|1024Wh,Output|2000W' | split: ',' %}
+    — This snippet primarily expects blocks-based rendering.
+
+  table_id: optional unique string for aria labelling
+{%- endcomment -%}
+
+{%- assign tbl_id = table_id | default: 'srn-spec-tbl' -%}
+
+<div class="srn-spec-table-wrap" role="region" aria-label="Technical specifications">
+  <table class="srn-spec-table" id="{{ tbl_id }}">
+    <caption class="srn-visually-hidden">Product specifications</caption>
+    <tbody>
+      {%- if specs != blank -%}
+        {%- assign row_idx = 0 -%}
+        {%- for spec in specs -%}
+          {%- if spec.type == 'spec_row' or spec.settings.label != blank -%}
+            <tr class="srn-spec-table__row{% if row_idx == 0 %} srn-spec-table__row--first{% endif %}{% cycle ' srn-spec-table__row--odd', ' srn-spec-table__row--even' %}">
+              <th class="srn-spec-table__label" scope="row">{{ spec.settings.label }}</th>
+              <td class="srn-spec-table__value">{{ spec.settings.value }}</td>
+            </tr>
+            {%- assign row_idx = row_idx | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        <tr class="srn-spec-table__row">
+          <td colspan="2" class="srn-spec-table__empty">No specifications available.</td>
+        </tr>
+      {%- endif -%}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .srn-spec-table-wrap {
+    border: 1px solid rgba(17,19,24,0.09);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .srn-spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .srn-spec-table__row {
+    border-bottom: 1px solid rgba(17,19,24,0.07);
+  }
+  .srn-spec-table__row:last-child {
+    border-bottom: none;
+  }
+  .srn-spec-table__row--odd {
+    background: #f8f9fb;
+  }
+  .srn-spec-table__row--even {
+    background: #fff;
+  }
+  .srn-spec-table__label {
+    padding: 12px 16px;
+    font-weight: 600;
+    color: rgba(17,19,24,0.70);
+    text-align: left;
+    width: 42%;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    vertical-align: top;
+  }
+  .srn-spec-table__value {
+    padding: 12px 16px;
+    font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 13px;
+    color: #111318;
+    font-weight: 500;
+    text-align: left;
+    vertical-align: top;
+  }
+  .srn-spec-table__empty {
+    padding: 24px 16px;
+    color: rgba(17,19,24,0.40);
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* Dark theme variant */
+  .srn-spec-table-wrap--dark {
+    border-color: rgba(255,255,255,0.08);
+  }
+  .srn-spec-table-wrap--dark .srn-spec-table__row--odd {
+    background: rgba(255,255,255,0.03);
+  }
+  .srn-spec-table-wrap--dark .srn-spec-table__row--even {
+    background: transparent;
+  }
+  .srn-spec-table-wrap--dark .srn-spec-table__row {
+    border-color: rgba(255,255,255,0.06);
+  }
+  .srn-spec-table-wrap--dark .srn-spec-table__label {
+    color: rgba(244,246,250,0.55);
+  }
+  .srn-spec-table-wrap--dark .srn-spec-table__value {
+    color: #f4f6fa;
+  }
+</style>

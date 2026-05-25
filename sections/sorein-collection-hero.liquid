@@ -1,0 +1,227 @@
+{%- comment -%} Sorein Collection Hero — dark bg, grid overlay, breadcrumb, sort row {%- endcomment -%}
+
+{%- liquid
+  assign hero_title = section.settings.subheading_override | default: collection.title
+-%}
+
+<style>
+  #srn-collhero-{{ section.id }} {
+    background: #090b0f;
+    position: relative;
+    overflow: hidden;
+    padding: 64px 0 56px;
+  }
+  #srn-collhero-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  #srn-collhero-{{ section.id }}::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, #090b0f);
+    pointer-events: none;
+    z-index: 1;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-bg-image {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-bg-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.20;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: rgba(244,246,250,0.40);
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-breadcrumb a {
+    color: rgba(244,246,250,0.40);
+    text-decoration: none;
+    transition: color 0.18s;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-breadcrumb a:hover { color: #22d3ee; }
+  #srn-collhero-{{ section.id }} .srn-ch-breadcrumb-current {
+    color: rgba(244,246,250,0.70);
+    font-weight: 500;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-title {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    color: #f4f6fa;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin: 0 0 16px;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-desc {
+    font-size: 16px;
+    color: rgba(244,246,250,0.60);
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-product-count {
+    font-size: 13px;
+    color: rgba(244,246,250,0.45);
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-sort-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-sort-label {
+    font-size: 13px;
+    color: rgba(244,246,250,0.45);
+    white-space: nowrap;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-sort-select {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 8px;
+    color: #f4f6fa;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 32px 7px 12px;
+    cursor: pointer;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(244,246,250,0.4)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: border-color 0.18s;
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-sort-select:focus {
+    border-color: rgba(34,211,238,0.40);
+  }
+  #srn-collhero-{{ section.id }} .srn-ch-sort-select option {
+    background: #0a0c10;
+    color: #f4f6fa;
+  }
+</style>
+
+<section id="srn-collhero-{{ section.id }}" aria-label="Collection header">
+
+  {%- if section.settings.show_image and section.settings.hero_image != blank -%}
+    <div class="srn-ch-bg-image">
+      {{
+        section.settings.hero_image
+        | image_url: width: 1600
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: '',
+          widths: '800, 1200, 1600',
+          sizes: '100vw'
+      }}
+    </div>
+  {%- endif -%}
+
+  <div class="srn-ch-container">
+
+    {%- if section.settings.show_breadcrumb -%}
+      <nav class="srn-ch-breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span aria-hidden="true">›</span>
+        <span class="srn-ch-breadcrumb-current" aria-current="page">{{ collection.title | default: 'Collection' }}</span>
+      </nav>
+    {%- endif -%}
+
+    <h1 class="srn-ch-title">{{ hero_title | default: 'Products' }}</h1>
+
+    {%- if collection.description != blank -%}
+      <p class="srn-ch-desc">{{ collection.description | strip_html | truncate: 200 }}</p>
+    {%- endif -%}
+
+    <div class="srn-ch-filter-row">
+      <p class="srn-ch-product-count">
+        {%- if collection.products_count == 1 -%}1 product
+        {%- elsif collection.products_count > 1 -%}{{ collection.products_count }} products
+        {%- else -%}No products{%- endif -%}
+      </p>
+      <div class="srn-ch-sort-wrap">
+        <label for="srn-sort-{{ section.id }}" class="srn-ch-sort-label">Sort by</label>
+        <select id="srn-sort-{{ section.id }}" class="srn-ch-sort-select" aria-label="Sort products by" onchange="window.location = window.location.pathname + '?sort_by=' + this.value;">
+          <option value="manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>Featured</option>
+          <option value="price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>Price: Low → High</option>
+          <option value="price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>Price: High → Low</option>
+          <option value="title-ascending" {% if collection.sort_by == 'title-ascending' %}selected{% endif %}>Name: A → Z</option>
+          <option value="best-selling" {% if collection.sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
+          <option value="created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>Newest</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Hero",
+  "tag": "div",
+  "class": "srn-collection-hero-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show background image",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero background image"
+    },
+    {
+      "type": "text",
+      "id": "subheading_override",
+      "label": "Title override (leave blank to use collection title)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Hero"
+    }
+  ]
+}
+{% endschema %}

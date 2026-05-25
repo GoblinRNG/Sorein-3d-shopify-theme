@@ -1,0 +1,653 @@
+{%- comment -%} Sorein Header — sticky, transparent-on-homepage, scroll-solid {%- endcomment -%}
+
+{%- assign is_homepage = false -%}
+{%- if template.name == 'index' -%}
+  {%- assign is_homepage = true -%}
+{%- endif -%}
+
+<style>
+  #srn-header-{{ section.id }} {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    width: 100%;
+    transition: background 0.35s cubic-bezier(0.22,1,0.36,1), backdrop-filter 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  #srn-header-{{ section.id }} .srn-header-inner {
+    background: #0a0c10;
+  }
+
+  #srn-header-{{ section.id }}.srn-header--transparent .srn-header-inner {
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  #srn-header-{{ section.id }}.srn-header--solid .srn-header-inner,
+  #srn-header-{{ section.id }}.srn-header--transparent.srn-header--solid .srn-header-inner {
+    background: rgba(10,12,16,0.92);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 4px 24px rgba(0,0,0,0.32);
+  }
+
+  #srn-header-{{ section.id }} .srn-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    padding: 0 24px;
+    max-width: 1360px;
+    margin: 0 auto;
+    gap: 24px;
+  }
+
+  /* Announcement Bar */
+  #srn-header-{{ section.id }} .srn-announcement {
+    background: linear-gradient(90deg, #0ea5e9 0%, #22d3ee 50%, #14b8a6 100%);
+    color: #0a0c10;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-align: center;
+    padding: 9px 16px;
+    line-height: 1.4;
+  }
+  #srn-header-{{ section.id }} .srn-announcement a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  #srn-header-{{ section.id }} .srn-announcement a:hover {
+    opacity: 0.8;
+  }
+
+  /* Logo */
+  #srn-header-{{ section.id }} .srn-header-logo {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  #srn-header-{{ section.id }} .srn-header-logo img {
+    display: block;
+    height: auto;
+    width: {{ section.settings.logo_width }}px;
+    max-width: {{ section.settings.logo_width }}px;
+  }
+  #srn-header-{{ section.id }} .srn-header-logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #f4f6fa;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Nav */
+  #srn-header-{{ section.id }} .srn-header-nav {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+  }
+  @media (min-width: 900px) {
+    #srn-header-{{ section.id }} .srn-header-nav {
+      display: flex;
+    }
+  }
+  #srn-header-{{ section.id }} .srn-nav-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(244,246,250,0.80);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: color 0.2s, background 0.2s;
+    white-space: nowrap;
+  }
+  #srn-header-{{ section.id }} .srn-nav-link:hover,
+  #srn-header-{{ section.id }} .srn-nav-link[aria-current="page"] {
+    color: #22d3ee;
+    background: rgba(34,211,238,0.08);
+  }
+
+  /* Right Icons */
+  #srn-header-{{ section.id }} .srn-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  #srn-header-{{ section.id }} .srn-header-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: rgba(244,246,250,0.80);
+    transition: color 0.2s, background 0.2s;
+    position: relative;
+  }
+  #srn-header-{{ section.id }} .srn-header-icon-btn:hover {
+    color: #f4f6fa;
+    background: rgba(255,255,255,0.06);
+  }
+  #srn-header-{{ section.id }} .srn-cart-count {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    min-width: 17px;
+    height: 17px;
+    border-radius: 9px;
+    background: #22d3ee;
+    color: #0a0c10;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    line-height: 1;
+    pointer-events: none;
+    transition: transform 0.2s cubic-bezier(0.22,1,0.36,1);
+  }
+  #srn-header-{{ section.id }} .srn-cart-count[data-count="0"] {
+    display: none;
+  }
+
+  /* Hamburger — mobile only */
+  #srn-header-{{ section.id }} .srn-hamburger {
+    display: flex;
+  }
+  @media (min-width: 900px) {
+    #srn-header-{{ section.id }} .srn-hamburger {
+      display: none;
+    }
+  }
+
+  /* Mobile Menu Overlay */
+  #srn-header-{{ section.id }} .srn-mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: #090b0f;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(8px);
+    transition: opacity 0.3s cubic-bezier(0.22,1,0.36,1), visibility 0.3s, transform 0.3s cubic-bezier(0.22,1,0.36,1);
+    overflow-y: auto;
+  }
+  #srn-header-{{ section.id }} .srn-mobile-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+  #srn-header-{{ section.id }} .srn-mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  #srn-header-{{ section.id }} .srn-mobile-menu-nav {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+  #srn-header-{{ section.id }} .srn-mobile-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(244,246,250,0.80);
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    letter-spacing: -0.01em;
+  }
+  #srn-header-{{ section.id }} .srn-mobile-nav-link:hover {
+    color: #22d3ee;
+    background: rgba(34,211,238,0.06);
+    border-color: rgba(34,211,238,0.14);
+  }
+  #srn-header-{{ section.id }} .srn-mobile-menu-footer {
+    padding: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  #srn-header-{{ section.id }} .srn-mobile-menu-cta {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+    color: #0a0c10;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+  }
+
+  /* Search bar (slide-down) */
+  #srn-header-{{ section.id }} .srn-search-bar {
+    background: #0a0c10;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 24px;
+    display: none;
+  }
+  #srn-header-{{ section.id }} .srn-search-bar.is-open {
+    display: block;
+  }
+  #srn-header-{{ section.id }} .srn-search-form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    gap: 8px;
+  }
+  #srn-header-{{ section.id }} .srn-search-input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #f4f6fa;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #srn-header-{{ section.id }} .srn-search-input::placeholder {
+    color: rgba(244,246,250,0.40);
+  }
+  #srn-header-{{ section.id }} .srn-search-input:focus {
+    border-color: rgba(34,211,238,0.50);
+  }
+  #srn-header-{{ section.id }} .srn-search-submit {
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: #22d3ee;
+    border: none;
+    color: #0a0c10;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  #srn-header-{{ section.id }} .srn-search-submit:hover {
+    opacity: 0.85;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #srn-header-{{ section.id }},
+    #srn-header-{{ section.id }} .srn-mobile-menu {
+      transition: none;
+    }
+  }
+</style>
+
+<section id="srn-header-{{ section.id }}" class="srn-header{% if is_homepage %} srn-header--transparent{% endif %}" role="banner" aria-label="Site header">
+
+  {%- if section.settings.show_announcement and section.settings.announcement_text != blank -%}
+    <div class="srn-announcement" role="complementary" aria-label="Announcement">
+      {%- if section.settings.announcement_url != blank -%}
+        <a href="{{ section.settings.announcement_url }}">{{ section.settings.announcement_text }}</a>
+      {%- else -%}
+        {{ section.settings.announcement_text }}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="srn-header-inner">
+    <div class="srn-header-bar">
+
+      {%- comment -%} Logo {%- endcomment -%}
+      <a href="{{ routes.root_url }}" class="srn-header-logo" aria-label="{{ section.settings.logo_text | default: 'Sorein' }} — Go to homepage">
+        {%- if section.settings.logo != blank -%}
+          {{
+            section.settings.logo
+            | image_url: width: section.settings.logo_width
+            | image_tag:
+              width: section.settings.logo_width,
+              alt: section.settings.logo_text | default: 'Sorein',
+              loading: 'eager',
+              fetchpriority: 'high',
+              style: "width:" | append: section.settings.logo_width | append: "px"
+          }}
+        {%- else -%}
+          <span class="srn-header-logo-text">{{ section.settings.logo_text | default: 'Sorein' }}</span>
+        {%- endif -%}
+      </a>
+
+      {%- comment -%} Desktop Nav {%- endcomment -%}
+      <nav class="srn-header-nav" aria-label="Main navigation">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'nav_link' -%}
+            <a
+              href="{{ block.settings.url | default: '#' }}"
+              class="srn-nav-link"
+              {% if request.path == block.settings.url %}aria-current="page"{% endif %}
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.label }}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </nav>
+
+      {%- comment -%} Right Actions {%- endcomment -%}
+      <div class="srn-header-actions">
+
+        {%- comment -%} Search {%- endcomment -%}
+        <button
+          class="srn-header-icon-btn"
+          aria-label="Toggle search"
+          data-srn-search-toggle
+          aria-expanded="false"
+          aria-controls="srn-search-bar-{{ section.id }}"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
+        </button>
+
+        {%- comment -%} Cart {%- endcomment -%}
+        <a href="{{ routes.cart_url }}" class="srn-header-icon-btn" aria-label="Cart ({{ cart.item_count }} items)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span class="srn-cart-count" aria-label="{{ cart.item_count }} items" data-count="{{ cart.item_count }}">
+            {{- cart.item_count -}}
+          </span>
+        </a>
+
+        {%- comment -%} Mobile Hamburger {%- endcomment -%}
+        <button
+          class="srn-header-icon-btn srn-hamburger"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="srn-mobile-menu-{{ section.id }}"
+          data-srn-hamburger
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    {%- comment -%} Search Bar {%- endcomment -%}
+    <div id="srn-search-bar-{{ section.id }}" class="srn-search-bar" role="search">
+      <form class="srn-search-form" action="{{ routes.search_url }}" method="get">
+        <input
+          class="srn-search-input"
+          type="search"
+          name="q"
+          placeholder="Search products, tech, support…"
+          autocomplete="off"
+          aria-label="Search"
+        >
+        <button type="submit" class="srn-search-submit">Search</button>
+      </form>
+    </div>
+  </div>
+
+  {%- comment -%} Mobile Full-Screen Menu {%- endcomment -%}
+  <div
+    id="srn-mobile-menu-{{ section.id }}"
+    class="srn-mobile-menu"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Navigation menu"
+    aria-hidden="true"
+  >
+    <div class="srn-mobile-menu-header">
+      <a href="{{ routes.root_url }}" class="srn-header-logo" aria-label="{{ section.settings.logo_text | default: 'Sorein' }} — Go to homepage">
+        {%- if section.settings.logo != blank -%}
+          {{
+            section.settings.logo
+            | image_url: width: section.settings.logo_width
+            | image_tag: width: section.settings.logo_width, alt: section.settings.logo_text | default: 'Sorein', loading: 'lazy'
+          }}
+        {%- else -%}
+          <span class="srn-header-logo-text">{{ section.settings.logo_text | default: 'Sorein' }}</span>
+        {%- endif -%}
+      </a>
+      <button
+        class="srn-header-icon-btn"
+        aria-label="Close navigation menu"
+        data-srn-menu-close
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="srn-mobile-menu-nav" aria-label="Mobile navigation">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'nav_link' -%}
+          <a href="{{ block.settings.url | default: '#' }}" class="srn-mobile-nav-link">
+            {{ block.settings.label }}
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+
+    <div class="srn-mobile-menu-footer">
+      <a href="{{ routes.cart_url }}" class="srn-mobile-menu-cta">
+        View Cart ({{ cart.item_count }})
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<script>
+(function() {
+  'use strict';
+
+  var headerId = 'srn-header-{{ section.id }}';
+  var menuId   = 'srn-mobile-menu-{{ section.id }}';
+  var searchId = 'srn-search-bar-{{ section.id }}';
+
+  var header     = document.getElementById(headerId);
+  var mobileMenu = document.getElementById(menuId);
+  var searchBar  = document.getElementById(searchId);
+  var hamburger  = header && header.querySelector('[data-srn-hamburger]');
+  var menuClose  = header && header.querySelector('[data-srn-menu-close]');
+  var searchBtn  = header && header.querySelector('[data-srn-search-toggle]');
+  var cartCount  = header && header.querySelector('.srn-cart-count');
+
+  if (!header) return;
+
+  // Scroll-solid behavior
+  function onScroll() {
+    if (window.scrollY > 20) {
+      header.classList.add('srn-header--solid');
+    } else {
+      header.classList.remove('srn-header--solid');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Mobile menu
+  function openMenu() {
+    mobileMenu.classList.add('is-open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    hamburger && hamburger.setAttribute('aria-expanded', 'true');
+    hamburger && hamburger.setAttribute('aria-label', 'Close navigation menu');
+    document.body.style.overflow = 'hidden';
+    var firstLink = mobileMenu.querySelector('.srn-mobile-nav-link');
+    firstLink && firstLink.focus();
+  }
+  function closeMenu() {
+    mobileMenu.classList.remove('is-open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    hamburger && hamburger.setAttribute('aria-expanded', 'false');
+    hamburger && hamburger.setAttribute('aria-label', 'Open navigation menu');
+    document.body.style.overflow = '';
+    hamburger && hamburger.focus();
+  }
+
+  hamburger && hamburger.addEventListener('click', function() {
+    if (mobileMenu.classList.contains('is-open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+  menuClose && menuClose.addEventListener('click', closeMenu);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      if (mobileMenu && mobileMenu.classList.contains('is-open')) closeMenu();
+      if (searchBar && searchBar.classList.contains('is-open')) toggleSearch(false);
+    }
+  });
+
+  // Search toggle
+  function toggleSearch(force) {
+    var isOpen = typeof force !== 'undefined' ? force : !searchBar.classList.contains('is-open');
+    if (isOpen) {
+      searchBar.classList.add('is-open');
+      searchBtn && searchBtn.setAttribute('aria-expanded', 'true');
+      var inp = searchBar.querySelector('input');
+      inp && inp.focus();
+    } else {
+      searchBar.classList.remove('is-open');
+      searchBtn && searchBtn.setAttribute('aria-expanded', 'false');
+    }
+  }
+  searchBtn && searchBtn.addEventListener('click', function() { toggleSearch(); });
+
+  // Cart count update via custom event
+  function updateCartCount(count) {
+    if (!cartCount) return;
+    cartCount.textContent = count;
+    cartCount.dataset.count = count;
+    cartCount.setAttribute('aria-label', count + ' items');
+    if (count > 0) {
+      cartCount.style.display = '';
+      cartCount.style.transform = 'scale(1.3)';
+      setTimeout(function() { cartCount.style.transform = ''; }, 300);
+    } else {
+      cartCount.style.display = 'none';
+    }
+  }
+
+  document.addEventListener('cart:updated', function(e) {
+    if (e.detail && typeof e.detail.item_count !== 'undefined') {
+      updateCartCount(e.detail.item_count);
+    }
+  });
+
+  // Also fetch live cart count on load for accuracy
+  fetch('/cart.js')
+    .then(function(r) { return r.json(); })
+    .then(function(d) { updateCartCount(d.item_count); })
+    .catch(function() {});
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "div",
+  "class": "srn-header-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text (fallback)",
+      "default": "Sorein"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width (px)",
+      "min": 80,
+      "max": 200,
+      "step": 4,
+      "default": 140
+    },
+    {
+      "type": "header",
+      "content": "Announcement Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Free shipping on orders over €499 — Limited time offer"
+    },
+    {
+      "type": "url",
+      "id": "announcement_url",
+      "label": "Announcement link (optional)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Navigation Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link label",
+          "default": "Link"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sorein Header",
+      "blocks": [
+        { "type": "nav_link", "settings": { "label": "Home", "url": "/" } },
+        { "type": "nav_link", "settings": { "label": "Products", "url": "/collections/all" } },
+        { "type": "nav_link", "settings": { "label": "A6 Pro Builder", "url": "/pages/a6-pro-builder" } },
+        { "type": "nav_link", "settings": { "label": "Technology", "url": "/pages/technology" } },
+        { "type": "nav_link", "settings": { "label": "About", "url": "/pages/about" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

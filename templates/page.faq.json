@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "faq-main": {
+      "type": "sorein-faq",
+      "settings": {
+        "heading": "Frequently asked questions",
+        "subheading": "Everything you need to know about Sorein power systems.",
+        "layout": "two-column"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-contact-cta": {
+      "type": "sorein-final-cta",
+      "settings": {
+        "heading": "Still have questions?",
+        "subheading": "Our energy experts are ready to help you choose the right system.",
+        "cta_primary_label": "Contact support",
+        "cta_secondary_label": "Build your system",
+        "trust_text": "Swedish expert support · Free delivery · 5-year warranty",
+        "show_image": false
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": ["header", "faq-main", "sorein-contact-cta", "footer"]
+}

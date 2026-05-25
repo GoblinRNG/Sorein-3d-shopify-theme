@@ -1,0 +1,68 @@
+{% comment %}Section: sorein-collection-grid.liquid — Product grid for collection pages{% endcomment %}
+{%- liquid
+  assign sid = section.id
+  assign cols = section.settings.columns | default: 3
+-%}
+<section id="srn-collgrid-{{ sid }}" class="srn-collgrid">
+<style>
+#srn-collgrid-{{ sid }} { background:#f8f9fb; padding:clamp(40px,5vw,72px) clamp(20px,5vw,60px) clamp(64px,8vw,96px); }
+#srn-collgrid-{{ sid }} .srn-collgrid__inner { max-width:1280px; margin:0 auto; }
+#srn-collgrid-{{ sid }} .srn-collgrid__toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:28px; flex-wrap:wrap; }
+#srn-collgrid-{{ sid }} .srn-collgrid__count { font-size:13px; color:rgba(17,19,24,0.50); }
+#srn-collgrid-{{ sid }} .srn-collgrid__sort { padding:10px 14px; border:1.5px solid rgba(17,19,24,0.12); border-radius:8px; font-size:14px; background:#fff; color:#111318; cursor:pointer; }
+#srn-collgrid-{{ sid }} .srn-collgrid__grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+@media(min-width:640px){ #srn-collgrid-{{ sid }} .srn-collgrid__grid { grid-template-columns:repeat({{ cols }},1fr); gap:24px; } }
+#srn-collgrid-{{ sid }} .srn-collgrid__empty { text-align:center; padding:80px 24px; color:rgba(17,19,24,0.45); }
+#srn-collgrid-{{ sid }} .srn-collgrid__empty h2 { font-size:22px; font-weight:700; color:#111318; margin:0 0 12px; }
+#srn-collgrid-{{ sid }} .srn-collgrid__seo { margin-top:64px; padding-top:48px; border-top:1px solid rgba(17,19,24,0.08); max-width:720px; }
+#srn-collgrid-{{ sid }} .srn-collgrid__seo h2 { font-size:20px; font-weight:700; color:#111318; margin:0 0 12px; }
+#srn-collgrid-{{ sid }} .srn-collgrid__seo p,#srn-collgrid-{{ sid }} .srn-collgrid__seo li { font-size:15px; line-height:1.7; color:rgba(17,19,24,0.65); }
+#srn-collgrid-{{ sid }} .srn-collgrid__pagination { display:flex; justify-content:center; gap:8px; margin-top:48px; }
+#srn-collgrid-{{ sid }} .srn-collgrid__pagination a,#srn-collgrid-{{ sid }} .srn-collgrid__pagination span { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:8px; border:1.5px solid rgba(17,19,24,0.12); font-size:14px; font-weight:600; color:#111318; text-decoration:none; transition:all 200ms; }
+#srn-collgrid-{{ sid }} .srn-collgrid__pagination a:hover { border-color:#22d3ee; color:#22d3ee; }
+#srn-collgrid-{{ sid }} .srn-collgrid__pagination .current { background:#22d3ee; color:#07090d; border-color:#22d3ee; }
+</style>
+<div class="srn-collgrid__inner">
+  {%- if section.settings.show_sort -%}
+  <div class="srn-collgrid__toolbar">
+    <span class="srn-collgrid__count">{{ collection.products_count }} product{{ collection.products_count | plural: '', 's' }}</span>
+    <select class="srn-collgrid__sort" onchange="window.location = '?sort_by=' + this.value" aria-label="Sort products">
+      <option value="manual"{% if collection.sort_by == 'manual' %} selected{% endif %}>Featured</option>
+      <option value="price-ascending"{% if collection.sort_by == 'price-ascending' %} selected{% endif %}>Price: Low to High</option>
+      <option value="price-descending"{% if collection.sort_by == 'price-descending' %} selected{% endif %}>Price: High to Low</option>
+      <option value="title-ascending"{% if collection.sort_by == 'title-ascending' %} selected{% endif %}>A–Z</option>
+      <option value="best-selling"{% if collection.sort_by == 'best-selling' %} selected{% endif %}>Best Selling</option>
+      <option value="created-descending"{% if collection.sort_by == 'created-descending' %} selected{% endif %}>Newest</option>
+    </select>
+  </div>
+  {%- endif -%}
+
+  {%- if collection.products.size > 0 -%}
+  <div class="srn-collgrid__grid">
+    {%- for product in collection.products -%}
+      {%- render 'sorein-product-card', product: product, card_index: forloop.index0 -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if paginate.pages > 1 -%}
+  <nav class="srn-collgrid__pagination" aria-label="Pagination">
+    {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" aria-label="Previous page">‹</a>{%- endif -%}
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>{%- else -%}<span class="current" aria-current="page">{{ part.title }}</span>{%- endif -%}
+    {%- endfor -%}
+    {%- if paginate.next -%}<a href="{{ paginate.next.url }}" aria-label="Next page">›</a>{%- endif -%}
+  </nav>
+  {%- endif -%}
+  {%- else -%}
+  <div class="srn-collgrid__empty">
+    <h2>No products found</h2>
+    <p>This collection has no products yet. <a href="{{ routes.all_products_collection_url }}" style="color:#22d3ee">Browse all products</a></p>
+  </div>
+  {%- endif -%}
+
+  {%- if section.settings.seo_copy != blank -%}
+  <div class="srn-collgrid__seo">{{ section.settings.seo_copy }}</div>
+  {%- endif -%}
+</div>
+</section>
+{% schema %}{"name":"Collection Grid","tag":"section","settings":[{"type":"range","id":"columns","min":2,"max":4,"step":1,"label":"Columns (desktop)","default":3},{"type":"range","id":"products_per_page","min":8,"max":24,"step":4,"label":"Products per page","default":12},{"type":"checkbox","id":"show_sort","label":"Show sort dropdown","default":true},{"type":"richtext","id":"seo_copy","label":"SEO copy (below grid)"}],"presets":[{"name":"Collection Grid"}]}{% endschema %}

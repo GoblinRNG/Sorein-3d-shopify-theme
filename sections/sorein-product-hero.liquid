@@ -1,0 +1,913 @@
+{%- comment -%} Sorein Product Hero — 2-col gallery + purchase panel {%- endcomment -%}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_images = product.images
+  assign has_variants = false
+  if product.variants.size > 1
+    assign has_variants = true
+  endif
+-%}
+
+<style>
+  #srn-prodhero-{{ section.id }} {
+    background: #f8f9fb;
+    padding: 40px 0 64px;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    #srn-prodhero-{{ section.id }} .srn-ph-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+    }
+  }
+
+  /* Gallery */
+  #srn-prodhero-{{ section.id }} .srn-ph-gallery {
+    position: sticky;
+    top: 88px;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-main-image-wrap {
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #eef0f4;
+    border: 1px solid rgba(17,19,24,0.07);
+    position: relative;
+    cursor: zoom-in;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 16px;
+    transition: opacity 0.22s cubic-bezier(0.22,1,0.36,1);
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-main-img.is-fading {
+    opacity: 0;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-thumb {
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background: #eef0f4;
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.18s;
+    flex-shrink: 0;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+    display: block;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-thumb.is-active,
+  #srn-prodhero-{{ section.id }} .srn-ph-thumb:hover {
+    border-color: #22d3ee;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-thumb:focus-visible {
+    outline: 2px solid #22d3ee;
+    outline-offset: 2px;
+  }
+
+  /* Purchase Panel */
+  #srn-prodhero-{{ section.id }} .srn-ph-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-type-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: #0ea5e9;
+    background: rgba(14,165,233,0.09);
+    border: 1px solid rgba(14,165,233,0.18);
+    padding: 4px 12px;
+    border-radius: 20px;
+    width: fit-content;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-title {
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 800;
+    color: #111318;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-short-desc {
+    font-size: 15px;
+    color: rgba(17,19,24,0.65);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* Price */
+  #srn-prodhero-{{ section.id }} .srn-ph-price-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  #srn-prodhero-{{ section.id }} .srn-price-display {
+    font-size: 32px;
+    font-weight: 800;
+    color: #111318;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  #srn-prodhero-{{ section.id }} .srn-price-compare {
+    font-size: 18px;
+    color: rgba(17,19,24,0.40);
+    text-decoration: line-through;
+  }
+  #srn-prodhero-{{ section.id }} .srn-price-saving {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0ea5e9;
+    background: rgba(14,165,233,0.09);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* Klarna */
+  #srn-prodhero-{{ section.id }} .srn-ph-klarna {
+    font-size: 13px;
+    color: rgba(17,19,24,0.55);
+    background: #f0f2f5;
+    border-radius: 8px;
+    padding: 9px 14px;
+    border-left: 3px solid #ffb3c7;
+  }
+
+  /* Variant Selectors */
+  #srn-prodhero-{{ section.id }} .srn-ph-variant-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-option-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111318;
+    letter-spacing: 0.01em;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-option-label span {
+    font-weight: 400;
+    color: rgba(17,19,24,0.55);
+    margin-left: 6px;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1.5px solid rgba(17,19,24,0.15);
+    font-size: 13px;
+    font-weight: 600;
+    color: #111318;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    user-select: none;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-pill:hover {
+    border-color: #0ea5e9;
+    color: #0ea5e9;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-pill.is-selected {
+    border-color: #22d3ee;
+    background: rgba(34,211,238,0.07);
+    color: #0a0c10;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-pill.is-unavailable {
+    opacity: 0.35;
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+
+  /* Quantity Stepper */
+  #srn-prodhero-{{ section.id }} .srn-ph-qty-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-qty-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111318;
+  }
+  #srn-prodhero-{{ section.id }} .srn-qty-stepper {
+    display: inline-flex;
+    align-items: center;
+    border: 1.5px solid rgba(17,19,24,0.15);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+  #srn-prodhero-{{ section.id }} .srn-qty-btn {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #111318;
+    font-size: 18px;
+    font-weight: 500;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  #srn-prodhero-{{ section.id }} .srn-qty-btn:hover {
+    background: rgba(17,19,24,0.05);
+  }
+  #srn-prodhero-{{ section.id }} .srn-qty-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  #srn-prodhero-{{ section.id }} .srn-qty-input {
+    width: 42px;
+    text-align: center;
+    border: none;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111318;
+    background: transparent;
+    outline: none;
+    padding: 0;
+    -moz-appearance: textfield;
+  }
+  #srn-prodhero-{{ section.id }} .srn-qty-input::-webkit-inner-spin-button,
+  #srn-prodhero-{{ section.id }} .srn-qty-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+  #srn-prodhero-{{ section.id }} .srn-qty-sep {
+    width: 1px;
+    height: 24px;
+    background: rgba(17,19,24,0.12);
+    flex-shrink: 0;
+  }
+
+  /* ATC Button */
+  #srn-prodhero-{{ section.id }} .srn-ph-atc-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-atc-btn {
+    width: 100%;
+    height: 54px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 100%);
+    color: #0a0c10;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: opacity 0.2s, transform 0.18s cubic-bezier(0.22,1,0.36,1);
+    position: relative;
+    overflow: hidden;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-atc-btn:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-atc-btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-atc-btn:disabled {
+    background: rgba(17,19,24,0.12);
+    color: rgba(17,19,24,0.40);
+    cursor: not-allowed;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-atc-btn.is-loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-atc-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(10,12,16,0.25);
+    border-top-color: #0a0c10;
+    border-radius: 50%;
+    display: none;
+  }
+  @keyframes srn-spin-{{ section.id }} {
+    to { transform: rotate(360deg); }
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-atc-btn.is-loading .srn-ph-atc-spinner {
+    display: block;
+    animation: srn-spin-{{ section.id }} 0.7s linear infinite;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-atc-btn.is-loading .srn-ph-atc-text {
+    visibility: hidden;
+  }
+
+  #srn-prodhero-{{ section.id }} .srn-ph-delivery-text {
+    font-size: 13px;
+    color: rgba(17,19,24,0.55);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-delivery-text svg {
+    color: #22d3ee;
+    flex-shrink: 0;
+  }
+
+  /* Sticky Mobile ATC */
+  #srn-prodhero-{{ section.id }} .srn-ph-sticky-atc {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background: rgba(248,249,251,0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(17,19,24,0.09);
+    padding: 12px 16px 16px;
+    flex-direction: column;
+    gap: 6px;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-sticky-atc.is-visible {
+    display: flex;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-sticky-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111318;
+    text-align: center;
+  }
+  #srn-prodhero-{{ section.id }} .srn-ph-sticky-btn {
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 100%);
+    color: #0a0c10;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #srn-prodhero-{{ section.id }} .srn-ph-main-img,
+    #srn-prodhero-{{ section.id }} .srn-ph-atc-btn {
+      transition: none;
+    }
+    #srn-prodhero-{{ section.id }} .srn-ph-atc-btn.is-loading .srn-ph-atc-spinner {
+      animation: none;
+    }
+  }
+</style>
+
+<section id="srn-prodhero-{{ section.id }}" data-section-type="product-hero">
+  <div class="srn-ph-container">
+    <div class="srn-ph-grid">
+
+      {%- comment -%} LEFT: Gallery {%- endcomment -%}
+      <div class="srn-ph-gallery" aria-label="Product images">
+        <div class="srn-ph-main-image-wrap">
+          {%- if product.featured_image -%}
+            {{
+              product.featured_image
+              | image_url: width: 900
+              | image_tag:
+                loading: 'eager',
+                fetchpriority: 'high',
+                class: 'srn-ph-main-img',
+                id: 'srn-main-img-' | append: section.id,
+                alt: product.featured_image.alt | default: product.title,
+                widths: '600, 900',
+                sizes: '(min-width: 900px) 50vw, 100vw'
+            }}
+          {%- else -%}
+            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(17,19,24,0.25);">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if product.images.size > 1 -%}
+          <div class="srn-ph-thumbs" role="list" aria-label="Product image thumbnails">
+            {%- for image in product.images limit: 6 -%}
+              <button
+                class="srn-ph-thumb{% if forloop.first %} is-active{% endif %}"
+                role="listitem"
+                data-image-url="{{ image | image_url: width: 900 }}"
+                data-image-alt="{{ image.alt | default: product.title | escape }}"
+                aria-label="{{ image.alt | default: 'Product image' | append: ' ' | append: forloop.index }}"
+                aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+              >
+                {{
+                  image
+                  | image_url: width: 144
+                  | image_tag:
+                    loading: 'lazy',
+                    alt: image.alt | default: product.title,
+                    widths: '72, 144',
+                    sizes: '72px'
+                }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} RIGHT: Purchase Panel {%- endcomment -%}
+      <div class="srn-ph-panel">
+
+        {%- if product.type != blank -%}
+          <span class="srn-ph-type-badge">{{ product.type }}</span>
+        {%- endif -%}
+
+        <h1 class="srn-ph-title">{{ product.title }}</h1>
+
+        {%- assign short_desc = product.description | strip_html | truncate: 200 -%}
+        {%- if short_desc != blank -%}
+          <p class="srn-ph-short-desc">{{ short_desc }}</p>
+        {%- endif -%}
+
+        {%- comment -%} Price {%- endcomment -%}
+        <div class="srn-ph-price-wrap" id="srn-price-wrap-{{ section.id }}">
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+            <span class="srn-price-compare" id="srn-compare-price-{{ section.id }}">{{ current_variant.compare_at_price | money }}</span>
+          {%- else -%}
+            <span class="srn-price-compare" id="srn-compare-price-{{ section.id }}" style="display:none;"></span>
+          {%- endif -%}
+          <span class="srn-price-display" id="srn-price-display-{{ section.id }}" aria-live="polite" aria-atomic="true">{{ current_variant.price | money }}</span>
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+            {%- assign savings_amt = current_variant.compare_at_price | minus: current_variant.price -%}
+            {%- assign save_pct = savings_amt | times: 100 | divided_by: current_variant.compare_at_price -%}
+            <span class="srn-price-saving" id="srn-price-saving-{{ section.id }}">Save {{ save_pct }}%</span>
+          {%- else -%}
+            <span class="srn-price-saving" id="srn-price-saving-{{ section.id }}" style="display:none;"></span>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_klarna and section.settings.klarna_text != blank -%}
+          <p class="srn-ph-klarna">{{ section.settings.klarna_text }}</p>
+        {%- endif -%}
+
+        {%- comment -%} Variant form {%- endcomment -%}
+        <form id="srn-product-form-{{ section.id }}" action="{{ routes.cart_add_url }}" method="post" novalidate>
+          <input type="hidden" name="form_type" value="product">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="id" id="srn-variant-id-{{ section.id }}" value="{{ current_variant.id }}">
+
+          {%- if has_variants -%}
+            {%- for option in product.options_with_values -%}
+              <div class="srn-ph-variant-group">
+                <p class="srn-ph-option-label">
+                  {{ option.name }}
+                  <span id="srn-opt-val-{{ section.id }}-{{ forloop.index0 }}">{{ option.selected_value }}</span>
+                </p>
+                <div class="srn-ph-pills" role="group" aria-label="{{ option.name }} options">
+                  {%- for value in option.values -%}
+                    <button
+                      type="button"
+                      class="srn-ph-pill{% if option.selected_value == value %} is-selected{% endif %}"
+                      data-option-index="{{ forloop.parentloop.index0 }}"
+                      data-option-value="{{ value | escape }}"
+                      aria-pressed="{{ option.selected_value == value }}"
+                    >
+                      {{ value }}
+                    </button>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+
+          {%- if section.settings.show_quantity -%}
+            <div class="srn-ph-qty-row">
+              <span class="srn-ph-qty-label">Quantity</span>
+              <div class="srn-qty-stepper" role="group" aria-label="Quantity">
+                <button type="button" class="srn-qty-btn" data-qty-change="-1" aria-label="Decrease quantity">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+                <span class="srn-qty-sep"></span>
+                <input
+                  class="srn-qty-input"
+                  type="number"
+                  name="quantity"
+                  id="srn-qty-{{ section.id }}"
+                  value="1"
+                  min="1"
+                  max="{{ current_variant.inventory_quantity | default: 99 }}"
+                  aria-label="Product quantity"
+                  readonly
+                >
+                <span class="srn-qty-sep"></span>
+                <button type="button" class="srn-qty-btn" data-qty-change="1" aria-label="Increase quantity">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
+
+          <div class="srn-ph-atc-wrap">
+            <button
+              type="submit"
+              name="add"
+              class="srn-ph-atc-btn"
+              id="srn-atc-btn-{{ section.id }}"
+              {% unless current_variant.available %}disabled{% endunless %}
+              aria-label="{% if current_variant.available %}Add {{ product.title }} to cart{% else %}Sold out{% endif %}"
+            >
+              <span class="srn-ph-atc-spinner" aria-hidden="true"></span>
+              <span class="srn-ph-atc-text">
+                {%- if current_variant.available -%}
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                  Add to Cart
+                {%- else -%}
+                  Sold Out
+                {%- endif -%}
+              </span>
+            </button>
+
+            {%- if section.settings.delivery_text != blank -%}
+              <p class="srn-ph-delivery-text">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                {{ section.settings.delivery_text }}
+              </p>
+            {%- endif -%}
+          </div>
+
+        </form>
+
+        {%- if section.settings.show_trust_row -%}
+          <div class="srn-ph-trust">
+            {% render 'sorein-trust-row',
+               delivery_text: section.settings.delivery_text,
+               warranty_text: '5-year warranty',
+               support_text: '24/7 support',
+               checkout_text: 'Secure checkout'
+            %}
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Sticky Mobile ATC {%- endcomment -%}
+  <div class="srn-ph-sticky-atc" id="srn-sticky-atc-{{ section.id }}" aria-hidden="true">
+    <p class="srn-ph-sticky-price" id="srn-sticky-price-{{ section.id }}">{{ current_variant.price | money }}</p>
+    <button
+      class="srn-ph-sticky-btn"
+      id="srn-sticky-btn-{{ section.id }}"
+      {% unless current_variant.available %}disabled{% endunless %}
+      aria-label="Add to cart"
+    >
+      {%- if current_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
+    </button>
+  </div>
+</section>
+
+<script type="application/json" id="srn-product-json-{{ section.id }}">
+  {
+    "id": {{ product.id | json }},
+    "title": {{ product.title | json }},
+    "variants": [
+      {%- for variant in product.variants -%}
+      {
+        "id": {{ variant.id }},
+        "title": {{ variant.title | json }},
+        "price": {{ variant.price }},
+        "compare_at_price": {{ variant.compare_at_price | default: 0 }},
+        "available": {{ variant.available }},
+        "inventory_quantity": {{ variant.inventory_quantity | default: 0 }},
+        "featured_image": {% if variant.featured_image %}{{ variant.featured_image | image_url: width: 900 | json }}{% else %}null{% endif %},
+        "featured_image_alt": {% if variant.featured_image %}{{ variant.featured_image.alt | default: product.title | json }}{% else %}null{% endif %},
+        "options": {{ variant.options | json }}
+      }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ],
+    "options": {{ product.options | json }},
+    "money_format": {{ shop.money_format | json }}
+  }
+</script>
+
+<script>
+(function() {
+  'use strict';
+
+  var sectionId  = '{{ section.id }}';
+  var section    = document.getElementById('srn-prodhero-' + sectionId);
+  if (!section) return;
+
+  var productData = JSON.parse(document.getElementById('srn-product-json-' + sectionId).textContent);
+  var selectedOptions = [];
+
+  // Init selected options from current variant
+  {%- if has_variants -%}
+  selectedOptions = {{ current_variant.options | json }};
+  {%- else -%}
+  selectedOptions = [];
+  {%- endif -%}
+
+  // Helper: format money (basic)
+  function formatMoney(cents) {
+    var format = productData.money_format || '{{amount}}';
+    var amount  = (cents / 100).toFixed(2);
+    // Strip trailing .00 if format doesn't use decimals
+    if (format.indexOf('amount_no_decimals') !== -1) {
+      amount = Math.round(cents / 100).toString();
+    }
+    return format.replace('{{amount_no_decimals}}', Math.round(cents / 100))
+                 .replace('{{amount}}', amount)
+                 .replace('{{amount_with_comma_separator}}', amount.replace('.', ','));
+  }
+
+  function findVariant() {
+    return productData.variants.find(function(v) {
+      return v.options.every(function(opt, i) {
+        return opt === selectedOptions[i];
+      });
+    });
+  }
+
+  function updateUI(variant) {
+    if (!variant) return;
+
+    var priceEl        = section.querySelector('#srn-price-display-' + sectionId);
+    var compareEl      = section.querySelector('#srn-compare-price-' + sectionId);
+    var savingEl       = section.querySelector('#srn-price-saving-' + sectionId);
+    var variantIdEl    = section.querySelector('#srn-variant-id-' + sectionId);
+    var atcBtn         = section.querySelector('#srn-atc-btn-' + sectionId);
+    var stickyPrice    = section.querySelector('#srn-sticky-price-' + sectionId);
+    var stickyBtn      = section.querySelector('#srn-sticky-btn-' + sectionId);
+    var atcText        = atcBtn && atcBtn.querySelector('.srn-ph-atc-text');
+
+    if (priceEl)     priceEl.textContent = formatMoney(variant.price);
+    if (stickyPrice) stickyPrice.textContent = formatMoney(variant.price);
+    if (variantIdEl) variantIdEl.value = variant.id;
+
+    if (compareEl) {
+      if (variant.compare_at_price > variant.price) {
+        compareEl.textContent = formatMoney(variant.compare_at_price);
+        compareEl.style.display = '';
+      } else {
+        compareEl.style.display = 'none';
+      }
+    }
+    if (savingEl) {
+      if (variant.compare_at_price > variant.price) {
+        var pct = Math.round((variant.compare_at_price - variant.price) * 100 / variant.compare_at_price);
+        savingEl.textContent = 'Save ' + pct + '%';
+        savingEl.style.display = '';
+      } else {
+        savingEl.style.display = 'none';
+      }
+    }
+
+    if (atcBtn) {
+      if (variant.available) {
+        atcBtn.disabled = false;
+        if (atcText) atcText.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> Add to Cart';
+      } else {
+        atcBtn.disabled = true;
+        if (atcText) atcText.textContent = 'Sold Out';
+      }
+    }
+    if (stickyBtn) {
+      stickyBtn.disabled = !variant.available;
+      stickyBtn.textContent = variant.available ? 'Add to Cart' : 'Sold Out';
+    }
+
+    // Update image if variant has one
+    if (variant.featured_image) {
+      var mainImg = section.querySelector('#srn-main-img-' + sectionId);
+      if (mainImg) {
+        mainImg.classList.add('is-fading');
+        setTimeout(function() {
+          mainImg.src = variant.featured_image;
+          mainImg.alt = variant.featured_image_alt || productData.title;
+          mainImg.classList.remove('is-fading');
+        }, 200);
+      }
+    }
+  }
+
+  // Variant pills
+  section.querySelectorAll('.srn-ph-pill').forEach(function(pill) {
+    pill.addEventListener('click', function() {
+      var optIdx = parseInt(this.dataset.optionIndex, 10);
+      var optVal = this.dataset.optionValue;
+      selectedOptions[optIdx] = optVal;
+
+      // Update pill state for this option group
+      section.querySelectorAll('.srn-ph-pill[data-option-index="' + optIdx + '"]').forEach(function(p) {
+        var isSelected = p.dataset.optionValue === optVal;
+        p.classList.toggle('is-selected', isSelected);
+        p.setAttribute('aria-pressed', isSelected);
+      });
+
+      // Update label
+      var labelSpan = section.querySelector('#srn-opt-val-' + sectionId + '-' + optIdx);
+      if (labelSpan) labelSpan.textContent = optVal;
+
+      var variant = findVariant();
+      updateUI(variant);
+    });
+  });
+
+  // Quantity stepper
+  var qtyInput  = section.querySelector('#srn-qty-' + sectionId);
+  section.querySelectorAll('[data-qty-change]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (!qtyInput) return;
+      var delta = parseInt(this.dataset.qtyChange, 10);
+      var current = parseInt(qtyInput.value, 10) || 1;
+      var newVal = Math.max(1, current + delta);
+      qtyInput.value = newVal;
+    });
+  });
+
+  // ATC form submission
+  var form = section.querySelector('#srn-product-form-' + sectionId);
+  var atcBtn = section.querySelector('#srn-atc-btn-' + sectionId);
+
+  function submitATC() {
+    if (!form || (atcBtn && atcBtn.disabled)) return;
+    var qty = qtyInput ? parseInt(qtyInput.value, 10) : 1;
+    var variantId = section.querySelector('#srn-variant-id-' + sectionId);
+    if (!variantId) return;
+
+    atcBtn && atcBtn.classList.add('is-loading');
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ id: parseInt(variantId.value, 10), quantity: qty })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      atcBtn && atcBtn.classList.remove('is-loading');
+      if (data.status) {
+        // Error from Shopify
+        console.error('ATC error:', data.description);
+        return;
+      }
+      // Success
+      return fetch('/cart.js').then(function(r) { return r.json(); });
+    })
+    .then(function(cart) {
+      if (!cart) return;
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+      // If cart type is page, redirect
+      if (document.body.dataset.cartType === 'page') {
+        window.location.href = '/cart';
+      }
+    })
+    .catch(function(err) {
+      console.error('ATC fetch error:', err);
+      atcBtn && atcBtn.classList.remove('is-loading');
+    });
+  }
+
+  form && form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    submitATC();
+  });
+
+  // Sticky ATC on mobile
+  var stickyATC = section.querySelector('#srn-sticky-atc-' + sectionId);
+  var atcWrap   = section.querySelector('.srn-ph-atc-wrap');
+  var stickyBtn = section.querySelector('#srn-sticky-btn-' + sectionId);
+
+  stickyBtn && stickyBtn.addEventListener('click', submitATC);
+
+  if (stickyATC && atcWrap && window.innerWidth < 900) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) {
+          stickyATC.classList.add('is-visible');
+          stickyATC.setAttribute('aria-hidden', 'false');
+        } else {
+          stickyATC.classList.remove('is-visible');
+          stickyATC.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }, { rootMargin: '-10px 0px 0px 0px' });
+    observer.observe(atcWrap);
+  }
+
+  // Thumbnail switcher
+  section.querySelectorAll('.srn-ph-thumb').forEach(function(thumb) {
+    thumb.addEventListener('click', function() {
+      var newUrl = this.dataset.imageUrl;
+      var newAlt = this.dataset.imageAlt;
+      var mainImg = section.querySelector('#srn-main-img-' + sectionId);
+      if (!mainImg || !newUrl) return;
+
+      section.querySelectorAll('.srn-ph-thumb').forEach(function(t) {
+        t.classList.remove('is-active');
+        t.setAttribute('aria-pressed', 'false');
+      });
+      this.classList.add('is-active');
+      this.setAttribute('aria-pressed', 'true');
+
+      mainImg.classList.add('is-fading');
+      setTimeout(function() {
+        mainImg.src = newUrl;
+        if (newAlt) mainImg.alt = newAlt;
+        mainImg.classList.remove('is-fading');
+      }, 200);
+    });
+  });
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Product Hero",
+  "tag": "div",
+  "class": "srn-product-hero-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_klarna",
+      "label": "Show Klarna / payment line",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "klarna_text",
+      "label": "Klarna / payment text",
+      "default": "Pay in 3 interest-free instalments with Klarna"
+    },
+    {
+      "type": "text",
+      "id": "delivery_text",
+      "label": "Delivery estimate text",
+      "default": "Free shipping — Estimated delivery 3–5 business days"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_row",
+      "label": "Show trust row",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity selector",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Hero"
+    }
+  ]
+}
+{% endschema %}

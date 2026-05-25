@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "technology": {
+      "type": "sorein-page-technology",
+      "settings": {
+        "heading": "The science of safe energy storage",
+        "subheading": "LiFePO4 chemistry, MPPT solar controllers, and modular architecture explained."
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-faq": {
+      "type": "sorein-faq",
+      "settings": {
+        "heading": "Technical questions",
+        "layout": "two-column"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": ["header", "technology", "sorein-faq", "footer"]
+}

@@ -1,0 +1,173 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "sorein-hero": {
+      "type": "sorein-hero-power",
+      "settings": {
+        "eyebrow": "Premium Energy Technology",
+        "heading": "Power your home when the grid stops.",
+        "heading_highlight": "grid stops",
+        "subheading": "Modular backup energy for cabins, homes, and off-grid life. Built on LiFePO4 chemistry for 3 500+ cycles and real energy independence.",
+        "cta_primary_label": "Build your system",
+        "cta_secondary_label": "Shop power stations",
+        "show_trust_row": true,
+        "trust_1": "Secure Checkout",
+        "trust_2": "Free Delivery",
+        "trust_3": "5-Year Warranty",
+        "trust_4": "Expert Support",
+        "show_stats": true,
+        "visual_badge": "LiFePO4 · 3 500 cycles"
+      },
+      "blocks": {
+        "stat-output": {
+          "type": "stat",
+          "settings": {
+            "value": "2 200 W",
+            "label": "Continuous Output",
+            "note": "Peak 4 800 W",
+            "icon": "⚡"
+          }
+        },
+        "stat-capacity": {
+          "type": "stat",
+          "settings": {
+            "value": "1 037 Wh",
+            "label": "Base Capacity",
+            "note": "Expandable to 9 677 Wh",
+            "icon": "🔋"
+          }
+        },
+        "stat-cycles": {
+          "type": "stat",
+          "settings": {
+            "value": "3 500+",
+            "label": "LiFePO4 Cycles",
+            "note": "≥10-year battery life",
+            "icon": "♻️"
+          }
+        },
+        "stat-solar": {
+          "type": "stat",
+          "settings": {
+            "value": "1 200 W",
+            "label": "Max Solar Input",
+            "note": "Recharge in ~1 hour",
+            "icon": "☀️"
+          }
+        }
+      },
+      "block_order": ["stat-output", "stat-capacity", "stat-cycles", "stat-solar"]
+    },
+    "sorein-use-cases": {
+      "type": "sorein-use-cases",
+      "settings": {
+        "heading": "Energy for every life",
+        "subheading": "From keeping the lights on during a blackout to powering an off-grid cabin — Sorein covers every scenario."
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-featured": {
+      "type": "sorein-featured-products",
+      "settings": {
+        "heading": "Choose your power station",
+        "subheading": "Expandable, modular systems built for serious energy independence.",
+        "columns": 3
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-powers": {
+      "type": "sorein-what-it-powers",
+      "settings": {
+        "heading": "What can it power?",
+        "subheading": "From essential appliances to your entire home — see what a Sorein system can run.",
+        "cta_label": "Calculate your runtime"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-modular": {
+      "type": "sorein-modular-system",
+      "settings": {
+        "heading": "Build the system your life needs",
+        "subheading": "Start with the A6 Pro base. Add batteries. Add inverters. Expand when you need more.",
+        "cta_label": "Build your system"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-solar": {
+      "type": "sorein-solar-ready",
+      "settings": {
+        "heading": "Charge from the sun. Anywhere.",
+        "subheading": "Connect up to 1 200W of solar panels. Recharge in as little as 1 hour. Designed for cabins, RVs, and off-grid life."
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-trust": {
+      "type": "sorein-trust-comparison",
+      "settings": {
+        "heading": "Built for serious energy independence",
+        "show_comparison": true
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-builder-cta": {
+      "type": "sorein-builder-cta",
+      "settings": {
+        "heading": "Configure your perfect power setup",
+        "subheading": "Choose your base, add batteries and inverters, and build the exact system your home, cabin, or RV needs.",
+        "eyebrow": "Flagship system",
+        "cta_primary_label": "Build your system",
+        "cta_secondary_label": "View A6 Pro specs"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-faq": {
+      "type": "sorein-faq",
+      "settings": {
+        "heading": "Frequently asked questions",
+        "layout": "two-column"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-final-cta": {
+      "type": "sorein-final-cta",
+      "settings": {
+        "heading": "Your backup power is one click away.",
+        "subheading": "Join thousands of homeowners, cabin owners, and off-grid enthusiasts who trust Sorein.",
+        "cta_primary_label": "Build your system",
+        "cta_secondary_label": "Browse all products",
+        "trust_text": "Free delivery · 5-year warranty · LiFePO4 safety · Expert support"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "sorein-hero",
+    "sorein-use-cases",
+    "sorein-featured",
+    "sorein-powers",
+    "sorein-modular",
+    "sorein-solar",
+    "sorein-trust",
+    "sorein-builder-cta",
+    "sorein-faq",
+    "sorein-final-cta",
+    "footer"
+  ]
+}

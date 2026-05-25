@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "not-found": {
+      "type": "sorein-page-404",
+      "settings": {
+        "heading": "Page not found",
+        "subheading": "This page may have moved or doesn't exist. Let's get you back on track."
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": ["header", "not-found", "footer"]
+}

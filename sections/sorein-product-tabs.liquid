@@ -1,0 +1,79 @@
+{% comment %}Section: sorein-product-tabs.liquid — Tabbed content for PDPs{% endcomment %}
+{%- liquid assign sid = section.id -%}
+<section id="srn-prodtabs-{{ sid }}" class="srn-prodtabs">
+<style>
+#srn-prodtabs-{{ sid }} { background:#ffffff; padding:clamp(48px,6vw,80px) clamp(20px,5vw,60px); border-top:1px solid rgba(17,19,24,0.07); }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__inner { max-width:1280px; margin:0 auto; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__nav { display:flex; gap:0; overflow-x:auto; border-bottom:2px solid rgba(17,19,24,0.08); scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__nav::-webkit-scrollbar { display:none; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__tab { padding:14px 20px; font-size:14.5px; font-weight:600; color:rgba(17,19,24,0.55); background:none; border:none; border-bottom:2px solid transparent; margin-bottom:-2px; cursor:pointer; white-space:nowrap; transition:all 200ms; flex-shrink:0; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__tab:hover { color:#111318; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__tab[aria-selected="true"] { color:#22d3ee; border-bottom-color:#22d3ee; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__tab:focus-visible { outline:2px solid #22d3ee; outline-offset:2px; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__content { padding:32px 0 0; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__panel { display:none; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__panel[data-active] { display:block; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__panel-body { font-size:15px; line-height:1.75; color:rgba(17,19,24,0.72); max-width:720px; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__panel-body h3 { font-size:17px; font-weight:700; color:#111318; margin:24px 0 8px; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__panel-body ul { padding-left:20px; margin:0 0 16px; }
+#srn-prodtabs-{{ sid }} .srn-prodtabs__panel-body li { margin-bottom:6px; }
+@media(prefers-reduced-motion:reduce){ #srn-prodtabs-{{ sid }} .srn-prodtabs__tab { transition:none; } }
+</style>
+<div class="srn-prodtabs__inner">
+  <div class="srn-prodtabs__nav" role="tablist" aria-label="Product information">
+    {%- for block in section.blocks -%}
+    {%- if block.type == 'tab' -%}
+    <button
+      class="srn-prodtabs__tab"
+      role="tab"
+      aria-selected="{{ forloop.first | json }}"
+      aria-controls="srn-prodtabs-panel-{{ sid }}-{{ forloop.index }}"
+      id="srn-prodtabs-tab-{{ sid }}-{{ forloop.index }}"
+      data-tab="{{ forloop.index }}"
+      {{ block.shopify_attributes }}
+    >{{ block.settings.tab_label }}</button>
+    {%- endif -%}
+    {%- endfor -%}
+  </div>
+  <div class="srn-prodtabs__content">
+    {%- for block in section.blocks -%}
+    {%- if block.type == 'tab' -%}
+    <div
+      class="srn-prodtabs__panel"
+      role="tabpanel"
+      id="srn-prodtabs-panel-{{ sid }}-{{ forloop.index }}"
+      aria-labelledby="srn-prodtabs-tab-{{ sid }}-{{ forloop.index }}"
+      {%- if forloop.first %} data-active{%- endif -%}
+      {{ block.shopify_attributes }}
+    >
+      <div class="srn-prodtabs__panel-body">{{ block.settings.tab_content }}</div>
+    </div>
+    {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+</section>
+<script>
+(function(){
+  'use strict';
+  var root = document.getElementById('srn-prodtabs-{{ sid }}');
+  if(!root) return;
+  var tabs = root.querySelectorAll('[role="tab"]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      tab.setAttribute('aria-selected','true');
+      var panels = root.querySelectorAll('[role="tabpanel"]');
+      panels.forEach(function(p){ delete p.dataset.active; });
+      var target = root.querySelector('#' + tab.getAttribute('aria-controls'));
+      if(target) target.dataset.active = '';
+    });
+    tab.addEventListener('keydown', function(e){
+      var idx = Array.from(tabs).indexOf(tab);
+      if(e.key === 'ArrowRight' && tabs[idx+1]){ tabs[idx+1].click(); tabs[idx+1].focus(); }
+      if(e.key === 'ArrowLeft' && tabs[idx-1]){ tabs[idx-1].click(); tabs[idx-1].focus(); }
+    });
+  });
+})();
+</script>
+{% schema %}{"name":"Product Tabs","tag":"section","settings":[],"blocks":[{"type":"tab","name":"Tab","settings":[{"type":"text","id":"tab_label","label":"Tab label","default":"In the Box"},{"type":"richtext","id":"tab_content","label":"Tab content"}]}],"presets":[{"name":"Product Tabs","blocks":[{"type":"tab","settings":{"tab_label":"In the Box","tab_content":"<p><strong>What's included:</strong></p><ul><li>A6 Pro base unit</li><li>AC wall charging cable</li><li>MC4 solar adapter</li><li>DC car adapter</li><li>User manual</li></ul>"}},{"type":"tab","settings":{"tab_label":"Use Cases","tab_content":"<p>The Sorein A6 Pro is designed for home backup, cabin off-grid power, RV/camping energy, and emergency preparedness.</p>"}},{"type":"tab","settings":{"tab_label":"Solar Charging","tab_content":"<p>Connect up to 1 200W of solar panels via MC4 connectors. MPPT charge controller ensures maximum solar efficiency.</p>"}},{"type":"tab","settings":{"tab_label":"Warranty","tab_content":"<p><strong>5-year warranty</strong> on all Sorein products. Contact our Swedish support team for any issues."}}]}]}{% endschema %}

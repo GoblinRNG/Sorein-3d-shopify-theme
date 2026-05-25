@@ -1,0 +1,149 @@
+/*
+ * Sorein Theme — Font Stack CSS
+ * Version: 1.0.0
+ *
+ * This file defines the font family custom properties used throughout the theme.
+ * It does NOT load any external font files (no Google Fonts, no CDN dependencies).
+ *
+ * TO ADD CUSTOM FONTS:
+ * 1. Upload your font files (.woff2 preferred, .woff fallback) to the /assets/ directory
+ * 2. Add @font-face declarations below
+ * 3. Update --srn-font-heading and --srn-font-body to use your font name first
+ *
+ * Recommended font for Sorein brand: Inter (free, open source)
+ * Download from: https://rsms.me/inter/
+ * Upload inter-regular.woff2, inter-medium.woff2, inter-semibold.woff2, inter-bold.woff2
+ *
+ * EXAMPLE @font-face (uncomment and adjust when files are uploaded):
+ *
+ * @font-face {
+ *   font-family: 'Inter';
+ *   font-weight: 400;
+ *   font-style: normal;
+ *   font-display: swap;
+ *   src: url('{{ "inter-regular.woff2" | asset_url }}') format('woff2'),
+ *        url('{{ "inter-regular.woff" | asset_url }}') format('woff');
+ * }
+ *
+ * @font-face {
+ *   font-family: 'Inter';
+ *   font-weight: 500;
+ *   font-style: normal;
+ *   font-display: swap;
+ *   src: url('{{ "inter-medium.woff2" | asset_url }}') format('woff2'),
+ *        url('{{ "inter-medium.woff" | asset_url }}') format('woff');
+ * }
+ *
+ * @font-face {
+ *   font-family: 'Inter';
+ *   font-weight: 600;
+ *   font-style: normal;
+ *   font-display: swap;
+ *   src: url('{{ "inter-semibold.woff2" | asset_url }}') format('woff2'),
+ *        url('{{ "inter-semibold.woff" | asset_url }}') format('woff');
+ * }
+ *
+ * @font-face {
+ *   font-family: 'Inter';
+ *   font-weight: 700;
+ *   font-style: normal;
+ *   font-display: swap;
+ *   src: url('{{ "inter-bold.woff2" | asset_url }}') format('woff2'),
+ *        url('{{ "inter-bold.woff" | asset_url }}') format('woff');
+ * }
+ *
+ * @font-face {
+ *   font-family: 'Inter';
+ *   font-weight: 800;
+ *   font-style: normal;
+ *   font-display: swap;
+ *   src: url('{{ "inter-extrabold.woff2" | asset_url }}') format('woff2'),
+ *        url('{{ "inter-extrabold.woff" | asset_url }}') format('woff');
+ * }
+ */
+
+/* ============================================================
+   FONT FAMILY CUSTOM PROPERTIES
+   These are the font stacks used everywhere in the theme.
+   Update the first value in each stack to your actual custom font name.
+   ============================================================ */
+
+:root {
+  /*
+   * Heading font — used for h1–h6, display text, and hero titles.
+   * Sorein brand: Inter for its clean, technical, premium feel.
+   * Fallback chain ensures text renders immediately on any system.
+   */
+  --srn-font-heading: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Helvetica, Arial, sans-serif;
+
+  /*
+   * Body font — used for body copy, UI labels, buttons, form fields.
+   * Matching heading font creates visual consistency.
+   */
+  --srn-font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Helvetica, Arial, sans-serif;
+
+  /*
+   * Monospace font — used for technical specs, model numbers, code snippets.
+   * Gives a precision/engineering feel to technical data.
+   */
+  --srn-font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Cascadia Code',
+    Consolas, 'Courier New', monospace;
+
+  /*
+   * Display font — optionally different from heading for large hero text.
+   * Currently same as heading; override if a display typeface is added.
+   */
+  --srn-font-display: var(--srn-font-heading);
+
+  /* Default weights — overridden by Shopify font picker via theme.liquid */
+  --srn-font-heading-weight: 700;
+  --srn-font-heading-style: normal;
+  --srn-font-body-weight: 400;
+  --srn-font-body-style: normal;
+}
+
+/* ============================================================
+   SYSTEM FONT OPTIMIZATION
+   These rules ensure optimal rendering across operating systems
+   without requiring custom font loading.
+   ============================================================ */
+
+html {
+  /* Enable font kerning for headings */
+  font-kerning: normal;
+}
+
+/* Improve heading rendering at large sizes */
+h1, h2, h3,
+.srn-display-text {
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* Technical/spec text uses mono stack */
+.srn-text-mono,
+.srn-spec-value,
+[data-spec],
+code,
+pre,
+kbd {
+  font-family: var(--srn-font-mono);
+  font-feature-settings: 'zero' 1; /* slashed zero for clarity */
+}
+
+/* ============================================================
+   VARIABLE FONT SUPPORT (if Inter Variable is uploaded)
+   Inter Variable allows smooth weight transitions in animations.
+   Uncomment below if uploading inter-variable.woff2
+
+   @font-face {
+     font-family: 'Inter';
+     font-weight: 100 900;
+     font-style: normal;
+     font-display: swap;
+     src: url('{{ "inter-variable.woff2" | asset_url }}') format('woff2-variations');
+     font-named-instance: 'Regular';
+   }
+   ============================================================ */

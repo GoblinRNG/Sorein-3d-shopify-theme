@@ -1,0 +1,100 @@
+{% comment %}
+  Section: main-page.liquid
+  Purpose: Generic page content renderer for page.json template
+  Renders page.content (WYSIWYG) with Sorein typography styling
+{% endcomment %}
+
+<section
+  id="srn-mainpage-{{ section.id }}"
+  class="srn-main-page"
+>
+  <style>
+    #srn-mainpage-{{ section.id }} {
+      background: var(--srn-bg, #f8f9fb);
+      padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 60px);
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.022em;
+      color: #111318;
+      margin: 0 0 24px;
+      line-height: 1.1;
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body {
+      font-size: clamp(15px, 1.6vw, 17px);
+      line-height: 1.75;
+      color: rgba(17,19,24,0.75);
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body h2 {
+      font-size: clamp(20px, 2.5vw, 26px);
+      font-weight: 700;
+      color: #111318;
+      margin: 40px 0 12px;
+      letter-spacing: -0.018em;
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body h3 {
+      font-size: clamp(17px, 2vw, 21px);
+      font-weight: 600;
+      color: #111318;
+      margin: 32px 0 10px;
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body p {
+      margin: 0 0 16px;
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body a {
+      color: #22d3ee;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body ul,
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body ol {
+      padding-left: 24px;
+      margin: 0 0 16px;
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body li {
+      margin-bottom: 8px;
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body th,
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(17,19,24,0.09);
+    }
+    #srn-mainpage-{{ section.id }} .srn-mainpage__body th {
+      font-weight: 600;
+      color: #111318;
+      background: rgba(17,19,24,0.04);
+    }
+  </style>
+
+  <div class="srn-mainpage__inner">
+    <h1 class="srn-mainpage__title">{{ page.title }}</h1>
+    <div class="srn-mainpage__body">
+      {{ page.content }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page Content",
+  "tag": "section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Page Content"
+    }
+  ]
+}
+{% endschema %}

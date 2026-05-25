@@ -1,0 +1,88 @@
+{% comment %}Section: sorein-page-technology.liquid — LiFePO4 + MPPT education page{% endcomment %}
+{%- liquid assign sid = section.id -%}
+<section id="srn-tech-{{ sid }}" class="srn-tech">
+<style>
+#srn-tech-{{ sid }} .srn-tech__hero { background:#090b0f; color:#f4f6fa; padding:clamp(72px,10vw,120px) clamp(20px,5vw,60px); text-align:center; position:relative; overflow:hidden; }
+#srn-tech-{{ sid }} .srn-tech__hero::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(14,165,233,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,0.04) 1px,transparent 1px); background-size:56px 56px; }
+#srn-tech-{{ sid }} .srn-tech__hero-content { position:relative; z-index:1; max-width:640px; margin:0 auto; }
+#srn-tech-{{ sid }} .srn-tech__hero h1 { font-size:clamp(28px,4.5vw,52px); font-weight:700; letter-spacing:-0.025em; margin:0 0 16px; }
+#srn-tech-{{ sid }} .srn-tech__hero p { color:rgba(244,246,250,0.65); font-size:clamp(15px,1.7vw,18px); line-height:1.65; margin:0; }
+#srn-tech-{{ sid }} .srn-tech__section { padding:clamp(56px,8vw,96px) clamp(20px,5vw,60px); }
+#srn-tech-{{ sid }} .srn-tech__section:nth-child(even) { background:#f8f9fb; }
+#srn-tech-{{ sid }} .srn-tech__section:nth-child(odd) { background:#ffffff; }
+#srn-tech-{{ sid }} .srn-tech__section-inner { max-width:1280px; margin:0 auto; }
+#srn-tech-{{ sid }} h2 { font-size:clamp(22px,3vw,36px); font-weight:700; letter-spacing:-0.022em; color:#111318; margin:0 0 16px; }
+#srn-tech-{{ sid }} .srn-tech__lead { font-size:clamp(15px,1.6vw,17px); color:rgba(17,19,24,0.65); line-height:1.75; max-width:620px; margin:0 0 32px; }
+#srn-tech-{{ sid }} .srn-tech__stat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:32px; }
+@media(min-width:640px){ #srn-tech-{{ sid }} .srn-tech__stat-grid { grid-template-columns:repeat(4,1fr); } }
+#srn-tech-{{ sid }} .srn-tech__stat-card { background:#090b0f; border-radius:12px; padding:20px; color:#f4f6fa; }
+#srn-tech-{{ sid }} .srn-tech__stat-card strong { display:block; font-size:clamp(20px,2.5vw,28px); font-weight:700; color:#22d3ee; letter-spacing:-0.02em; }
+#srn-tech-{{ sid }} .srn-tech__stat-card span { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:rgba(244,246,250,0.45); margin-top:4px; display:block; }
+#srn-tech-{{ sid }} .srn-tech__comparison { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:32px; }
+@media(max-width:640px){ #srn-tech-{{ sid }} .srn-tech__comparison { grid-template-columns:1fr; } }
+#srn-tech-{{ sid }} .srn-tech__comp-card { border-radius:12px; padding:20px; border:1.5px solid rgba(17,19,24,0.10); }
+#srn-tech-{{ sid }} .srn-tech__comp-card--sorein { background:#090b0f; border-color:#22d3ee; color:#f4f6fa; }
+#srn-tech-{{ sid }} .srn-tech__comp-card h4 { font-size:14px; font-weight:700; margin:0 0 12px; }
+#srn-tech-{{ sid }} .srn-tech__comp-card--sorein h4 { color:#22d3ee; }
+#srn-tech-{{ sid }} .srn-tech__comp-card li { font-size:13px; line-height:1.6; margin-bottom:4px; color:rgba(17,19,24,0.70); list-style:none; padding-left:14px; position:relative; }
+#srn-tech-{{ sid }} .srn-tech__comp-card--sorein li { color:rgba(244,246,250,0.75); }
+#srn-tech-{{ sid }} .srn-tech__comp-card li::before { content:'✓'; position:absolute; left:0; color:#22d3ee; font-weight:700; }
+</style>
+<div class="srn-tech__hero">
+  <div class="srn-tech__hero-content">
+    <h1>{{ section.settings.heading }}</h1>
+    {%- if section.settings.subheading != blank -%}<p>{{ section.settings.subheading }}</p>{%- endif -%}
+  </div>
+</div>
+<div class="srn-tech__section">
+  <div class="srn-tech__section-inner">
+    <h2>LiFePO4 — Lithium Iron Phosphate</h2>
+    <p class="srn-tech__lead">LiFePO4 is the safest and most stable lithium battery chemistry available. Unlike standard lithium-ion, it does not overheat or produce toxic gases, making it safe for home and indoor use.</p>
+    <div class="srn-tech__stat-grid">
+      <div class="srn-tech__stat-card"><strong>3 500+</strong><span>Charge cycles</span></div>
+      <div class="srn-tech__stat-card"><strong>≥10 yr</strong><span>Lifespan</span></div>
+      <div class="srn-tech__stat-card"><strong>Safe</strong><span>Indoor use</span></div>
+      <div class="srn-tech__stat-card"><strong>−10°C</strong><span>Cold operation</span></div>
+    </div>
+    <div class="srn-tech__comparison">
+      <div class="srn-tech__comp-card srn-tech__comp-card--sorein">
+        <h4>LiFePO4 (Sorein)</h4>
+        <ul><li>3 500+ cycles</li><li>Safe chemistry</li><li>No thermal runaway</li><li>Safe indoors</li><li>10-year lifespan</li></ul>
+      </div>
+      <div class="srn-tech__comp-card">
+        <h4>NMC Lithium-Ion</h4>
+        <ul style=""><li>500–1000 cycles</li><li>Higher energy density</li><li>Thermal runaway risk</li><li>Requires ventilation</li><li>3–5 year lifespan</li></ul>
+      </div>
+      <div class="srn-tech__comp-card">
+        <h4>Lead-Acid</h4>
+        <ul><li>300–500 cycles</li><li>Very heavy</li><li>Toxic chemistry</li><li>Outdoor only</li><li>2–5 year lifespan</li></ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="srn-tech__section">
+  <div class="srn-tech__section-inner">
+    <h2>MPPT Solar Controller</h2>
+    <p class="srn-tech__lead">Maximum Power Point Tracking (MPPT) ensures your solar panels always deliver their maximum available energy to the battery, regardless of temperature or shading conditions. Sorein's MPPT controller supports up to 1 200W solar input.</p>
+    <div class="srn-tech__stat-grid">
+      <div class="srn-tech__stat-card"><strong>1 200 W</strong><span>Max solar input</span></div>
+      <div class="srn-tech__stat-card"><strong>MPPT</strong><span>Controller type</span></div>
+      <div class="srn-tech__stat-card"><strong>MC4</strong><span>Connector standard</span></div>
+      <div class="srn-tech__stat-card"><strong>~1 hr</strong><span>Solar recharge time</span></div>
+    </div>
+  </div>
+</div>
+<div class="srn-tech__section">
+  <div class="srn-tech__section-inner">
+    <h2>Modular expandable architecture</h2>
+    <p class="srn-tech__lead">Sorein's modular system is designed to grow with your energy needs. Start with the Main Base 3600 (3 600W AC output, 1 000W solar), then stack EB240 batteries (+2 400 Wh each, up to ×5) and AC300 inverters (+3 600W independent output each, up to ×2). A single stack reaches 12 000 Wh. Multiple systems can be paralleled for up to 100 kWh / 36 kW total.</p>
+    <div class="srn-tech__stat-grid">
+      <div class="srn-tech__stat-card"><strong>100 kWh</strong><span>Max total capacity</span></div>
+      <div class="srn-tech__stat-card"><strong>36 kW</strong><span>Max total output</span></div>
+      <div class="srn-tech__stat-card"><strong>Modular</strong><span>Add anytime</span></div>
+      <div class="srn-tech__stat-card"><strong>No tools</strong><span>Easy connection</span></div>
+    </div>
+  </div>
+</div>
+</section>
+{% schema %}{"name":"Technology Page","tag":"section","settings":[{"type":"textarea","id":"heading","label":"Hero heading","default":"The science of safe energy storage"},{"type":"textarea","id":"subheading","label":"Hero subheading","default":"LiFePO4 chemistry, MPPT solar controllers, and modular architecture explained."},{"type":"image_picker","id":"lifepo4_image","label":"LiFePO4 diagram image"},{"type":"image_picker","id":"mppt_image","label":"MPPT diagram image"}],"presets":[{"name":"Technology Page"}]}{% endschema %}

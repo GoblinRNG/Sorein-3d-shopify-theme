@@ -1,0 +1,348 @@
+{%- comment -%} Sorein Footer — 4-col dark with social, links, payment icons {%- endcomment -%}
+
+<style>
+  #srn-footer-{{ section.id }} {
+    background: #090b0f;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    color: #f4f6fa;
+    padding: 0;
+  }
+
+  #srn-footer-{{ section.id }} .srn-footer-grid {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 64px 24px 48px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  @media (min-width: 640px) {
+    #srn-footer-{{ section.id }} .srn-footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1024px) {
+    #srn-footer-{{ section.id }} .srn-footer-grid {
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 32px;
+    }
+  }
+
+  /* Col 1 — Brand */
+  #srn-footer-{{ section.id }} .srn-footer-brand-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 14px;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-logo-text {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-brand-logo img {
+    max-width: 140px;
+    height: auto;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-tagline {
+    font-size: 13px;
+    color: rgba(244,246,250,0.50);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    max-width: 240px;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-socials {
+    display: flex;
+    gap: 10px;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(244,246,250,0.60);
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s, border-color 0.2s;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-social-link:hover {
+    color: #22d3ee;
+    background: rgba(34,211,238,0.08);
+    border-color: rgba(34,211,238,0.20);
+  }
+
+  /* Link Columns */
+  #srn-footer-{{ section.id }} .srn-footer-col-heading {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(244,246,250,0.40);
+    margin-bottom: 16px;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-link {
+    font-size: 14px;
+    color: rgba(244,246,250,0.65);
+    text-decoration: none;
+    transition: color 0.2s;
+    line-height: 1.4;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-link:hover {
+    color: #22d3ee;
+  }
+
+  /* Bottom Bar */
+  #srn-footer-{{ section.id }} .srn-footer-bottom {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 20px 24px 28px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-copyright {
+    font-size: 13px;
+    color: rgba(244,246,250,0.35);
+  }
+  #srn-footer-{{ section.id }} .srn-footer-payment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #srn-footer-{{ section.id }} .srn-payment-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(244,246,250,0.45);
+    letter-spacing: 0.03em;
+  }
+  #srn-footer-{{ section.id }} .srn-footer-locale {
+    font-size: 13px;
+    color: rgba(244,246,250,0.35);
+  }
+</style>
+
+<section id="srn-footer-{{ section.id }}">
+
+  <div class="srn-footer-grid">
+
+    {%- comment -%} Col 1: Brand {%- endcomment -%}
+    <div class="srn-footer-brand">
+      <a href="{{ routes.root_url }}" class="srn-footer-brand-logo" aria-label="{{ section.settings.logo_text | default: 'Sorein' }} — homepage">
+        {%- if section.settings.logo != blank -%}
+          {{ section.settings.logo | image_url: width: 140 | image_tag: loading: 'lazy', alt: section.settings.logo_text | default: 'Sorein' }}
+        {%- else -%}
+          <span class="srn-footer-logo-text">{{ section.settings.logo_text | default: 'Sorein' }}</span>
+        {%- endif -%}
+      </a>
+      <p class="srn-footer-tagline">{{ section.settings.tagline | default: 'Premium Scandinavian energy-tech' }}</p>
+
+      <div class="srn-footer-socials">
+        {%- if section.settings.instagram_url != blank -%}
+          <a href="{{ section.settings.instagram_url }}" class="srn-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Sorein on Instagram">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.facebook_url != blank -%}
+          <a href="{{ section.settings.facebook_url }}" class="srn-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Sorein on Facebook">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+            </svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.youtube_url != blank -%}
+          <a href="{{ section.settings.youtube_url }}" class="srn-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Sorein on YouTube">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+              <path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} Link Columns from blocks {%- endcomment -%}
+    {%- assign products_links = section.blocks | where: 'type', 'footer_link' | where: 'settings.column', 'products' -%}
+    {%- assign support_links  = section.blocks | where: 'type', 'footer_link' | where: 'settings.column', 'support' -%}
+    {%- assign company_links  = section.blocks | where: 'type', 'footer_link' | where: 'settings.column', 'company' -%}
+
+    <div class="srn-footer-col">
+      <p class="srn-footer-col-heading">Products</p>
+      <nav class="srn-footer-links" aria-label="Products links">
+        {%- for block in products_links -%}
+          <a href="{{ block.settings.url | default: '#' }}" class="srn-footer-link" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+        {%- endfor -%}
+      </nav>
+    </div>
+
+    <div class="srn-footer-col">
+      <p class="srn-footer-col-heading">Support</p>
+      <nav class="srn-footer-links" aria-label="Support links">
+        {%- for block in support_links -%}
+          <a href="{{ block.settings.url | default: '#' }}" class="srn-footer-link" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+        {%- endfor -%}
+      </nav>
+    </div>
+
+    <div class="srn-footer-col">
+      <p class="srn-footer-col-heading">Company</p>
+      <nav class="srn-footer-links" aria-label="Company links">
+        {%- for block in company_links -%}
+          <a href="{{ block.settings.url | default: '#' }}" class="srn-footer-link" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+        {%- endfor -%}
+      </nav>
+    </div>
+
+  </div>
+
+  <div class="srn-footer-bottom">
+    <p class="srn-footer-copyright">{{ section.settings.copyright_text | default: '© 2025 Sorein AB. All rights reserved.' }}</p>
+
+    {%- if section.settings.show_payment_icons -%}
+      <div class="srn-footer-payment" aria-label="Accepted payment methods">
+        <span class="srn-payment-badge">Visa</span>
+        <span class="srn-payment-badge">Mastercard</span>
+        <span class="srn-payment-badge">Klarna</span>
+        <span class="srn-payment-badge">PayPal</span>
+      </div>
+    {%- endif -%}
+
+    <div class="srn-footer-locale">
+      <span>🇸🇪 SE / EUR</span>
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "div",
+  "class": "srn-footer-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer logo"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text (fallback)",
+      "default": "Sorein"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Premium Scandinavian energy-tech"
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "© 2025 Sorein AB. All rights reserved."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "footer_link",
+      "name": "Footer Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link label",
+          "default": "Link"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link URL"
+        },
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Column",
+          "options": [
+            { "value": "products", "label": "Products" },
+            { "value": "support",  "label": "Support" },
+            { "value": "company",  "label": "Company" }
+          ],
+          "default": "products"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sorein Footer",
+      "blocks": [
+        { "type": "footer_link", "settings": { "label": "Power Stations", "url": "/collections/power-stations", "column": "products" } },
+        { "type": "footer_link", "settings": { "label": "Solar Generators", "url": "/collections/solar-generators", "column": "products" } },
+        { "type": "footer_link", "settings": { "label": "Home Backup", "url": "/collections/home-backup", "column": "products" } },
+        { "type": "footer_link", "settings": { "label": "A6 Pro Builder", "url": "/pages/a6-pro-builder", "column": "products" } },
+        { "type": "footer_link", "settings": { "label": "FAQ", "url": "/pages/faq", "column": "support" } },
+        { "type": "footer_link", "settings": { "label": "Contact", "url": "/pages/contact", "column": "support" } },
+        { "type": "footer_link", "settings": { "label": "Warranty", "url": "/pages/warranty", "column": "support" } },
+        { "type": "footer_link", "settings": { "label": "Shipping", "url": "/pages/shipping", "column": "support" } },
+        { "type": "footer_link", "settings": { "label": "About Sorein", "url": "/pages/about", "column": "company" } },
+        { "type": "footer_link", "settings": { "label": "Technology", "url": "/pages/technology", "column": "company" } },
+        { "type": "footer_link", "settings": { "label": "Privacy Policy", "url": "/policies/privacy-policy", "column": "company" } },
+        { "type": "footer_link", "settings": { "label": "Terms", "url": "/policies/terms-of-service", "column": "company" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
