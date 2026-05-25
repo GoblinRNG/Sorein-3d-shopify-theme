@@ -1,0 +1,597 @@
+<style>
+  #srn-contact-{{ section.id }} {
+    background: #f8f9fb;
+    padding: clamp(64px, 10vw, 112px) 0;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 60px);
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 72px;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #111318;
+    margin: 12px 0 16px;
+    line-height: 1.1;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__sub {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: rgba(17,19,24,0.60);
+    margin: 0;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  @media (min-width: 900px) {
+    #srn-contact-{{ section.id }} .srn-contact__grid {
+      grid-template-columns: 1fr 1.2fr;
+      gap: 64px;
+      align-items: start;
+    }
+  }
+
+  /* Contact info cards */
+  #srn-contact-{{ section.id }} .srn-contact__info {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__info-card {
+    background: #fff;
+    border: 1px solid rgba(17,19,24,0.08);
+    border-radius: 16px;
+    padding: 28px 32px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__info-card:hover {
+    border-color: rgba(34,211,238,0.35);
+    box-shadow: 0 4px 24px rgba(34,211,238,0.08);
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__info-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(34,211,238,0.10);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #22d3ee;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__info-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__info-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(17,19,24,0.40);
+    margin: 0 0 6px;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__info-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111318;
+    margin: 0 0 4px;
+    line-height: 1.4;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__info-value a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__info-value a:hover {
+    color: #22d3ee;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__info-note {
+    font-size: 0.875rem;
+    color: rgba(17,19,24,0.50);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Form */
+  #srn-contact-{{ section.id }} .srn-contact__form-wrap {
+    background: #fff;
+    border: 1px solid rgba(17,19,24,0.08);
+    border-radius: 20px;
+    padding: clamp(28px, 5vw, 48px);
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__form-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111318;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__form-sub {
+    font-size: 0.9375rem;
+    color: rgba(17,19,24,0.55);
+    margin: 0 0 32px;
+    line-height: 1.55;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 540px) {
+    #srn-contact-{{ section.id }} .srn-contact__row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: rgba(17,19,24,0.65);
+    letter-spacing: 0.02em;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__input,
+  #srn-contact-{{ section.id }} .srn-contact__select,
+  #srn-contact-{{ section.id }} .srn-contact__textarea {
+    padding: 14px 16px;
+    border: 1.5px solid rgba(17,19,24,0.12);
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    background: #f8f9fb;
+    color: #111318;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    width: 100%;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5l5 5 5-5' stroke='%2311131880' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 20px;
+    padding-right: 40px;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__input:focus,
+  #srn-contact-{{ section.id }} .srn-contact__select:focus,
+  #srn-contact-{{ section.id }} .srn-contact__textarea:focus {
+    border-color: #22d3ee;
+    background: #fff;
+    outline: none;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__textarea {
+    resize: vertical;
+    min-height: 128px;
+    line-height: 1.6;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__submit {
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(128deg, #22d3ee 0%, #0ea5e9 100%);
+    color: #07090d;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__submit:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__submit:active {
+    transform: translateY(0);
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__success {
+    display: none;
+    text-align: center;
+    padding: 40px 24px;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__success-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(34,211,238,0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: #22d3ee;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__success-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__success-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111318;
+    margin: 0 0 8px;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__success-text {
+    font-size: 0.9375rem;
+    color: rgba(17,19,24,0.60);
+    margin: 0;
+  }
+
+  /* Trust strip */
+  #srn-contact-{{ section.id }} .srn-contact__trust {
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(17,19,24,0.07);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px 60px;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__trust-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(17,19,24,0.55);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  #srn-contact-{{ section.id }} .srn-contact__trust-item svg {
+    width: 18px;
+    height: 18px;
+    stroke: #22d3ee;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #srn-contact-{{ section.id }} .srn-contact__info-card,
+    #srn-contact-{{ section.id }} .srn-contact__submit {
+      transition: none;
+    }
+  }
+</style>
+
+<section id="srn-contact-{{ section.id }}" aria-labelledby="srn-contact-h1-{{ section.id }}">
+  <div class="srn-contact__inner">
+
+    <div class="srn-contact__header">
+      <p class="srn-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1 class="srn-contact__h1" id="srn-contact-h1-{{ section.id }}">{{ section.settings.heading }}</h1>
+      <p class="srn-contact__sub">{{ section.settings.subheading }}</p>
+    </div>
+
+    <div class="srn-contact__grid">
+
+      <!-- Info cards -->
+      <div class="srn-contact__info">
+
+        <div class="srn-contact__info-card">
+          <div class="srn-contact__info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <p class="srn-contact__info-label">Email</p>
+            <p class="srn-contact__info-value">
+              <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+            </p>
+            <p class="srn-contact__info-note">{{ section.settings.email_note }}</p>
+          </div>
+        </div>
+
+        {% if section.settings.phone != blank %}
+        <div class="srn-contact__info-card">
+          <div class="srn-contact__info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68 2 2 0 012-2.18h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 6.91a16 16 0 006 6l1.06-1.06a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div>
+            <p class="srn-contact__info-label">Phone</p>
+            <p class="srn-contact__info-value">
+              <a href="tel:{{ section.settings.phone | remove: ' ' }}">{{ section.settings.phone }}</a>
+            </p>
+            <p class="srn-contact__info-note">{{ section.settings.phone_note }}</p>
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="srn-contact__info-card">
+          <div class="srn-contact__info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <p class="srn-contact__info-label">Support hours</p>
+            <p class="srn-contact__info-value">{{ section.settings.hours }}</p>
+            <p class="srn-contact__info-note">{{ section.settings.hours_note }}</p>
+          </div>
+        </div>
+
+        {% if section.settings.address != blank %}
+        <div class="srn-contact__info-card">
+          <div class="srn-contact__info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <p class="srn-contact__info-label">Address</p>
+            <p class="srn-contact__info-value">{{ section.settings.address }}</p>
+            <p class="srn-contact__info-note">{{ section.settings.address_note }}</p>
+          </div>
+        </div>
+        {% endif %}
+
+      </div><!-- /info -->
+
+      <!-- Contact form -->
+      <div class="srn-contact__form-wrap">
+        <h2 class="srn-contact__form-title">{{ section.settings.form_heading }}</h2>
+        <p class="srn-contact__form-sub">{{ section.settings.form_sub }}</p>
+
+        {%- form 'contact', id: 'srn-contact-form-' | append: section.id -%}
+          <div class="srn-contact__form">
+
+            <div class="srn-contact__row">
+              <div class="srn-contact__field">
+                <label class="srn-contact__label" for="srn-contact-name-{{ section.id }}">Name</label>
+                <input
+                  type="text"
+                  id="srn-contact-name-{{ section.id }}"
+                  name="contact[name]"
+                  class="srn-contact__input"
+                  placeholder="Your full name"
+                  value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                  autocomplete="name"
+                  required
+                >
+              </div>
+              <div class="srn-contact__field">
+                <label class="srn-contact__label" for="srn-contact-email-{{ section.id }}">Email</label>
+                <input
+                  type="email"
+                  id="srn-contact-email-{{ section.id }}"
+                  name="contact[email]"
+                  class="srn-contact__input"
+                  placeholder="you@example.com"
+                  value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                  autocomplete="email"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="srn-contact__field">
+              <label class="srn-contact__label" for="srn-contact-subject-{{ section.id }}">Topic</label>
+              <select id="srn-contact-subject-{{ section.id }}" name="contact[subject]" class="srn-contact__select">
+                <option value="">Select a topic…</option>
+                <option value="Pre-sale question">Pre-sale question</option>
+                <option value="Order status">Order status</option>
+                <option value="Technical support">Technical support</option>
+                <option value="Warranty claim">Warranty claim</option>
+                <option value="Returns & refunds">Returns &amp; refunds</option>
+                <option value="Dealer / B2B inquiry">Dealer / B2B inquiry</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="srn-contact__field">
+              <label class="srn-contact__label" for="srn-contact-msg-{{ section.id }}">Message</label>
+              <textarea
+                id="srn-contact-msg-{{ section.id }}"
+                name="contact[body]"
+                class="srn-contact__textarea"
+                placeholder="Tell us how we can help…"
+                required
+              >{{ form.body }}</textarea>
+            </div>
+
+            <button type="submit" class="srn-contact__submit">Send message</button>
+
+          </div>
+
+          {%- if form.posted_successfully? -%}
+            <script>
+              document.getElementById('srn-contact-form-{{ section.id }}').style.display = 'none';
+              document.getElementById('srn-contact-success-{{ section.id }}').style.display = 'block';
+            </script>
+          {%- endif -%}
+
+        {%- endform -%}
+
+        <div class="srn-contact__success" id="srn-contact-success-{{ section.id }}" aria-live="polite">
+          <div class="srn-contact__success-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <p class="srn-contact__success-title">Message sent!</p>
+          <p class="srn-contact__success-text">We'll get back to you within 1 business day.</p>
+        </div>
+
+      </div><!-- /form-wrap -->
+
+    </div><!-- /grid -->
+
+    <div class="srn-contact__trust" aria-label="Trust signals">
+      <div class="srn-contact__trust-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        5-year manufacturer warranty
+      </div>
+      <div class="srn-contact__trust-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Reply within 1 business day
+      </div>
+      <div class="srn-contact__trust-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Swedish-based support team
+      </div>
+      <div class="srn-contact__trust-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Expert technical advisors
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact Page",
+  "tag": "section",
+  "class": "srn-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Get in touch"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "We're here to help"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Questions about your order, technical support, or product advice — our team of energy experts is ready."
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form heading",
+      "default": "Send us a message"
+    },
+    {
+      "type": "text",
+      "id": "form_sub",
+      "label": "Form subheading",
+      "default": "Fill out the form and we'll get back to you within one business day."
+    },
+    {
+      "type": "header",
+      "content": "Contact details"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email address",
+      "default": "support@sorein.com"
+    },
+    {
+      "type": "text",
+      "id": "email_note",
+      "label": "Email note",
+      "default": "For all inquiries — we reply within 1 business day."
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone (optional)",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "phone_note",
+      "label": "Phone note",
+      "default": "Monday – Friday, 09:00–17:00 CET"
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Support hours",
+      "default": "Monday – Friday, 09:00–17:00 CET"
+    },
+    {
+      "type": "text",
+      "id": "hours_note",
+      "label": "Hours note",
+      "default": "We aim to respond to all messages within 24 hours."
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address (optional)",
+      "default": "Stockholm, Sweden"
+    },
+    {
+      "type": "text",
+      "id": "address_note",
+      "label": "Address note",
+      "default": "Sorein AB — EU operations"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Page"
+    }
+  ]
+}
+{% endschema %}

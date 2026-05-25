@@ -1,0 +1,342 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Sorein",
+    "theme_version": "1.0.0",
+    "theme_author": "Sorein",
+    "theme_documentation_url": "https://sorein.com",
+    "theme_support_url": "https://sorein.com/support"
+  },
+  {
+    "name": "Logo & Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 80,
+        "max": 300,
+        "step": 10,
+        "unit": "px",
+        "label": "Custom logo width",
+        "default": 140
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "32 x 32px .png or .ico recommended"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Accent Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary accent (Cyan)",
+        "default": "#22d3ee",
+        "info": "Used for primary CTAs, links, and highlights"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary accent (Blue)",
+        "default": "#0ea5e9",
+        "info": "Used for gradients and secondary highlights"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Tertiary accent (Teal)",
+        "default": "#14b8a6",
+        "info": "Used for badges, tags, and supporting accents"
+      },
+      {
+        "type": "header",
+        "content": "Background Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_dark",
+        "label": "Dark background",
+        "default": "#090b0f"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_light",
+        "label": "Light background",
+        "default": "#f8f9fb"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_card_dark",
+        "label": "Dark card background",
+        "default": "#0f1117"
+      },
+      {
+        "type": "header",
+        "content": "Text Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_text_dark",
+        "label": "Text on dark",
+        "default": "#f4f6fa"
+      },
+      {
+        "type": "color",
+        "id": "color_text_light",
+        "label": "Text on light",
+        "default": "#111318"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_header_font",
+        "label": "Heading font",
+        "default": "inter_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body font",
+        "default": "inter_n4"
+      },
+      {
+        "type": "range",
+        "id": "type_base_size",
+        "min": 12,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "label": "Base font size",
+        "default": 16
+      },
+      {
+        "type": "select",
+        "id": "type_heading_weight",
+        "label": "Heading weight",
+        "options": [
+          { "value": "600", "label": "Semi Bold (600)" },
+          { "value": "700", "label": "Bold (700)" },
+          { "value": "800", "label": "Extra Bold (800)" },
+          { "value": "900", "label": "Black (900)" }
+        ],
+        "default": "700"
+      }
+    ]
+  },
+  {
+    "name": "Buttons",
+    "settings": [
+      {
+        "type": "range",
+        "id": "button_radius",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "label": "Button corner radius",
+        "default": 10
+      },
+      {
+        "type": "checkbox",
+        "id": "button_glow",
+        "label": "Enable button glow on hover",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1440,
+        "step": 20,
+        "unit": "px",
+        "label": "Maximum page width",
+        "default": 1280
+      },
+      {
+        "type": "range",
+        "id": "section_padding",
+        "min": 20,
+        "max": 80,
+        "step": 4,
+        "unit": "px",
+        "label": "Default section vertical padding",
+        "default": 48
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "page", "label": "Cart page" },
+          { "value": "drawer", "label": "Cart drawer (slide-in)" }
+        ],
+        "default": "page",
+        "info": "Choose how the cart opens when a product is added"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_note",
+        "label": "Enable order note in cart",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Announcement Bar",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_announcement",
+        "label": "Show announcement bar",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Announcement text",
+        "default": "Free delivery on all orders over 999 SEK — 5-year warranty included"
+      },
+      {
+        "type": "url",
+        "id": "announcement_link",
+        "label": "Announcement link",
+        "info": "Leave blank for no link"
+      },
+      {
+        "type": "color",
+        "id": "announcement_bg",
+        "label": "Announcement bar background",
+        "default": "#090b0f"
+      },
+      {
+        "type": "color",
+        "id": "announcement_text_color",
+        "label": "Announcement text color",
+        "default": "#22d3ee"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "instagram_url",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "facebook_url",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "youtube_url",
+        "label": "YouTube URL"
+      },
+      {
+        "type": "url",
+        "id": "linkedin_url",
+        "label": "LinkedIn URL"
+      },
+      {
+        "type": "url",
+        "id": "tiktok_url",
+        "label": "TikTok URL"
+      }
+    ]
+  },
+  {
+    "name": "Trust & Checkout",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Trust Badges"
+      },
+      {
+        "type": "text",
+        "id": "delivery_text",
+        "label": "Delivery trust text",
+        "default": "Free delivery on all orders over 999 SEK"
+      },
+      {
+        "type": "text",
+        "id": "warranty_text",
+        "label": "Warranty trust text",
+        "default": "5-year warranty on all Sorein products"
+      },
+      {
+        "type": "text",
+        "id": "support_text",
+        "label": "Support trust text",
+        "default": "Swedish expert support"
+      },
+      {
+        "type": "text",
+        "id": "checkout_text",
+        "label": "Checkout trust text",
+        "default": "Secure checkout"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_trust_on_product",
+        "label": "Show trust bar on product pages",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Payment Icons"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons in footer",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "SEO & Analytics",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "seo_schema_org",
+        "label": "Custom Schema.org JSON-LD",
+        "info": "Advanced: add organization or website schema markup"
+      },
+      {
+        "type": "text",
+        "id": "gtm_id",
+        "label": "Google Tag Manager ID",
+        "info": "e.g. GTM-XXXXXXX — leave blank to disable"
+      }
+    ]
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "cart-page": {
+      "type": "sorein-cart-page",
+      "settings": {
+        "show_note": true,
+        "delivery_text": "Free delivery on all orders",
+        "show_trust_row": true
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": ["header", "cart-page", "footer"]
+}

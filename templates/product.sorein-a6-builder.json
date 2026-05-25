@@ -1,0 +1,45 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "a6-builder": {
+      "type": "sorein-a6-builder",
+      "settings": {
+        "section_heading": "Build Your System",
+        "section_subheading": "Configure your perfect Sorein power setup. Every component is modular and expandable.",
+        "base_price": "41 495",
+        "eb210_price": "14 995",
+        "ac200_price": "9 995",
+        "chassis_mobile_price": "4 995",
+        "chassis_offroad_price": "5 995",
+        "show_klarna_line": true,
+        "klarna_text": "Split over 36 months from {price}/month",
+        "delivery_text": "Free delivery — estimated 5–7 business days",
+        "warranty_text": "5-year warranty included"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-faq": {
+      "type": "sorein-faq",
+      "settings": {
+        "heading": "Builder questions",
+        "layout": "two-column"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "a6-builder",
+    "sorein-faq",
+    "footer"
+  ]
+}

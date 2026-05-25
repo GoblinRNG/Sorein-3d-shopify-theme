@@ -1,0 +1,47 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "collection-hero": {
+      "type": "sorein-collection-hero",
+      "settings": {
+        "show_image": true,
+        "show_breadcrumb": true
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "collection-grid": {
+      "type": "sorein-collection-grid",
+      "settings": {
+        "columns": 3,
+        "products_per_page": 12,
+        "show_sort": true
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-faq": {
+      "type": "sorein-faq",
+      "settings": {
+        "heading": "Buying guide",
+        "layout": "two-column"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "collection-hero",
+    "collection-grid",
+    "sorein-faq",
+    "footer"
+  ]
+}

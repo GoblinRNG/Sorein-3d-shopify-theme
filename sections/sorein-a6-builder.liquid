@@ -1,0 +1,2384 @@
+{% comment %}
+  Sorein A6 Pro Builder — Flagship Modular Power Station Configurator
+  Shopify Online Store 2.0 section
+  Scoped CSS + IIFE JS, no Liquid in schema defaults
+{% endcomment %}
+
+{%- liquid
+  assign base_price_raw       = section.settings.base_price | default: '41 495'
+  assign eb210_price_raw      = section.settings.eb210_price | default: '14 995'
+  assign ac200_price_raw      = section.settings.ac200_price | default: '9 995'
+  assign chassis_mobile_price = section.settings.chassis_mobile_price | default: '4 995'
+  assign chassis_offroad_price = section.settings.chassis_offroad_price | default: '5 995'
+
+  assign sid = section.id
+-%}
+
+{%- style -%}
+/* ─── Reset / Scope ─────────────────────────────────────────── */
+#srn-a6builder-{{ sid }} *,
+#srn-a6builder-{{ sid }} *::before,
+#srn-a6builder-{{ sid }} *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Tokens ────────────────────────────────────────────────── */
+#srn-a6builder-{{ sid }} {
+  --srn-dark:         #090b0f;
+  --srn-dark-2:       #111318;
+  --srn-dark-3:       #181c24;
+  --srn-light:        #f8f9fb;
+  --srn-light-2:      #eef0f4;
+  --srn-cyan:         #22d3ee;
+  --srn-blue:         #0ea5e9;
+  --srn-teal:         #14b8a6;
+  --srn-text-dark:    #f4f6fa;
+  --srn-sub-dark:     rgba(244,246,250,0.60);
+  --srn-text-light:   #111318;
+  --srn-sub-light:    rgba(17,19,24,0.60);
+  --srn-border-dark:  rgba(255,255,255,0.08);
+  --srn-card-dark:    rgba(255,255,255,0.04);
+  --srn-card-dark-2:  rgba(255,255,255,0.07);
+  --srn-radius-card:  16px;
+  --srn-radius-btn:   10px;
+  font-family: inherit;
+}
+
+/* ─── Hero / Purchase Area ──────────────────────────────────── */
+.srn-a6-hero {
+  background: var(--srn-dark);
+  padding: 64px 32px 72px;
+}
+.srn-a6-hero__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+/* ─── Preview Card (left) ───────────────────────────────────── */
+.srn-a6-preview {
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.srn-a6-preview__img-wrap {
+  position: relative;
+  border-radius: var(--srn-radius-card);
+  overflow: hidden;
+  background: var(--srn-dark-3);
+  aspect-ratio: 4/3;
+  border: 1px solid var(--srn-border-dark);
+}
+.srn-a6-preview__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  transition: opacity 200ms ease;
+}
+.srn-a6-preview__img--back {
+  opacity: 0;
+  z-index: 1;
+}
+.srn-a6-preview__img--front {
+  opacity: 1;
+  z-index: 2;
+}
+.srn-a6-preview__img--fading-in {
+  opacity: 1;
+}
+.srn-a6-preview__img--fading-out {
+  opacity: 0;
+}
+
+/* Capacity bar */
+.srn-a6-cap-bar {
+  background: var(--srn-card-dark);
+  border: 1px solid var(--srn-border-dark);
+  border-radius: var(--srn-radius-card);
+  padding: 18px 20px;
+}
+.srn-a6-cap-bar__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.srn-a6-cap-bar__label {
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--srn-sub-dark);
+}
+.srn-a6-cap-bar__value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--srn-cyan);
+  letter-spacing: -.01em;
+}
+.srn-a6-cap-bar__unit {
+  font-size: 13px;
+  color: var(--srn-sub-dark);
+  margin-left: 4px;
+}
+.srn-a6-cap-bar__track {
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.srn-a6-cap-bar__fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--srn-teal), var(--srn-cyan));
+  width: 0%;
+  transition: width 300ms cubic-bezier(.4,0,.2,1);
+}
+.srn-a6-cap-bar__sub {
+  font-size: 12px;
+  color: var(--srn-sub-dark);
+  text-align: right;
+}
+
+/* Build spec summary (below cap bar) */
+.srn-a6-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.srn-a6-spec-chip {
+  background: var(--srn-card-dark);
+  border: 1px solid var(--srn-border-dark);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.srn-a6-spec-chip__label {
+  font-size: 11px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--srn-sub-dark);
+  margin-bottom: 4px;
+}
+.srn-a6-spec-chip__value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--srn-text-dark);
+}
+.srn-a6-spec-chip__value span.unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--srn-sub-dark);
+  margin-left: 2px;
+}
+
+/* ─── Purchase Panel (right) ────────────────────────────────── */
+.srn-a6-purchase {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-top: 8px;
+}
+.srn-a6-purchase__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(34,211,238,0.12);
+  border: 1px solid rgba(34,211,238,0.25);
+  border-radius: 9999px;
+  padding: 5px 12px;
+  font-size: 11px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--srn-cyan);
+  width: fit-content;
+}
+.srn-a6-purchase__tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--srn-cyan);
+  flex-shrink: 0;
+}
+.srn-a6-purchase__title {
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 800;
+  color: var(--srn-text-dark);
+  letter-spacing: -.02em;
+  line-height: 1.1;
+}
+.srn-a6-purchase__subtitle {
+  font-size: 15px;
+  color: var(--srn-sub-dark);
+  line-height: 1.6;
+}
+
+/* Price area */
+.srn-a6-price-area {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.srn-a6-price-area__label {
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--srn-sub-dark);
+}
+.srn-a6-price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.srn-a6-price {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  color: var(--srn-text-dark);
+  letter-spacing: -.03em;
+  transition: opacity 150ms ease;
+}
+.srn-a6-price__currency {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--srn-sub-dark);
+  margin-left: 6px;
+}
+.srn-a6-price-sub {
+  font-size: 13px;
+  color: var(--srn-sub-dark);
+}
+
+/* CTA area */
+.srn-a6-cta-area {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.srn-a6-btn-atc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 18px 32px;
+  background: linear-gradient(135deg, var(--srn-cyan), var(--srn-blue));
+  color: #fff;
+  border: none;
+  border-radius: var(--srn-radius-btn);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+  transition: opacity 200ms ease, transform 120ms ease;
+  position: relative;
+  overflow: hidden;
+}
+.srn-a6-btn-atc:hover { opacity: .92; }
+.srn-a6-btn-atc:active { transform: scale(.98); }
+.srn-a6-btn-atc:disabled { opacity: .55; cursor: not-allowed; }
+.srn-a6-btn-atc:focus-visible {
+  outline: 2px solid var(--srn-cyan);
+  outline-offset: 3px;
+}
+.srn-a6-btn-atc__spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: srn-a6-spin-{{ sid }} 700ms linear infinite;
+  display: none;
+  flex-shrink: 0;
+}
+.srn-a6-btn-atc.is-loading .srn-a6-btn-atc__spinner { display: block; }
+.srn-a6-btn-atc.is-loading .srn-a6-btn-atc__label { opacity: .7; }
+
+.srn-a6-atc-error {
+  font-size: 13px;
+  color: #f87171;
+  display: none;
+  padding: 10px 14px;
+  background: rgba(248,113,113,0.10);
+  border: 1px solid rgba(248,113,113,0.25);
+  border-radius: 8px;
+}
+.srn-a6-atc-error.is-visible { display: block; }
+
+.srn-a6-atc-success {
+  font-size: 13px;
+  color: var(--srn-cyan);
+  display: none;
+  padding: 10px 14px;
+  background: rgba(34,211,238,0.08);
+  border: 1px solid rgba(34,211,238,0.20);
+  border-radius: 8px;
+}
+.srn-a6-atc-success.is-visible { display: block; }
+
+/* Klarna line */
+.srn-a6-klarna {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--srn-sub-dark);
+}
+.srn-a6-klarna__logo {
+  font-weight: 800;
+  color: #ffb3c7;
+  letter-spacing: -.01em;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.srn-a6-klarna__text {
+  flex: 1;
+}
+
+/* Trust icons row */
+.srn-a6-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.srn-a6-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--srn-sub-dark);
+}
+.srn-a6-trust-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--srn-cyan);
+  flex-shrink: 0;
+}
+
+/* ─── Builder Section (light bg) ────────────────────────────── */
+.srn-a6-builder {
+  background: var(--srn-light);
+  padding: 72px 32px 96px;
+}
+.srn-a6-builder__head {
+  max-width: 1280px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+.srn-a6-builder__title {
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 800;
+  color: var(--srn-text-light);
+  letter-spacing: -.02em;
+  margin-bottom: 14px;
+}
+.srn-a6-builder__sub {
+  font-size: 16px;
+  color: var(--srn-sub-light);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.srn-a6-builder__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ─── Step Cards ────────────────────────────────────────────── */
+.srn-a6-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.srn-a6-step {
+  background: #fff;
+  border: 1px solid var(--srn-light-2);
+  border-radius: var(--srn-radius-card);
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.srn-a6-step__header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 22px 18px;
+  border-bottom: 1px solid var(--srn-light-2);
+}
+.srn-a6-step__num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--srn-dark-2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.srn-a6-step__num--done {
+  background: linear-gradient(135deg, var(--srn-teal), var(--srn-cyan));
+}
+.srn-a6-step__num svg {
+  width: 16px;
+  height: 16px;
+}
+.srn-a6-step__htitle {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--srn-text-light);
+}
+.srn-a6-step__badge {
+  font-size: 11px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--srn-sub-light);
+  background: var(--srn-light-2);
+  border-radius: 9999px;
+  padding: 4px 10px;
+}
+.srn-a6-step__body {
+  padding: 20px 22px;
+}
+
+/* Step 1 – Base (locked) */
+.srn-a6-base-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.srn-a6-base-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(20,184,166,0.15), rgba(14,165,233,0.15));
+  border: 1px solid rgba(34,211,238,0.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.srn-a6-base-card__icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--srn-cyan);
+}
+.srn-a6-base-card__info {
+  flex: 1;
+}
+.srn-a6-base-card__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--srn-text-light);
+  margin-bottom: 6px;
+}
+.srn-a6-base-card__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.srn-a6-spec-pill {
+  font-size: 12px;
+  color: var(--srn-sub-light);
+  background: var(--srn-light-2);
+  border-radius: 9999px;
+  padding: 3px 10px;
+}
+.srn-a6-base-card__price {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--srn-text-light);
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+/* Step 2 – Chassis radio cards */
+.srn-a6-chassis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.srn-a6-chassis-option {
+  position: relative;
+}
+.srn-a6-chassis-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.srn-a6-chassis-card {
+  display: block;
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid var(--srn-light-2);
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease;
+  background: #fff;
+}
+.srn-a6-chassis-card:hover {
+  border-color: rgba(34,211,238,0.40);
+}
+.srn-a6-chassis-option input:checked + .srn-a6-chassis-card {
+  border-color: var(--srn-cyan);
+  background: rgba(34,211,238,0.05);
+}
+.srn-a6-chassis-option input:focus-visible + .srn-a6-chassis-card {
+  outline: 2px solid var(--srn-cyan);
+  outline-offset: 2px;
+}
+.srn-a6-chassis-card__radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--srn-light-2);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 120ms ease;
+}
+.srn-a6-chassis-option input:checked + .srn-a6-chassis-card .srn-a6-chassis-card__radio {
+  border-color: var(--srn-cyan);
+  background: var(--srn-cyan);
+  box-shadow: 0 0 0 4px rgba(34,211,238,0.15);
+}
+.srn-a6-chassis-card__radio::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.srn-a6-chassis-option input:checked + .srn-a6-chassis-card .srn-a6-chassis-card__radio::after {
+  opacity: 1;
+}
+.srn-a6-chassis-card__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--srn-text-light);
+  margin-bottom: 4px;
+}
+.srn-a6-chassis-card__desc {
+  font-size: 12px;
+  color: var(--srn-sub-light);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.srn-a6-chassis-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.srn-a6-chassis-card__weight {
+  font-size: 12px;
+  color: var(--srn-sub-light);
+}
+.srn-a6-chassis-card__price {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--srn-text-light);
+}
+
+/* Step 3 & 4 – Quantity steppers */
+.srn-a6-module-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--srn-light-2);
+}
+.srn-a6-module-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.srn-a6-module-row:first-child {
+  padding-top: 0;
+}
+.srn-a6-module-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--srn-light-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.srn-a6-module-icon svg {
+  width: 20px;
+  height: 20px;
+  color: var(--srn-blue);
+}
+.srn-a6-module-info {
+  flex: 1;
+}
+.srn-a6-module-info__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--srn-text-light);
+  margin-bottom: 3px;
+}
+.srn-a6-module-info__sub {
+  font-size: 12px;
+  color: var(--srn-sub-light);
+}
+.srn-a6-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--srn-light-2);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.srn-a6-stepper__btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--srn-text-light);
+  transition: background 100ms ease;
+  flex-shrink: 0;
+}
+.srn-a6-stepper__btn:hover { background: var(--srn-light-2); }
+.srn-a6-stepper__btn:disabled { opacity: .35; cursor: not-allowed; }
+.srn-a6-stepper__btn:focus-visible {
+  outline: 2px solid var(--srn-cyan);
+  outline-offset: -2px;
+}
+.srn-a6-stepper__val {
+  min-width: 36px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--srn-text-light);
+  padding: 0 4px;
+  border-left: 1px solid var(--srn-light-2);
+  border-right: 1px solid var(--srn-light-2);
+  line-height: 36px;
+}
+.srn-a6-module-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--srn-text-light);
+  min-width: 72px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ─── Accessories Card ──────────────────────────────────────── */
+.srn-a6-acc-card {
+  background: #fff;
+  border: 1px solid var(--srn-light-2);
+  border-radius: var(--srn-radius-card);
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.srn-a6-acc-img-wrap {
+  width: 100%;
+  aspect-ratio: 16/7;
+  overflow: hidden;
+}
+.srn-a6-acc-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.srn-a6-acc-body {
+  padding: 22px;
+}
+.srn-a6-acc-body__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--srn-text-light);
+  margin-bottom: 8px;
+}
+.srn-a6-acc-body__desc {
+  font-size: 14px;
+  color: var(--srn-sub-light);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.srn-a6-btn-acc {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border: 2px solid var(--srn-text-light);
+  border-radius: var(--srn-radius-btn);
+  color: var(--srn-text-light);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 150ms ease, color 150ms ease;
+}
+.srn-a6-btn-acc:hover {
+  background: var(--srn-text-light);
+  color: #fff;
+}
+.srn-a6-btn-acc:focus-visible {
+  outline: 2px solid var(--srn-cyan);
+  outline-offset: 3px;
+}
+
+/* ─── Config Summary Card (sticky right) ────────────────────── */
+.srn-a6-summary-wrap {
+  position: sticky;
+  top: 80px;
+}
+.srn-a6-summary {
+  background: var(--srn-dark);
+  border: 1px solid var(--srn-border-dark);
+  border-radius: var(--srn-radius-card);
+  overflow: hidden;
+}
+.srn-a6-summary__head {
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--srn-border-dark);
+}
+.srn-a6-summary__htitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--srn-text-dark);
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.srn-a6-summary__body {
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.srn-a6-sum-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--srn-border-dark);
+}
+.srn-a6-sum-row:last-child { border-bottom: none; }
+.srn-a6-sum-row__left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+.srn-a6-sum-row__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--srn-card-dark-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.srn-a6-sum-row__icon svg {
+  width: 14px;
+  height: 14px;
+  color: var(--srn-cyan);
+}
+.srn-a6-sum-row__name {
+  font-size: 13px;
+  color: var(--srn-text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.srn-a6-sum-row__qty {
+  font-size: 12px;
+  color: var(--srn-sub-dark);
+  flex-shrink: 0;
+}
+.srn-a6-sum-row__price {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--srn-text-dark);
+  flex-shrink: 0;
+}
+
+.srn-a6-sum-divider {
+  height: 1px;
+  background: var(--srn-border-dark);
+  margin: 6px 0;
+}
+
+.srn-a6-sum-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--srn-border-dark);
+}
+.srn-a6-sum-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.srn-a6-sum-stat__label {
+  font-size: 12px;
+  color: var(--srn-sub-dark);
+}
+.srn-a6-sum-stat__value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--srn-text-dark);
+  transition: opacity 150ms ease;
+}
+
+.srn-a6-sum-total {
+  padding: 16px 0 12px;
+  border-bottom: 1px solid var(--srn-border-dark);
+}
+.srn-a6-sum-total__label {
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--srn-sub-dark);
+  margin-bottom: 4px;
+}
+.srn-a6-sum-total__price {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--srn-text-dark);
+  letter-spacing: -.02em;
+  transition: opacity 150ms ease;
+}
+.srn-a6-sum-total__currency {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--srn-sub-dark);
+  margin-left: 4px;
+}
+.srn-a6-sum-klarna {
+  font-size: 12px;
+  color: var(--srn-sub-dark);
+  margin-top: 4px;
+}
+
+.srn-a6-summary__footer {
+  padding: 16px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.srn-a6-sum-btn-atc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 24px;
+  background: linear-gradient(135deg, var(--srn-cyan), var(--srn-blue));
+  color: #fff;
+  border: none;
+  border-radius: var(--srn-radius-btn);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 200ms ease;
+}
+.srn-a6-sum-btn-atc:hover { opacity: .90; }
+.srn-a6-sum-btn-atc:disabled { opacity: .50; cursor: not-allowed; }
+.srn-a6-sum-btn-atc:focus-visible {
+  outline: 2px solid var(--srn-cyan);
+  outline-offset: 3px;
+}
+.srn-a6-sum-btn-atc__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: srn-a6-spin-{{ sid }} 700ms linear infinite;
+  display: none;
+  flex-shrink: 0;
+}
+.srn-a6-sum-btn-atc.is-loading .srn-a6-sum-btn-atc__spinner { display: block; }
+
+.srn-a6-sum-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.srn-a6-sum-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--srn-sub-dark);
+}
+.srn-a6-sum-meta-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--srn-teal);
+  flex-shrink: 0;
+}
+
+/* ─── Sticky Mobile Bar ─────────────────────────────────────── */
+.srn-a6-sticky-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--srn-dark);
+  border-top: 1px solid var(--srn-border-dark);
+  padding: 14px 20px;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.25);
+}
+.srn-a6-sticky-bar__price-block {
+  flex: 1;
+}
+.srn-a6-sticky-bar__label {
+  font-size: 11px;
+  color: var(--srn-sub-dark);
+  margin-bottom: 1px;
+}
+.srn-a6-sticky-bar__price {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--srn-text-dark);
+  letter-spacing: -.01em;
+}
+.srn-a6-sticky-bar__currency {
+  font-size: 12px;
+  color: var(--srn-sub-dark);
+  margin-left: 3px;
+}
+.srn-a6-sticky-bar__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--srn-cyan), var(--srn-blue));
+  color: #fff;
+  border: none;
+  border-radius: var(--srn-radius-btn);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.srn-a6-sticky-bar__btn:disabled { opacity: .5; cursor: not-allowed; }
+.srn-a6-sticky-bar__btn:focus-visible {
+  outline: 2px solid var(--srn-cyan);
+  outline-offset: 3px;
+}
+.srn-a6-sticky-bar__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: srn-a6-spin-{{ sid }} 700ms linear infinite;
+  display: none;
+  flex-shrink: 0;
+}
+.srn-a6-sticky-bar__btn.is-loading .srn-a6-sticky-bar__spinner { display: block; }
+
+/* ─── Animations ────────────────────────────────────────────── */
+@keyframes srn-a6-spin-{{ sid }} {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 899px) {
+  .srn-a6-hero__inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0;
+  }
+  .srn-a6-hero {
+    padding: 40px 20px 48px;
+  }
+  .srn-a6-preview {
+    position: static;
+  }
+  .srn-a6-builder {
+    padding: 48px 20px 120px;
+  }
+  .srn-a6-builder__inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .srn-a6-summary-wrap {
+    position: static;
+  }
+  .srn-a6-chassis-grid {
+    grid-template-columns: 1fr;
+  }
+  .srn-a6-specs {
+    grid-template-columns: 1fr 1fr;
+  }
+  .srn-a6-sticky-bar {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .srn-a6-specs {
+    grid-template-columns: 1fr 1fr;
+  }
+  .srn-a6-hero {
+    padding: 32px 16px 40px;
+  }
+  .srn-a6-builder {
+    padding: 40px 16px 120px;
+  }
+}
+
+/* ─── Reduced Motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #srn-a6builder-{{ sid }} * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+{%- endstyle -%}
+
+<div id="srn-a6builder-{{ sid }}">
+
+  {%- comment %} ── JSON Data ─────────────────────────────────────────── {% endcomment %}
+  <script type="application/json" id="sorein-a6-data-{{ sid }}">
+    {
+      "modules": {
+        "base": {
+          "title": "Main Base 3600",
+          "wh": 0,
+          "w": 3600,
+          "watt_peak": 7200,
+          "weight_g": 9500,
+          "variantId": {{ section.settings.base_variant | json }},
+          "displayPrice": {{ section.settings.base_price | json }}
+        },
+        "chassis": [
+          {
+            "id": "mobile",
+            "title": "Mobile Battery Chassis",
+            "desc": "Compact lightweight chassis. Wheels and retractable handle included.",
+            "weight_g": 3200,
+            "variantId": {{ section.settings.chassis_mobile_variant | json }},
+            "displayPrice": {{ section.settings.chassis_mobile_price | json }}
+          },
+          {
+            "id": "offroad",
+            "title": "Off-Road Chassis",
+            "desc": "Heavy-duty aluminium alloy frame with non-slip rubber wheels and safety brake lock. 6.5 kg.",
+            "weight_g": 6500,
+            "variantId": {{ section.settings.chassis_offroad_variant | json }},
+            "displayPrice": {{ section.settings.chassis_offroad_price | json }}
+          }
+        ],
+        "eb210": {
+          "title": "Extra Battery EB240",
+          "wh": 2400,
+          "weight_g": 22000,
+          "min": 0,
+          "max": 5,
+          "variantId": {{ section.settings.eb210_variant | json }},
+          "displayPrice": {{ section.settings.eb210_price | json }}
+        },
+        "ac200": {
+          "title": "Extra Inverter AC300",
+          "w": 3600,
+          "weight_g": 7120,
+          "min": 0,
+          "max": 2,
+          "variantId": {{ section.settings.ac200_variant | json }},
+          "displayPrice": {{ section.settings.ac200_price | json }}
+        }
+      },
+      "images": {
+        "default": {{ section.settings.builder_image_default | image_url: width: 1200 | json }},
+        "low":     {{ section.settings.builder_image_low    | image_url: width: 1200 | json }},
+        "medium":  {{ section.settings.builder_image_medium | image_url: width: 1200 | json }},
+        "large":   {{ section.settings.builder_image_large  | image_url: width: 1200 | json }},
+        "full":    {{ section.settings.builder_image_full   | image_url: width: 1200 | json }}
+      },
+      "imageAlts": {
+        "default": {{ section.settings.builder_image_default.alt | default: 'Main Base 3600 Configuration' | json }},
+        "low":     {{ section.settings.builder_image_low.alt    | default: 'Sorein Modular — Light Build'        | json }},
+        "medium":  {{ section.settings.builder_image_medium.alt | default: 'Sorein Modular — Medium Build'       | json }},
+        "large":   {{ section.settings.builder_image_large.alt  | default: 'Sorein Modular — Large Build'        | json }},
+        "full":    {{ section.settings.builder_image_full.alt   | default: 'Sorein Modular — Full Build'         | json }}
+      },
+      "maxCapacityWh": 9600,
+      "showKlarna": {{ section.settings.show_klarna_line | json }},
+      "klarnaMonths": 36
+    }
+  </script>
+
+  {%- comment %} ── Hero / Purchase Section ───────────────────────────── {% endcomment %}
+  <section class="srn-a6-hero" aria-label="Sorein Modular Power Station Builder">
+    <div class="srn-a6-hero__inner">
+
+      {%- comment %} Left: Product Preview ─────────────────────────────── {% endcomment %}
+      <div class="srn-a6-preview">
+
+        {%- comment %} Crossfade image container {% endcomment %}
+        <div class="srn-a6-preview__img-wrap" role="img" aria-label="A6 Pro build preview">
+          <img
+            class="srn-a6-preview__img srn-a6-preview__img--front"
+            id="srn-img-front-{{ sid }}"
+            src="{%- if section.settings.builder_image_default != blank -%}{{ section.settings.builder_image_default | image_url: width: 900 }}{%- else -%}{{ 'product-1' | placeholder_svg_tag }}{%- endif -%}"
+            alt="{{ section.settings.builder_image_default.alt | default: 'Main Base 3600 Configuration' }}"
+            width="900"
+            height="675"
+            loading="eager"
+          >
+          <img
+            class="srn-a6-preview__img srn-a6-preview__img--back"
+            id="srn-img-back-{{ sid }}"
+            src=""
+            alt=""
+            width="900"
+            height="675"
+            loading="lazy"
+          >
+        </div>
+
+        {%- comment %} Capacity bar {% endcomment %}
+        <div class="srn-a6-cap-bar">
+          <div class="srn-a6-cap-bar__head">
+            <span class="srn-a6-cap-bar__label">Total Capacity</span>
+            <span>
+              <span class="srn-a6-cap-bar__value" id="srn-cap-wh-{{ sid }}" aria-live="polite">1 037</span>
+              <span class="srn-a6-cap-bar__unit">Wh</span>
+            </span>
+          </div>
+          <div class="srn-a6-cap-bar__track" role="progressbar" aria-label="Capacity fill" aria-valuemin="0" aria-valuemax="9600" aria-valuenow="0">
+            <div class="srn-a6-cap-bar__fill" id="srn-cap-fill-{{ sid }}"></div>
+          </div>
+          <div class="srn-a6-cap-bar__sub" id="srn-cap-pct-{{ sid }}">10.7% of max (9 677 Wh)</div>
+        </div>
+
+        {%- comment %} Spec chips {% endcomment %}
+        <div class="srn-a6-specs">
+          <div class="srn-a6-spec-chip">
+            <div class="srn-a6-spec-chip__label">AC Output</div>
+            <div class="srn-a6-spec-chip__value" id="srn-spec-output-{{ sid }}">2 200<span class="unit">W</span></div>
+          </div>
+          <div class="srn-a6-spec-chip">
+            <div class="srn-a6-spec-chip__label">Capacity</div>
+            <div class="srn-a6-spec-chip__value" id="srn-spec-cap-{{ sid }}">1 037<span class="unit">Wh</span></div>
+          </div>
+          <div class="srn-a6-spec-chip">
+            <div class="srn-a6-spec-chip__label">Total Weight</div>
+            <div class="srn-a6-spec-chip__value" id="srn-spec-weight-{{ sid }}">—<span class="unit">kg</span></div>
+          </div>
+          <div class="srn-a6-spec-chip">
+            <div class="srn-a6-spec-chip__label">Cell Type</div>
+            <div class="srn-a6-spec-chip__value" style="font-size:13px">LiFePO4</div>
+          </div>
+        </div>
+
+      </div>{%- comment %} /preview {% endcomment %}
+
+      {%- comment %} Right: Purchase Panel ───────────────────────────────── {% endcomment %}
+      <div class="srn-a6-purchase">
+
+        <div>
+          <div class="srn-a6-purchase__tag">
+            <span class="srn-a6-purchase__tag-dot"></span>
+            In Stock — Ships in 5–7 days
+          </div>
+        </div>
+
+        <div>
+          <h1 class="srn-a6-purchase__title">Sorein Modular Power Station — Main Base 3600</h1>
+          <p class="srn-a6-purchase__subtitle" style="margin-top:12px">
+            Scandinavian energy engineering. Expandable capacity, modular inverters, and LiFePO4 chemistry — built for home backup, off-grid, and beyond.
+          </p>
+        </div>
+
+        <div class="srn-a6-price-area">
+          <div class="srn-a6-price-area__label">Your configuration total</div>
+          <div class="srn-a6-price-wrap">
+            <div
+              class="srn-a6-price"
+              id="srn-hero-price-{{ sid }}"
+              aria-live="polite"
+              aria-label="Total configuration price"
+            >{{ section.settings.base_price | default: '41 495' }}</div>
+            <span class="srn-a6-price__currency">SEK</span>
+          </div>
+          <div class="srn-a6-price-sub" id="srn-hero-klarna-{{ sid }}">
+            {%- if section.settings.show_klarna_line %}
+              Includes base unit + chassis
+            {%- endif %}
+          </div>
+        </div>
+
+        <div class="srn-a6-cta-area">
+          <button
+            class="srn-a6-btn-atc"
+            id="srn-atc-hero-{{ sid }}"
+            type="button"
+            aria-label="Add A6 Pro configuration to cart"
+          >
+            <span class="srn-a6-btn-atc__spinner" aria-hidden="true"></span>
+            <span class="srn-a6-btn-atc__label">Add to Cart</span>
+          </button>
+
+          <div class="srn-a6-atc-error" id="srn-atc-error-hero-{{ sid }}" role="alert" aria-live="assertive"></div>
+          <div class="srn-a6-atc-success" id="srn-atc-success-hero-{{ sid }}" role="status" aria-live="polite"></div>
+
+          {%- if section.settings.show_klarna_line %}
+            <div class="srn-a6-klarna">
+              <span class="srn-a6-klarna__logo">Klarna</span>
+              <span class="srn-a6-klarna__text" id="srn-klarna-hero-{{ sid }}">
+                {{ section.settings.klarna_text | default: 'Split over 36 months from {price}/month' }}
+              </span>
+            </div>
+          {%- endif %}
+        </div>
+
+        <div class="srn-a6-trust" role="list">
+          <div class="srn-a6-trust-item" role="listitem">
+            <svg class="srn-a6-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>{{ section.settings.warranty_text | default: '5-year warranty' }}</span>
+          </div>
+          <div class="srn-a6-trust-item" role="listitem">
+            <svg class="srn-a6-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            <span>{{ section.settings.delivery_text | default: 'Free delivery' }}</span>
+          </div>
+          <div class="srn-a6-trust-item" role="listitem">
+            <svg class="srn-a6-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Secure checkout</span>
+          </div>
+        </div>
+
+      </div>{%- comment %} /purchase {% endcomment %}
+
+    </div>
+  </section>
+
+  {%- comment %} ── Builder Section ───────────────────────────────────── {% endcomment %}
+  <section class="srn-a6-builder" aria-label="Build Your System">
+
+    <div class="srn-a6-builder__head">
+      <h2 class="srn-a6-builder__title">{{ section.settings.section_heading | default: 'Build Your System' }}</h2>
+      {%- if section.settings.section_subheading != blank %}
+        <p class="srn-a6-builder__sub">{{ section.settings.section_subheading }}</p>
+      {%- endif %}
+    </div>
+
+    <div class="srn-a6-builder__inner">
+
+      {%- comment %} Left: Steps ──────────────────────────────────────── {% endcomment %}
+      <div class="srn-a6-steps">
+
+        {%- comment %} Step 1 — Base (locked) ─────────────────────────── {% endcomment %}
+        <div class="srn-a6-step" id="srn-step1-{{ sid }}">
+          <div class="srn-a6-step__header">
+            <div class="srn-a6-step__num srn-a6-step__num--done" aria-label="Step 1 complete">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="srn-a6-step__htitle">Main Power Base</div>
+            <div class="srn-a6-step__badge">Always included</div>
+          </div>
+          <div class="srn-a6-step__body">
+            <div class="srn-a6-base-card">
+              <div class="srn-a6-base-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+              </div>
+              <div class="srn-a6-base-card__info">
+                <div class="srn-a6-base-card__name">Main Base 3600</div>
+                <div class="srn-a6-base-card__specs">
+                  <span class="srn-a6-spec-pill">2 200W output</span>
+                  <span class="srn-a6-spec-pill">1 037Wh</span>
+                  <span class="srn-a6-spec-pill">LiFePO4</span>
+                  <span class="srn-a6-spec-pill">AC / DC / USB / Solar</span>
+                  <span class="srn-a6-spec-pill">4 800W peak</span>
+                </div>
+              </div>
+              <div class="srn-a6-base-card__price">{{ section.settings.base_price | default: '41 495' }} SEK</div>
+            </div>
+          </div>
+        </div>
+
+        {%- comment %} Step 2 — Chassis ────────────────────────────────── {% endcomment %}
+        <div class="srn-a6-step" id="srn-step2-{{ sid }}">
+          <div class="srn-a6-step__header">
+            <div class="srn-a6-step__num" id="srn-step2-num-{{ sid }}">2</div>
+            <div class="srn-a6-step__htitle">Choose Chassis</div>
+            <div class="srn-a6-step__badge">Required</div>
+          </div>
+          <div class="srn-a6-step__body">
+            <fieldset style="border:none">
+              <legend class="srn-visually-hidden">Select chassis type</legend>
+              <div class="srn-a6-chassis-grid">
+
+                {%- comment %} Mobile Chassis {% endcomment %}
+                <div class="srn-a6-chassis-option">
+                  <input
+                    type="radio"
+                    name="srn-chassis-{{ sid }}"
+                    id="srn-chassis-mobile-{{ sid }}"
+                    value="mobile"
+                    checked
+                    aria-describedby="srn-chassis-mobile-desc-{{ sid }}"
+                  >
+                  <label class="srn-a6-chassis-card" for="srn-chassis-mobile-{{ sid }}">
+                    <div class="srn-a6-chassis-card__radio" aria-hidden="true"></div>
+                    <div class="srn-a6-chassis-card__name">Mobile Battery Chassis</div>
+                    <div class="srn-a6-chassis-card__desc" id="srn-chassis-mobile-desc-{{ sid }}">
+                      Compact and lightweight. Perfect for home and travel use.
+                    </div>
+                    <div class="srn-a6-chassis-card__meta">
+                      <span class="srn-a6-chassis-card__weight">3.2 kg</span>
+                      <span class="srn-a6-chassis-card__price">{{ section.settings.chassis_mobile_price | default: '4 995' }} SEK</span>
+                    </div>
+                  </label>
+                </div>
+
+                {%- comment %} Off-Road Chassis {% endcomment %}
+                <div class="srn-a6-chassis-option">
+                  <input
+                    type="radio"
+                    name="srn-chassis-{{ sid }}"
+                    id="srn-chassis-offroad-{{ sid }}"
+                    value="offroad"
+                    aria-describedby="srn-chassis-offroad-desc-{{ sid }}"
+                  >
+                  <label class="srn-a6-chassis-card" for="srn-chassis-offroad-{{ sid }}">
+                    <div class="srn-a6-chassis-card__radio" aria-hidden="true"></div>
+                    <div class="srn-a6-chassis-card__name">Off-Road Mobile Chassis</div>
+                    <div class="srn-a6-chassis-card__desc" id="srn-chassis-offroad-desc-{{ sid }}">
+                      Reinforced frame with all-terrain wheels for outdoor use.
+                    </div>
+                    <div class="srn-a6-chassis-card__meta">
+                      <span class="srn-a6-chassis-card__weight">4.1 kg</span>
+                      <span class="srn-a6-chassis-card__price">{{ section.settings.chassis_offroad_price | default: '5 995' }} SEK</span>
+                    </div>
+                  </label>
+                </div>
+
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        {%- comment %} Step 3 — Extra Battery ──────────────────────────── {% endcomment %}
+        <div class="srn-a6-step" id="srn-step3-{{ sid }}">
+          <div class="srn-a6-step__header">
+            <div class="srn-a6-step__num" id="srn-step3-num-{{ sid }}">3</div>
+            <div class="srn-a6-step__htitle">Extra Battery</div>
+            <div class="srn-a6-step__badge">Optional</div>
+          </div>
+          <div class="srn-a6-step__body">
+            <div class="srn-a6-module-row">
+              <div class="srn-a6-module-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3"/><line x1="6" y1="12" x2="12" y2="12"/><line x1="9" y1="9" x2="9" y2="15"/></svg>
+              </div>
+              <div class="srn-a6-module-info">
+                <div class="srn-a6-module-info__name">Extra Battery EB240</div>
+                <div class="srn-a6-module-info__sub" id="srn-eb240-sub-{{ sid }}">+2 160 Wh per unit · 21.0 kg each</div>
+              </div>
+              <div class="srn-a6-stepper" role="group" aria-label="EB240 quantity">
+                <button
+                  class="srn-a6-stepper__btn"
+                  id="srn-eb240-dec-{{ sid }}"
+                  type="button"
+                  aria-label="Decrease EB240 quantity"
+                  disabled
+                >−</button>
+                <div class="srn-a6-stepper__val" id="srn-eb240-val-{{ sid }}" aria-live="polite" aria-label="EB240 quantity: 0">0</div>
+                <button
+                  class="srn-a6-stepper__btn"
+                  id="srn-eb240-inc-{{ sid }}"
+                  type="button"
+                  aria-label="Increase EB240 quantity"
+                >+</button>
+              </div>
+              <div class="srn-a6-module-price" id="srn-eb240-price-{{ sid }}" aria-live="polite">—</div>
+            </div>
+          </div>
+        </div>
+
+        {%- comment %} Step 4 — Extra Inverter ─────────────────────────── {% endcomment %}
+        <div class="srn-a6-step" id="srn-step4-{{ sid }}">
+          <div class="srn-a6-step__header">
+            <div class="srn-a6-step__num" id="srn-step4-num-{{ sid }}">4</div>
+            <div class="srn-a6-step__htitle">Extra Inverter</div>
+            <div class="srn-a6-step__badge">Optional</div>
+          </div>
+          <div class="srn-a6-step__body">
+            <div class="srn-a6-module-row">
+              <div class="srn-a6-module-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <div class="srn-a6-module-info">
+                <div class="srn-a6-module-info__name">Extra Inverter AC300</div>
+                <div class="srn-a6-module-info__sub" id="srn-ac300-sub-{{ sid }}">+2 200W output per unit · 8.5 kg each</div>
+              </div>
+              <div class="srn-a6-stepper" role="group" aria-label="AC300 quantity">
+                <button
+                  class="srn-a6-stepper__btn"
+                  id="srn-ac300-dec-{{ sid }}"
+                  type="button"
+                  aria-label="Decrease AC300 quantity"
+                  disabled
+                >−</button>
+                <div class="srn-a6-stepper__val" id="srn-ac300-val-{{ sid }}" aria-live="polite" aria-label="AC300 quantity: 0">0</div>
+                <button
+                  class="srn-a6-stepper__btn"
+                  id="srn-ac300-inc-{{ sid }}"
+                  type="button"
+                  aria-label="Increase AC300 quantity"
+                >+</button>
+              </div>
+              <div class="srn-a6-module-price" id="srn-ac300-price-{{ sid }}" aria-live="polite">—</div>
+            </div>
+          </div>
+        </div>
+
+        {%- comment %} Accessories ─────────────────────────────────────── {% endcomment %}
+        {%- if section.settings.accessories_heading != blank or section.settings.accessories_image != blank %}
+          <div class="srn-a6-acc-card">
+            {%- if section.settings.accessories_image != blank %}
+              <div class="srn-a6-acc-img-wrap">
+                <img
+                  class="srn-a6-acc-img"
+                  src="{{ section.settings.accessories_image | image_url: width: 900 }}"
+                  alt="{{ section.settings.accessories_image.alt | default: 'Power accessories' }}"
+                  width="900"
+                  height="394"
+                  loading="lazy"
+                >
+              </div>
+            {%- endif %}
+            <div class="srn-a6-acc-body">
+              {%- if section.settings.accessories_heading != blank %}
+                <div class="srn-a6-acc-body__title">{{ section.settings.accessories_heading }}</div>
+              {%- endif %}
+              {%- if section.settings.accessories_description != blank %}
+                <div class="srn-a6-acc-body__desc">{{ section.settings.accessories_description }}</div>
+              {%- endif %}
+              {%- if section.settings.accessories_link != blank %}
+                <a
+                  href="{{ section.settings.accessories_link }}"
+                  class="srn-a6-btn-acc"
+                  aria-label="Browse {{ section.settings.accessories_heading | default: 'power accessories' }}"
+                >
+                  Browse accessories
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              {%- endif %}
+            </div>
+          </div>
+        {%- endif %}
+
+      </div>{%- comment %} /steps {% endcomment %}
+
+      {%- comment %} Right: Config Summary ────────────────────────────── {% endcomment %}
+      <div class="srn-a6-summary-wrap">
+        <div class="srn-a6-summary" role="region" aria-label="Your configuration summary">
+
+          <div class="srn-a6-summary__head">
+            <div class="srn-a6-summary__htitle">Your Configuration</div>
+          </div>
+
+          <div class="srn-a6-summary__body" id="srn-sum-rows-{{ sid }}" aria-live="polite">
+
+            {%- comment %} Item rows injected by JS {% endcomment %}
+            <div class="srn-a6-sum-row" id="srn-sum-base-row-{{ sid }}">
+              <div class="srn-a6-sum-row__left">
+                <div class="srn-a6-sum-row__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+                </div>
+                <span class="srn-a6-sum-row__name">Main Base 3600</span>
+              </div>
+              <span class="srn-a6-sum-row__qty">×1</span>
+              <span class="srn-a6-sum-row__price" id="srn-sum-base-price-{{ sid }}">{{ section.settings.base_price | default: '41 495' }} SEK</span>
+            </div>
+
+            <div class="srn-a6-sum-row" id="srn-sum-chassis-row-{{ sid }}">
+              <div class="srn-a6-sum-row__left">
+                <div class="srn-a6-sum-row__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <span class="srn-a6-sum-row__name" id="srn-sum-chassis-name-{{ sid }}">Mobile Battery Chassis</span>
+              </div>
+              <span class="srn-a6-sum-row__qty">×1</span>
+              <span class="srn-a6-sum-row__price" id="srn-sum-chassis-price-{{ sid }}">{{ section.settings.chassis_mobile_price | default: '4 995' }} SEK</span>
+            </div>
+
+            <div class="srn-a6-sum-row" id="srn-sum-eb210-row-{{ sid }}" style="display:none">
+              <div class="srn-a6-sum-row__left">
+                <div class="srn-a6-sum-row__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3"/><line x1="6" y1="12" x2="12" y2="12"/><line x1="9" y1="9" x2="9" y2="15"/></svg>
+                </div>
+                <span class="srn-a6-sum-row__name">Extra Battery EB240</span>
+              </div>
+              <span class="srn-a6-sum-row__qty" id="srn-sum-eb210-qty-{{ sid }}">×0</span>
+              <span class="srn-a6-sum-row__price" id="srn-sum-eb210-price-{{ sid }}">—</span>
+            </div>
+
+            <div class="srn-a6-sum-row" id="srn-sum-ac200-row-{{ sid }}" style="display:none">
+              <div class="srn-a6-sum-row__left">
+                <div class="srn-a6-sum-row__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <span class="srn-a6-sum-row__name">Extra Inverter AC300</span>
+              </div>
+              <span class="srn-a6-sum-row__qty" id="srn-sum-ac200-qty-{{ sid }}">×0</span>
+              <span class="srn-a6-sum-row__price" id="srn-sum-ac200-price-{{ sid }}">—</span>
+            </div>
+
+          </div>{%- comment %} /sum-rows {% endcomment %}
+
+          <div style="padding:0 22px">
+            <div class="srn-a6-sum-stats">
+              <div class="srn-a6-sum-stat">
+                <span class="srn-a6-sum-stat__label">Total capacity</span>
+                <span class="srn-a6-sum-stat__value" id="srn-sum-stat-cap-{{ sid }}">1 037 Wh</span>
+              </div>
+              <div class="srn-a6-sum-stat">
+                <span class="srn-a6-sum-stat__label">Total AC output</span>
+                <span class="srn-a6-sum-stat__value" id="srn-sum-stat-output-{{ sid }}">2 200 W</span>
+              </div>
+              <div class="srn-a6-sum-stat">
+                <span class="srn-a6-sum-stat__label">Shipping weight</span>
+                <span class="srn-a6-sum-stat__value" id="srn-sum-stat-weight-{{ sid }}">— kg</span>
+              </div>
+            </div>
+
+            <div class="srn-a6-sum-total">
+              <div class="srn-a6-sum-total__label">Subtotal</div>
+              <div aria-live="polite" aria-label="Configuration subtotal">
+                <span class="srn-a6-sum-total__price" id="srn-sum-total-{{ sid }}">{{ section.settings.base_price | default: '41 495' }}</span>
+                <span class="srn-a6-sum-total__currency">SEK</span>
+              </div>
+              {%- if section.settings.show_klarna_line %}
+                <div class="srn-a6-sum-klarna" id="srn-sum-klarna-{{ sid }}"></div>
+              {%- endif %}
+            </div>
+          </div>
+
+          <div class="srn-a6-summary__footer">
+            <button
+              class="srn-a6-sum-btn-atc"
+              id="srn-atc-sum-{{ sid }}"
+              type="button"
+              aria-label="Add A6 Pro configuration to cart"
+            >
+              <span class="srn-a6-sum-btn-atc__spinner" aria-hidden="true"></span>
+              <span class="srn-a6-sum-btn-atc__label">Add to Cart</span>
+            </button>
+            <div class="srn-a6-sum-meta">
+              <div class="srn-a6-sum-meta-line">
+                <svg class="srn-a6-sum-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                {{ section.settings.delivery_text | default: 'Free delivery — estimated 5–7 business days' }}
+              </div>
+              <div class="srn-a6-sum-meta-line">
+                <svg class="srn-a6-sum-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                {{ section.settings.warranty_text | default: '5-year warranty included' }}
+              </div>
+              <div class="srn-a6-sum-meta-line">
+                <svg class="srn-a6-sum-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Secure checkout
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>{%- comment %} /summary {% endcomment %}
+
+    </div>
+  </section>
+
+  {%- comment %} ── Sticky Mobile Bar ─────────────────────────────────── {% endcomment %}
+  <div
+    class="srn-a6-sticky-bar"
+    id="srn-sticky-bar-{{ sid }}"
+    role="region"
+    aria-label="Quick add to cart"
+  >
+    <div class="srn-a6-sticky-bar__price-block">
+      <div class="srn-a6-sticky-bar__label">Total</div>
+      <div>
+        <span class="srn-a6-sticky-bar__price" id="srn-sticky-price-{{ sid }}">{{ section.settings.base_price | default: '41 495' }}</span>
+        <span class="srn-a6-sticky-bar__currency">SEK</span>
+      </div>
+    </div>
+    <button
+      class="srn-a6-sticky-bar__btn"
+      id="srn-atc-sticky-{{ sid }}"
+      type="button"
+      aria-label="Add A6 Pro configuration to cart"
+    >
+      <span class="srn-a6-sticky-bar__spinner" aria-hidden="true"></span>
+      <span>Add to Cart</span>
+    </button>
+  </div>
+
+</div>{%- comment %} /#srn-a6builder {% endcomment %}
+
+{%- comment %} ── Visually hidden helper ─────────────────────────────── {% endcomment %}
+<style>
+  .srn-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  var SID = {{ sid | json }};
+  var $ = function (id) { return document.getElementById(id); };
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Read data ──────────────────────────────────────────────────────────────
+  var dataEl = $('sorein-a6-data-' + SID);
+  if (!dataEl) return;
+  var DATA;
+  try { DATA = JSON.parse(dataEl.textContent); }
+  catch (e) { console.error('[SrnA6Builder] Failed to parse JSON data', e); return; }
+
+  var MOD    = DATA.modules;
+  var IMAGES = DATA.images;
+  var ALTS   = DATA.imageAlts;
+  var MAX_WH = DATA.maxCapacityWh": 9600;
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  var state = {
+    chassisId:  'mobile',
+    eb210Qty:   0,
+    ac200Qty:   0
+  };
+
+  // ── Helpers ─────────────────────────────────────────────────────────────────
+  function fmtWh(n)  { return fmtNum(n) + ' Wh'; }
+  function fmtW(n)   { return fmtNum(n) + ' W'; }
+  function fmtKg(g)  { return (g / 1000).toFixed(1) + ' kg'; }
+  function fmtNum(n) {
+    // Space-separated thousands: 41 495
+    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+  function fmtSEK(n) { return fmtNum(n) + ' SEK'; }
+
+  // Parse a display price string like "41 495" → numeric integer
+  function parsePriceStr(str) {
+    if (!str) return 0;
+    return parseInt((str + '').replace(/[\s ]/g, ''), 10) || 0;
+  }
+
+  // ── Calculations ───────────────────────────────────────────────────────────
+  function calcState() {
+    var chassis = getSelectedChassis();
+
+    var totalWh     = MOD.base.wh + (state.eb210Qty * MOD.eb210.wh);
+    var totalW      = MOD.base.w  + (state.ac200Qty * MOD.ac200.w);
+    var totalWeightG = MOD.base.weight_g
+                      + (chassis ? chassis.weight_g : 0)
+                      + (state.eb210Qty * MOD.eb210.weight_g)
+                      + (state.ac200Qty * MOD.ac200.weight_g);
+
+    var basePrice    = parsePriceStr(MOD.base.displayPrice);
+    var chassisPrice = chassis ? parsePriceStr(chassis.displayPrice) : 0;
+    var eb210Price   = state.eb210Qty * parsePriceStr(MOD.eb210.displayPrice);
+    var ac200Price   = state.ac200Qty * parsePriceStr(MOD.ac200.displayPrice);
+    var totalPrice   = basePrice + chassisPrice + eb210Price + ac200Price;
+
+    return {
+      totalWh:      totalWh,
+      totalW:       totalW,
+      totalWeightG: totalWeightG,
+      totalPrice:   totalPrice,
+      basePrice:    basePrice,
+      chassisPrice: chassisPrice,
+      eb210Price:   eb210Price,
+      ac200Price:   ac200Price,
+      chassis:      chassis
+    };
+  }
+
+  function getSelectedChassis() {
+    for (var i = 0; i < MOD.chassis.length; i++) {
+      if (MOD.chassis[i].id === state.chassisId) return MOD.chassis[i];
+    }
+    return MOD.chassis[0];
+  }
+
+  // ── Render ─────────────────────────────────────────────────────────────────
+  function render() {
+    var c = calcState();
+    updateNumbers(c);
+    updateCapBar(c);
+    updateSummaryRows(c);
+    updateImage(c);
+    updateKlarna(c);
+    updateStepIcons();
+  }
+
+  function setText(id, val) {
+    var el = $(id);
+    if (el) el.textContent = val;
+  }
+
+  function updateNumbers(c) {
+    // Hero price
+    setText('srn-hero-price-' + SID, fmtNum(c.totalPrice));
+
+    // Spec chips
+    setText('srn-spec-output-' + SID, fmtNum(c.totalW));
+    setText('srn-spec-cap-' + SID, fmtNum(c.totalWh));
+    setText('srn-spec-weight-' + SID, (c.totalWeightG / 1000).toFixed(1));
+
+    // Module prices
+    var eb210LineEl = $('srn-eb210-price-' + SID);
+    if (eb210LineEl) {
+      eb210LineEl.textContent = state.eb210Qty > 0
+        ? fmtNum(c.eb210Price) + ' SEK'
+        : '—';
+    }
+    var ac200LineEl = $('srn-ac200-price-' + SID);
+    if (ac200LineEl) {
+      ac200LineEl.textContent = state.ac200Qty > 0
+        ? fmtNum(c.ac200Price) + ' SEK'
+        : '—';
+    }
+
+    // Stepper displays
+    var eb210ValEl = $('srn-eb210-val-' + SID);
+    if (eb210ValEl) {
+      eb210ValEl.textContent = state.eb210Qty;
+      eb210ValEl.setAttribute('aria-label', 'EB240 quantity: ' + state.eb210Qty);
+    }
+    var ac200ValEl = $('srn-ac200-val-' + SID);
+    if (ac200ValEl) {
+      ac200ValEl.textContent = state.ac200Qty;
+      ac200ValEl.setAttribute('aria-label', 'AC300 quantity: ' + state.ac200Qty);
+    }
+
+    // Stepper button disabled states
+    setDisabled('srn-eb210-dec-' + SID, state.eb210Qty <= MOD.eb210.min);
+    setDisabled('srn-eb210-inc-' + SID, state.eb210Qty >= MOD.eb210.max);
+    setDisabled('srn-ac200-dec-' + SID, state.ac200Qty <= MOD.ac200.min);
+    setDisabled('srn-ac200-inc-' + SID, state.ac200Qty >= MOD.ac200.max);
+
+    // Sticky bar price
+    setText('srn-sticky-price-' + SID, fmtNum(c.totalPrice));
+  }
+
+  function setDisabled(id, bool) {
+    var el = $(id);
+    if (el) el.disabled = bool;
+  }
+
+  function updateCapBar(c) {
+    var pct = Math.min(100, Math.round((c.totalWh / MAX_WH) * 1000) / 10);
+    var fillEl = $('srn-cap-fill-' + SID);
+    if (fillEl) fillEl.style.width = pct + '%';
+
+    var trackEl = fillEl && fillEl.parentElement;
+    if (trackEl) {
+      trackEl.setAttribute('aria-valuenow', c.totalWh);
+    }
+
+    setText('srn-cap-wh-' + SID, fmtNum(c.totalWh));
+    setText('srn-cap-pct-' + SID, pct.toFixed(1) + '% of max (' + fmtNum(MAX_WH) + ' Wh)');
+  }
+
+  function updateSummaryRows(c) {
+    // Chassis row
+    if (c.chassis) {
+      setText('srn-sum-chassis-name-' + SID, c.chassis.title);
+      setText('srn-sum-chassis-price-' + SID, fmtNum(c.chassisPrice) + ' SEK');
+    }
+
+    // EB240 row
+    var eb210Row = $('srn-sum-eb210-row-' + SID);
+    if (eb210Row) {
+      eb210Row.style.display = state.eb210Qty > 0 ? '' : 'none';
+      setText('srn-sum-eb210-qty-' + SID, '×' + state.eb210Qty);
+      setText('srn-sum-eb210-price-' + SID, fmtNum(c.eb210Price) + ' SEK');
+    }
+
+    // AC300 row
+    var ac200Row = $('srn-sum-ac200-row-' + SID);
+    if (ac200Row) {
+      ac200Row.style.display = state.ac200Qty > 0 ? '' : 'none';
+      setText('srn-sum-ac200-qty-' + SID, '×' + state.ac200Qty);
+      setText('srn-sum-ac200-price-' + SID, fmtNum(c.ac200Price) + ' SEK');
+    }
+
+    // Stats
+    setText('srn-sum-stat-cap-' + SID, fmtNum(c.totalWh) + ' Wh');
+    setText('srn-sum-stat-output-' + SID, fmtNum(c.totalW) + ' W');
+    setText('srn-sum-stat-weight-' + SID, fmtKg(c.totalWeightG));
+
+    // Summary total
+    setText('srn-sum-total-' + SID, fmtNum(c.totalPrice));
+  }
+
+  function updateKlarna(c) {
+    if (!DATA.showKlarna) return;
+    var months  = DATA.klarnaMonths || 36;
+    var monthly = Math.ceil(c.totalPrice / months);
+    var txt     = '~' + fmtNum(monthly) + ' SEK/month over ' + months + ' months';
+
+    setText('srn-sum-klarna-' + SID, txt);
+    setText('srn-klarna-hero-' + SID, txt);
+  }
+
+  // ── Image switching ─────────────────────────────────────────────────────────
+  var _currentBucket = 'default';
+  var _imgFrontEl = null;
+  var _imgBackEl  = null;
+
+  function initImageEls() {
+    _imgFrontEl = $('srn-img-front-' + SID);
+    _imgBackEl  = $('srn-img-back-' + SID);
+  }
+
+  function weightToBucket(weightG) {
+    var kg = weightG / 1000;
+    if (kg < 20)  return 'default';
+    if (kg < 35)  return 'low';
+    if (kg < 55)  return 'medium';
+    if (kg < 80)  return 'large';
+    return 'full';
+  }
+
+  function updateImage(c) {
+    var bucket = weightToBucket(c.totalWeightG);
+    var src    = IMAGES[bucket] || IMAGES['default'];
+    var alt    = ALTS[bucket]   || ALTS['default'] || 'A6 Pro configuration';
+
+    // If image not set, fall back to default
+    if (!src) {
+      src = IMAGES['default'];
+      alt = ALTS['default'] || 'Main Base 3600 Configuration';
+    }
+
+    if (bucket === _currentBucket) return;
+    _currentBucket = bucket;
+
+    if (!src || reducedMotion) {
+      if (_imgFrontEl && src) {
+        _imgFrontEl.src = src;
+        _imgFrontEl.alt = alt;
+      }
+      return;
+    }
+
+    // Crossfade: load into back layer, then swap
+    if (!_imgBackEl || !_imgFrontEl) return;
+
+    _imgBackEl.src = src;
+    _imgBackEl.alt = alt;
+    _imgBackEl.style.opacity = '0';
+    _imgBackEl.style.zIndex  = '1';
+    _imgFrontEl.style.zIndex = '2';
+
+    _imgBackEl.onload = function () {
+      // Fade back in
+      _imgBackEl.style.transition  = 'opacity 200ms ease';
+      _imgFrontEl.style.transition = 'opacity 200ms ease';
+      _imgBackEl.style.opacity  = '1';
+      _imgFrontEl.style.opacity = '0';
+
+      setTimeout(function () {
+        // Promote back to front
+        _imgFrontEl.src = src;
+        _imgFrontEl.alt = alt;
+        _imgFrontEl.style.opacity    = '1';
+        _imgFrontEl.style.transition = '';
+        _imgFrontEl.style.zIndex     = '2';
+        _imgBackEl.style.opacity     = '0';
+        _imgBackEl.style.zIndex      = '1';
+        _imgBackEl.style.transition  = '';
+      }, 210);
+    };
+
+    _imgBackEl.onerror = function () {
+      // Silently fall back; don't swap
+    };
+  }
+
+  // ── Step icon updates ──────────────────────────────────────────────────────
+  var CHECKMARK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  function updateStepIcons() {
+    // Step 2 — chassis always selected
+    var s2 = $('srn-step2-num-' + SID);
+    if (s2 && !s2.classList.contains('srn-a6-step__num--done')) {
+      s2.classList.add('srn-a6-step__num--done');
+      s2.innerHTML = CHECKMARK;
+      s2.setAttribute('aria-label', 'Step 2 complete');
+    }
+
+    // Step 3 — EB240
+    var s3 = $('srn-step3-num-' + SID);
+    if (s3) {
+      if (state.eb210Qty > 0) {
+        s3.classList.add('srn-a6-step__num--done');
+        s3.innerHTML = CHECKMARK;
+        s3.setAttribute('aria-label', 'Step 3 complete');
+      } else {
+        s3.classList.remove('srn-a6-step__num--done');
+        s3.innerHTML = '3';
+        s3.removeAttribute('aria-label');
+      }
+    }
+
+    // Step 4 — AC300
+    var s4 = $('srn-step4-num-' + SID);
+    if (s4) {
+      if (state.ac200Qty > 0) {
+        s4.classList.add('srn-a6-step__num--done');
+        s4.innerHTML = CHECKMARK;
+        s4.setAttribute('aria-label', 'Step 4 complete');
+      } else {
+        s4.classList.remove('srn-a6-step__num--done');
+        s4.innerHTML = '4';
+        s4.removeAttribute('aria-label');
+      }
+    }
+  }
+
+  // ── Event: chassis radio ───────────────────────────────────────────────────
+  function bindChassisRadios() {
+    var radios = document.querySelectorAll(
+      '#srn-a6builder-' + SID + ' input[name="srn-chassis-' + SID + '"]'
+    );
+    radios.forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        state.chassisId = this.value;
+        render();
+      });
+    });
+  }
+
+  // ── Event: steppers ───────────────────────────────────────────────────────
+  function bindStepper(decId, incId, key, min, max) {
+    var decBtn = $(decId);
+    var incBtn = $(incId);
+    if (decBtn) {
+      decBtn.addEventListener('click', function () {
+        if (state[key] > min) {
+          state[key]--;
+          render();
+        }
+      });
+    }
+    if (incBtn) {
+      incBtn.addEventListener('click', function () {
+        if (state[key] < max) {
+          state[key]++;
+          render();
+        }
+      });
+    }
+  }
+
+  // ── Add to Cart ────────────────────────────────────────────────────────────
+  function buildCartItems() {
+    var items = [];
+    var chassis = getSelectedChassis();
+    var buildConfig = {
+      base:    { title: MOD.base.title, qty: 1 },
+      chassis: { title: chassis ? chassis.title : '', qty: 1 },
+      eb210:   { title: MOD.eb210.title, qty: state.eb210Qty },
+      ac200:   { title: MOD.ac200.title, qty: state.ac200Qty }
+    };
+    var configStr = JSON.stringify(buildConfig);
+
+    // Base
+    if (MOD.base.variantId) {
+      items.push({
+        id:         MOD.base.variantId,
+        quantity:   1,
+        properties: { '_build_config': configStr, '_module': 'base' }
+      });
+    }
+
+    // Chassis
+    if (chassis && chassis.variantId) {
+      items.push({
+        id:         chassis.variantId,
+        quantity:   1,
+        properties: { '_build_config': configStr, '_module': 'chassis_' + chassis.id }
+      });
+    }
+
+    // EB240
+    if (state.eb210Qty > 0 && MOD.eb210.variantId) {
+      items.push({
+        id:         MOD.eb210.variantId,
+        quantity:   state.eb210Qty,
+        properties: { '_build_config': configStr, '_module': 'eb210' }
+      });
+    }
+
+    // AC300
+    if (state.ac200Qty > 0 && MOD.ac200.variantId) {
+      items.push({
+        id:         MOD.ac200.variantId,
+        quantity:   state.ac200Qty,
+        properties: { '_build_config': configStr, '_module': 'ac200' }
+      });
+    }
+
+    return items;
+  }
+
+  function setLoadingState(loading) {
+    var btns = [
+      $('srn-atc-hero-' + SID),
+      $('srn-atc-sum-' + SID),
+      $('srn-atc-sticky-' + SID)
+    ];
+    btns.forEach(function (btn) {
+      if (!btn) return;
+      btn.disabled = loading;
+      if (loading) {
+        btn.classList.add('is-loading');
+      } else {
+        btn.classList.remove('is-loading');
+      }
+    });
+  }
+
+  function showError(msg) {
+    var errHero = $('srn-atc-error-hero-' + SID);
+    if (errHero) {
+      errHero.textContent = msg;
+      errHero.classList.add('is-visible');
+    }
+  }
+  function hideError() {
+    var errHero = $('srn-atc-error-hero-' + SID);
+    if (errHero) {
+      errHero.textContent = '';
+      errHero.classList.remove('is-visible');
+    }
+  }
+
+  function showSuccess(msg) {
+    var succEl = $('srn-atc-success-hero-' + SID);
+    if (succEl) {
+      succEl.textContent = msg;
+      succEl.classList.add('is-visible');
+      setTimeout(function () { succEl.classList.remove('is-visible'); }, 4000);
+    }
+  }
+
+  function addToCart() {
+    var items = buildCartItems();
+    if (items.length === 0) {
+      showError('Please complete your configuration. Variant IDs may not be set yet — please contact support.');
+      return;
+    }
+
+    hideError();
+    setLoadingState(true);
+
+    fetch('/cart/add.js', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body:    JSON.stringify({ items: items })
+    })
+    .then(function (res) {
+      if (!res.ok) {
+        return res.json().then(function (data) {
+          throw new Error(data.description || 'Could not add to cart. Please try again.');
+        });
+      }
+      return res.json();
+    })
+    .then(function () {
+      setLoadingState(false);
+      showSuccess('Added to cart! Your A6 Pro build is ready.');
+
+      // Attempt to open cart drawer or update cart count
+      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+      var cartCount = document.querySelectorAll('[data-cart-count],[js-cart-count]');
+      // Refresh cart count via API
+      fetch('/cart.js')
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          cartCount.forEach(function (el) {
+            el.textContent = cart.item_count;
+          });
+        })
+        .catch(function () {});
+    })
+    .catch(function (err) {
+      setLoadingState(false);
+      showError(err.message || 'Something went wrong. Please try again.');
+    });
+  }
+
+  // ── Bind ATC buttons ────────────────────────────────────────────────────────
+  function bindATC() {
+    ['srn-atc-hero-' + SID, 'srn-atc-sum-' + SID, 'srn-atc-sticky-' + SID].forEach(function (id) {
+      var btn = $(id);
+      if (btn) btn.addEventListener('click', addToCart);
+    });
+  }
+
+  // ── Init ───────────────────────────────────────────────────────────────────
+  function init() {
+    initImageEls();
+    bindChassisRadios();
+    bindStepper(
+      'srn-eb210-dec-' + SID,
+      'srn-eb210-inc-' + SID,
+      'eb210Qty',
+      MOD.eb210.min,
+      MOD.eb210.max
+    );
+    bindStepper(
+      'srn-ac200-dec-' + SID,
+      'srn-ac200-inc-' + SID,
+      'ac200Qty',
+      MOD.ac200.min,
+      MOD.ac200.max
+    );
+    bindATC();
+
+    // Initial render
+    render();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "A6 Pro Builder",
+  "tag": "div",
+  "class": "srn-section-a6builder",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Main product for the A6 Pro"
+    },
+    {
+      "type": "text",
+      "id": "base_variant",
+      "label": "Base 2000 variant ID",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "chassis_mobile_variant",
+      "label": "Mobile Chassis variant ID",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "chassis_offroad_variant",
+      "label": "Off-Road Chassis variant ID",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "eb210_variant",
+      "label": "EB240 Extra Battery variant ID",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "ac200_variant",
+      "label": "AC300 Extra Inverter variant ID",
+      "default": ""
+    },
+    {
+      "type": "header",
+      "content": "Pricing (display only, Shopify variants override)"
+    },
+    {
+      "type": "text",
+      "id": "base_price",
+      "label": "Base display price",
+      "default": "41 495"
+    },
+    {
+      "type": "text",
+      "id": "eb210_price",
+      "label": "EB240 display price per unit",
+      "default": "14 995"
+    },
+    {
+      "type": "text",
+      "id": "ac200_price",
+      "label": "AC300 display price per unit",
+      "default": "9 995"
+    },
+    {
+      "type": "text",
+      "id": "chassis_mobile_price",
+      "label": "Mobile Chassis display price",
+      "default": "4 995"
+    },
+    {
+      "type": "text",
+      "id": "chassis_offroad_price",
+      "label": "Off-Road Chassis display price",
+      "default": "5 995"
+    },
+    {
+      "type": "header",
+      "content": "Build images"
+    },
+    {
+      "type": "image_picker",
+      "id": "builder_image_default",
+      "label": "Default build image"
+    },
+    {
+      "type": "image_picker",
+      "id": "builder_image_low",
+      "label": "Low weight build image"
+    },
+    {
+      "type": "image_picker",
+      "id": "builder_image_medium",
+      "label": "Medium build image"
+    },
+    {
+      "type": "image_picker",
+      "id": "builder_image_large",
+      "label": "Large build image"
+    },
+    {
+      "type": "image_picker",
+      "id": "builder_image_full",
+      "label": "Full build image"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section heading",
+      "default": "Build Your System"
+    },
+    {
+      "type": "textarea",
+      "id": "section_subheading",
+      "label": "Section subheading",
+      "default": "Configure your perfect Sorein power setup. Every component is modular and expandable."
+    },
+    {
+      "type": "header",
+      "content": "Accessories"
+    },
+    {
+      "type": "text",
+      "id": "accessories_heading",
+      "label": "Accessories heading",
+      "default": "Power accessories"
+    },
+    {
+      "type": "textarea",
+      "id": "accessories_description",
+      "label": "Accessories description",
+      "default": ""
+    },
+    {
+      "type": "url",
+      "id": "accessories_link",
+      "label": "Accessories collection URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "accessories_image",
+      "label": "Accessories image"
+    },
+    {
+      "type": "header",
+      "content": "Trust"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_klarna_line",
+      "label": "Show Klarna payment line",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "klarna_text",
+      "label": "Klarna text",
+      "default": "Split over 36 months from {price}/month"
+    },
+    {
+      "type": "text",
+      "id": "delivery_text",
+      "label": "Delivery text",
+      "default": "Free delivery — estimated 5–7 business days"
+    },
+    {
+      "type": "text",
+      "id": "warranty_text",
+      "label": "Warranty text",
+      "default": "5-year warranty included"
+    }
+  ],
+  "presets": [
+    {
+      "name": "A6 Pro Builder"
+    }
+  ]
+}
+{% endschema %}

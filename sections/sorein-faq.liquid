@@ -1,0 +1,380 @@
+<style>
+  #srn-faq-{{ section.id }} {
+    background: #f8f9fb;
+    padding: 88px 0 100px;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 56px;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__h2 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #111318;
+    margin: 12px 0 16px;
+    line-height: 1.15;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__sub {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: rgba(17,19,24,0.60);
+    margin: 0;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__list--two-col {
+    max-width: 1200px;
+  }
+
+  @media (min-width: 880px) {
+    #srn-faq-{{ section.id }} .srn-faq__list--two-col {
+      grid-template-columns: 1fr 1fr;
+      gap: 0 40px;
+      align-items: start;
+    }
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__item {
+    border-bottom: 1px solid rgba(17,19,24,0.09);
+    transition: border-color 0.2s ease, padding-left 0.2s ease;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__item[data-open="true"] {
+    border-left: 3px solid rgba(34,211,238,0.50);
+    padding-left: 16px;
+    margin-left: -3px;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__question-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__q-text {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111318;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+    transition: color 0.2s ease;
+    flex: 1;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__question-btn[aria-expanded="true"] .srn-faq__q-text {
+    color: #22d3ee;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__chevron {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: rgba(17,19,24,0.35);
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), color 0.2s ease;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__question-btn[aria-expanded="true"] .srn-faq__chevron {
+    transform: rotate(180deg);
+    color: #22d3ee;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__chevron svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__answer[aria-hidden="false"] {
+    grid-template-rows: 1fr;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__answer-inner {
+    overflow: hidden;
+  }
+
+  #srn-faq-{{ section.id }} .srn-faq__answer-text {
+    padding: 0 20px 22px 0;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: rgba(17,19,24,0.65);
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #srn-faq-{{ section.id }} .srn-faq__answer,
+    #srn-faq-{{ section.id }} .srn-faq__chevron {
+      transition: none;
+    }
+  }
+</style>
+
+<section id="srn-faq-{{ section.id }}" aria-labelledby="srn-faq-h2-{{ section.id }}">
+  <div class="srn-container">
+    <div class="srn-faq__header">
+      {% if section.settings.eyebrow != blank %}
+        <p class="srn-eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      <h2 class="srn-faq__h2" id="srn-faq-h2-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {% if section.settings.subheading != blank %}
+        <p class="srn-faq__sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      {% assign is_two_col = false %}
+      {% if section.settings.layout == 'two-column' %}
+        {% assign is_two_col = true %}
+      {% endif %}
+
+      <div class="srn-faq__list{% if is_two_col %} srn-faq__list--two-col{% endif %}" role="list">
+        {% for block in section.blocks %}
+          {% if block.type == 'faq_item' %}
+            {% assign item_id = 'srn-faq-' | append: section.id | append: '-' | append: forloop.index %}
+            <div class="srn-faq__item" role="listitem" data-open="false" {{ block.shopify_attributes }}>
+              <h3 style="margin:0;">
+                <button
+                  class="srn-faq__question-btn"
+                  aria-expanded="false"
+                  aria-controls="{{ item_id }}-answer"
+                  id="{{ item_id }}-btn"
+                >
+                  <span class="srn-faq__q-text">{{ block.settings.question }}</span>
+                  <span class="srn-faq__chevron" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                  </span>
+                </button>
+              </h3>
+              <div
+                class="srn-faq__answer"
+                id="{{ item_id }}-answer"
+                aria-labelledby="{{ item_id }}-btn"
+                aria-hidden="true"
+                role="region"
+              >
+                <div class="srn-faq__answer-inner">
+                  <p class="srn-faq__answer-text">{{ block.settings.answer }}</p>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% if section.blocks.size > 0 %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% assign faq_first = true %}
+    {% for block in section.blocks %}
+      {% if block.type == 'faq_item' %}
+        {% unless faq_first %},{% endunless %}
+        {% assign faq_first = false %}
+        {
+          "@type": "Question",
+          "name": {{ block.settings.question | json }},
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": {{ block.settings.answer | json }}
+          }
+        }
+      {% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+
+<script>
+(function() {
+  var section = document.getElementById('srn-faq-{{ section.id }}');
+  if (!section) return;
+  var buttons = section.querySelectorAll('.srn-faq__question-btn');
+  buttons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      var answerId = btn.getAttribute('aria-controls');
+      var answerEl = document.getElementById(answerId);
+      var itemEl = btn.closest('.srn-faq__item');
+      if (expanded) {
+        btn.setAttribute('aria-expanded', 'false');
+        answerEl.setAttribute('aria-hidden', 'true');
+        itemEl.setAttribute('data-open', 'false');
+      } else {
+        btn.setAttribute('aria-expanded', 'true');
+        answerEl.setAttribute('aria-hidden', 'false');
+        itemEl.setAttribute('data-open', 'true');
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "srn-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Questions answered"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently asked questions"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Everything you need to know before you buy."
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "single-column", "label": "Single column" },
+        { "value": "two-column", "label": "Two columns (desktop)" }
+      ],
+      "default": "two-column"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What does this product do?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Add your answer here."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is the maximum expansion capacity?",
+            "answer": "Free stacking is supported: 1 Main Base 3600 + up to 5 EB240 expansion batteries + up to 2 AC300 expansion inverters per unit. For even greater demands, connect multiple systems in parallel. The entire system supports up to 100kWh capacity and 36kW output (220–240V region)."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does it support UPS — zero-interruption switching?",
+            "answer": "Yes. With the Main Base alone: bypass conversion ≤ 20ms, keeping computers, monitors, and refrigerators running uninterrupted. Add one AC300 expansion inverter for true 0ms seamless switching — power failures become completely invisible to your devices."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does it take to fully recharge from the grid?",
+            "answer": "Recharge times depend on configuration: Main Base + 1×EB240 (2400Wh): ~1.5–2 hours. Main Base + 2×EB240 (4800Wh): ~3–3.5 hours. Main Base + 3×EB240 (7200Wh): ~4.5–5 hours. With dual AC300 inverter charging: ~2.5–3 hours for a 7200Wh system."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I charge with solar panels?",
+            "answer": "Yes. The Main Base 3600 accepts up to 1000W solar input (100V / 20A) via the XT60 solar port. Use any compatible photovoltaic panels — the built-in MPPT controller maximises harvest efficiency. Note: the AC300 expansion inverter does not have a solar input port."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can it output both 110V and 220V at the same time?",
+            "answer": "Yes. Dual-voltage output is achieved by combining a 220–240V Main Base 3600 with a 100–120V AC300 extra inverter. Each inverter operates as an independent circuit — they do not run in parallel, so you get separate power circuits at two different voltages simultaneously."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is it safe to use indoors?",
+            "answer": "Yes. The Sorein Modular Power Station uses EV-grade LFP (LiFePO4) battery chemistry, which does not emit harmful gases, is non-toxic, and is thermally stable. The housing carries a 5VA top fire-resistance rating and the system includes 18+ BMS protection algorithms. Safe for indoor, enclosed-space, and home use."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What app controls the system?",
+            "answer": "The Sorein system is controlled via the Energykeeper app (iOS & Android). It provides real-time monitoring of battery status and power flow, smart charging schedules, remote AC/DC output switching, OTA firmware updates, child lock, and push notifications. Connectivity: Bluetooth up to 45m range + 2.4GHz Wi-Fi. Supports 6 languages."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What protection systems are built in?",
+            "answer": "The system includes 18+ BMS protection algorithms covering: short circuit, overload, over-voltage, under-voltage, over-temperature, and reverse connection protection. The rugged one-piece die-cast aluminium frame provides physical durability, and the active cooling system (10 DC brushless fans + 8 aluminium heat sinks) keeps all modules within safe operating temperatures."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the operating temperature limits?",
+            "answer": "Charging: 0°C to 45°C. Discharging: -20°C to 45°C. The advanced cooling system ensures reliable performance across this range, making the Sorein system suitable for use in winter cabins, cold climates, and demanding outdoor environments."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I connect it as whole-house backup power?",
+            "answer": "There are two safe methods: (1) Direct wall plug — connect AC IN to a wall socket and AC OUT to your load; the system automatically switches when power fails. (2) Whole-house backup — a licensed electrician installs an ATS (Automatic Transfer Switch) into your distribution board, enabling whole-house emergency power. Always use 16A qualified wiring and sockets, and never reverse-feed the grid without an isolation switch."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

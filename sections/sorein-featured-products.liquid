@@ -1,0 +1,473 @@
+<style>
+  #srn-featured-{{ section.id }} {
+    background: #ffffff;
+    padding: 80px 0 96px;
+  }
+
+  #srn-featured-{{ section.id }} .srn-featured__header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 56px;
+  }
+
+  #srn-featured-{{ section.id }} .srn-featured__h2 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #111318;
+    margin: 12px 0 16px;
+    line-height: 1.15;
+  }
+
+  #srn-featured-{{ section.id }} .srn-featured__sub {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: rgba(17,19,24,0.60);
+    margin: 0;
+  }
+
+  #srn-featured-{{ section.id }} .srn-featured__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (min-width: 900px) {
+    #srn-featured-{{ section.id }} .srn-featured__grid[data-cols="2"] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    #srn-featured-{{ section.id }} .srn-featured__grid[data-cols="3"] {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    #srn-featured-{{ section.id }} .srn-featured__grid[data-cols="4"] {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card {
+    background: #f8f9fb;
+    border: 1px solid rgba(17,19,24,0.09);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.35s cubic-bezier(0.22,1,0.36,1),
+                border-color 0.25s ease;
+    position: relative;
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card.srn-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1),
+                transform 0.55s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.35s cubic-bezier(0.22,1,0.36,1),
+                border-color 0.25s ease;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px rgba(17,19,24,0.10);
+    border-color: rgba(34,211,238,0.30);
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card.srn-visible:hover {
+    transform: translateY(-6px);
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #22d3ee;
+    color: #090b0f;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 50px;
+    z-index: 2;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__img-wrap {
+    aspect-ratio: 4/3;
+    background: #edf0f4;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+    display: block;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card:hover .srn-product-card__img-wrap img {
+    transform: scale(1.04);
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(17,19,24,0.20);
+    font-size: 3rem;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__body {
+    padding: 20px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__specs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__spec {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #14b8a6;
+    background: rgba(20,184,166,0.10);
+    border: 1px solid rgba(20,184,166,0.20);
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #111318;
+    letter-spacing: -0.01em;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__desc {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: rgba(17,19,24,0.60);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111318;
+    letter-spacing: -0.02em;
+    margin-top: 4px;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__price-prefix {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(17,19,24,0.50);
+    margin-right: 2px;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__cta {
+    margin-top: auto;
+    padding-top: 12px;
+  }
+
+  #srn-featured-{{ section.id }} .srn-product-card__cta .srn-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #srn-featured-{{ section.id }} .srn-product-card {
+      opacity: 1;
+      transform: none;
+    }
+    #srn-featured-{{ section.id }} .srn-product-card:hover {
+      transform: none;
+    }
+    #srn-featured-{{ section.id }} .srn-product-card:hover .srn-product-card__img-wrap img {
+      transform: none;
+    }
+  }
+</style>
+
+<section id="srn-featured-{{ section.id }}" aria-labelledby="srn-featured-h2-{{ section.id }}">
+  <div class="srn-container">
+    <div class="srn-featured__header">
+      {% if section.settings.eyebrow != blank %}
+        <p class="srn-eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      <h2 class="srn-featured__h2" id="srn-featured-h2-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {% if section.settings.subheading != blank %}
+        <p class="srn-featured__sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    {% assign cols = section.settings.columns %}
+    <div class="srn-featured__grid" data-cols="{{ cols }}">
+
+      {% comment %} Collection-based display {% endcomment %}
+      {% if section.settings.collection != blank and section.blocks.size == 0 %}
+        {% assign col = collections[section.settings.collection] %}
+        {% for product in col.products limit: cols %}
+          <article class="srn-product-card">
+            <div class="srn-product-card__img-wrap">
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | image_url: width: 600 }}"
+                  alt="{{ product.featured_image.alt | escape | default: product.title | escape }}"
+                  width="600"
+                  height="450"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="srn-product-card__placeholder" aria-hidden="true">⚡</div>
+              {% endif %}
+            </div>
+            <div class="srn-product-card__body">
+              <h3 class="srn-product-card__title">{{ product.title }}</h3>
+              {% if product.description != blank %}
+                <p class="srn-product-card__desc">{{ product.description | strip_html }}</p>
+              {% endif %}
+              {% if section.settings.show_price %}
+                <div class="srn-product-card__price">
+                  {% if product.variants.size > 1 %}
+                    <span class="srn-product-card__price-prefix">From</span>
+                  {% endif %}
+                  {{ product.price_min | money }}
+                </div>
+              {% endif %}
+              <div class="srn-product-card__cta">
+                <a href="{{ product.url }}" class="srn-btn srn-btn--primary">View product</a>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+
+      {% else %}
+        {% comment %} Block-based display {% endcomment %}
+        {% for block in section.blocks %}
+          {% if block.type == 'product_card' %}
+            {% assign prod = block.settings.product %}
+            <article class="srn-product-card" {{ block.shopify_attributes }}>
+              {% if block.settings.badge_text != blank %}
+                <div class="srn-product-card__badge">{{ block.settings.badge_text }}</div>
+              {% endif %}
+              <div class="srn-product-card__img-wrap">
+                {% if prod != blank %}
+                  {% if prod.featured_image %}
+                    <img
+                      src="{{ prod.featured_image | image_url: width: 600 }}"
+                      alt="{{ prod.featured_image.alt | escape | default: prod.title | escape }}"
+                      width="600"
+                      height="450"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    <div class="srn-product-card__placeholder" aria-hidden="true">⚡</div>
+                  {% endif %}
+                {% else %}
+                  <div class="srn-product-card__placeholder" aria-hidden="true">⚡</div>
+                {% endif %}
+              </div>
+              <div class="srn-product-card__body">
+                {% if block.settings.capacity_wh != blank or block.settings.output_w != blank %}
+                  <div class="srn-product-card__specs">
+                    {% if block.settings.capacity_wh != blank %}
+                      <span class="srn-product-card__spec">{{ block.settings.capacity_wh }}</span>
+                    {% endif %}
+                    {% if block.settings.output_w != blank %}
+                      <span class="srn-product-card__spec">{{ block.settings.output_w }}</span>
+                    {% endif %}
+                  </div>
+                {% endif %}
+
+                <h3 class="srn-product-card__title">
+                  {% if prod != blank %}{{ prod.title }}{% else %}Product{% endif %}
+                </h3>
+
+                {% assign show_desc = block.settings.custom_desc %}
+                {% if show_desc == blank and prod != blank %}
+                  {% assign show_desc = prod.description | strip_html %}
+                {% endif %}
+                {% if show_desc != blank %}
+                  <p class="srn-product-card__desc">{{ show_desc }}</p>
+                {% endif %}
+
+                {% if section.settings.show_price and prod != blank %}
+                  <div class="srn-product-card__price">
+                    {% if prod.variants.size > 1 %}
+                      <span class="srn-product-card__price-prefix">From</span>
+                    {% endif %}
+                    {{ prod.price_min | money }}
+                  </div>
+                {% endif %}
+
+                <div class="srn-product-card__cta">
+                  {% if prod != blank %}
+                    <a href="{{ prod.url }}" class="srn-btn srn-btn--primary">View product</a>
+                  {% else %}
+                    <a href="#" class="srn-btn srn-btn--primary">View product</a>
+                  {% endif %}
+                </div>
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var section = document.getElementById('srn-featured-{{ section.id }}');
+  if (!section) return;
+
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cards = section.querySelectorAll('.srn-product-card');
+
+  if (prefersReduced) return;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('srn-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  cards.forEach(function(card, i) {
+    card.style.transitionDelay = (i * 90) + 'ms';
+    observer.observe(card);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "tag": "section",
+  "class": "srn-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Our systems"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Choose your power station"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Portable power stations built for real life — from everyday backup to full off-grid independence."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection (overrides blocks if set)"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Product Card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text (e.g. Best Seller)"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_desc",
+          "label": "Custom description (overrides product description)"
+        },
+        {
+          "type": "text",
+          "id": "capacity_wh",
+          "label": "Capacity (e.g. 2400 Wh)"
+        },
+        {
+          "type": "text",
+          "id": "output_w",
+          "label": "Output (e.g. 2200 W)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products",
+      "settings": {
+        "columns": 3
+      },
+      "blocks": [
+        {
+          "type": "product_card",
+          "settings": {
+            "badge_text": "Best Seller",
+            "custom_desc": "The Sorein Modular Power Station. 3600W continuous output, 1000W solar input, expandable to 12000Wh.",
+            "capacity_wh": "2400 Wh (per EB240)",
+            "output_w": "2200 W"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "badge_text": "New",
+            "custom_desc": "Compact and portable. Perfect for camping, RV, and light backup needs.",
+            "capacity_wh": "512 Wh",
+            "output_w": "1000 W"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

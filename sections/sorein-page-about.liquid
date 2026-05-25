@@ -1,0 +1,55 @@
+{% comment %}Section: sorein-page-about.liquid{% endcomment %}
+{%- liquid assign sid = section.id -%}
+<section id="srn-about-{{ sid }}" class="srn-about">
+<style>
+#srn-about-{{ sid }} { --c: #090b0f; }
+#srn-about-{{ sid }} .srn-about__hero { background:var(--c); position:relative; overflow:hidden; padding:clamp(72px,10vw,120px) clamp(20px,5vw,60px); text-align:center; color:#f4f6fa; }
+#srn-about-{{ sid }} .srn-about__hero::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(14,165,233,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,0.04) 1px,transparent 1px); background-size:56px 56px; pointer-events:none; }
+#srn-about-{{ sid }} .srn-about__hero-content { position:relative; z-index:1; max-width:680px; margin:0 auto; }
+#srn-about-{{ sid }} .srn-about__hero h1 { font-size:clamp(28px,4.5vw,52px); font-weight:700; letter-spacing:-0.025em; margin:0 0 20px; line-height:1.08; }
+#srn-about-{{ sid }} .srn-about__hero p { font-size:clamp(15px,1.7vw,18px); color:rgba(244,246,250,0.65); line-height:1.65; margin:0; }
+#srn-about-{{ sid }} .srn-about__mission { background:#f8f9fb; padding:clamp(56px,8vw,96px) clamp(20px,5vw,60px); }
+#srn-about-{{ sid }} .srn-about__mission-inner { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr; gap:40px; align-items:center; }
+@media(min-width:768px){ #srn-about-{{ sid }} .srn-about__mission-inner { grid-template-columns:1fr 1fr; } }
+#srn-about-{{ sid }} .srn-about__mission h2 { font-size:clamp(22px,3vw,36px); font-weight:700; letter-spacing:-0.022em; color:#111318; margin:0 0 16px; }
+#srn-about-{{ sid }} .srn-about__mission p { font-size:16px; line-height:1.75; color:rgba(17,19,24,0.68); margin:0 0 16px; }
+#srn-about-{{ sid }} .srn-about__mission img { width:100%; border-radius:16px; object-fit:cover; }
+#srn-about-{{ sid }} .srn-about__mission-placeholder { background:#e8ebf0; border-radius:16px; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; color:#6b7a8d; font-size:14px; }
+#srn-about-{{ sid }} .srn-about__stats { background:#ffffff; border-top:1px solid rgba(17,19,24,0.08); padding:clamp(40px,6vw,72px) clamp(20px,5vw,60px); }
+#srn-about-{{ sid }} .srn-about__stats-inner { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:0; text-align:center; }
+#srn-about-{{ sid }} .srn-about__stat { padding:24px; border-right:1px solid rgba(17,19,24,0.08); }
+#srn-about-{{ sid }} .srn-about__stat:last-child { border-right:none; }
+#srn-about-{{ sid }} .srn-about__stat-value { font-size:clamp(28px,3.5vw,42px); font-weight:700; color:#22d3ee; letter-spacing:-0.025em; }
+#srn-about-{{ sid }} .srn-about__stat-label { font-size:13px; font-weight:600; color:rgba(17,19,24,0.55); text-transform:uppercase; letter-spacing:0.07em; margin-top:6px; }
+</style>
+<div class="srn-about__hero">
+  <div class="srn-about__hero-content">
+    <h1>{{ section.settings.heading }}</h1>
+    {%- if section.settings.subheading != blank -%}<p>{{ section.settings.subheading }}</p>{%- endif -%}
+  </div>
+</div>
+<div class="srn-about__mission">
+  <div class="srn-about__mission-inner">
+    <div>
+      <h2>{{ section.settings.mission_heading | default: 'Our mission' }}</h2>
+      <p>{{ section.settings.mission_text | default: 'Sorein designs and distributes premium portable power systems for homeowners, off-grid enthusiasts, and anyone who values energy independence. We believe clean, reliable energy should be available to everyone.' }}</p>
+      <p>{{ section.settings.mission_text_2 | default: 'Based in Scandinavia, we combine Nordic design principles with cutting-edge energy technology to create products that are as beautiful as they are functional.' }}</p>
+    </div>
+    <div>
+      {%- if section.settings.mission_image != blank -%}
+      {{ section.settings.mission_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: 'Sorein team', sizes: '(min-width:768px) 46vw, 90vw', widths: '400,600,800' }}
+      {%- else -%}
+      <div class="srn-about__mission-placeholder" aria-hidden="true">Add an image in theme editor</div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+<div class="srn-about__stats">
+  <div class="srn-about__stats-inner">
+    <div class="srn-about__stat"><div class="srn-about__stat-value">{{ section.settings.stat1_value | default: '2021' }}</div><div class="srn-about__stat-label">{{ section.settings.stat1_label | default: 'Founded' }}</div></div>
+    <div class="srn-about__stat"><div class="srn-about__stat-value">{{ section.settings.stat2_value | default: 'Sweden' }}</div><div class="srn-about__stat-label">{{ section.settings.stat2_label | default: 'Headquarters' }}</div></div>
+    <div class="srn-about__stat"><div class="srn-about__stat-value">{{ section.settings.stat3_value | default: '5yr' }}</div><div class="srn-about__stat-label">{{ section.settings.stat3_label | default: 'Product warranty' }}</div></div>
+  </div>
+</div>
+</section>
+{% schema %}{"name":"About Page","tag":"section","settings":[{"type":"textarea","id":"heading","label":"Hero heading","default":"Built for serious energy independence"},{"type":"textarea","id":"subheading","label":"Hero subheading","default":"Sorein designs premium portable power systems for homeowners, off-grid enthusiasts, and anyone who values energy independence."},{"type":"text","id":"mission_heading","label":"Mission heading","default":"Our mission"},{"type":"textarea","id":"mission_text","label":"Mission paragraph 1"},{"type":"textarea","id":"mission_text_2","label":"Mission paragraph 2"},{"type":"image_picker","id":"mission_image","label":"Mission image"},{"type":"header","content":"Stats"},{"type":"text","id":"stat1_value","label":"Stat 1 value","default":"2021"},{"type":"text","id":"stat1_label","label":"Stat 1 label","default":"Founded"},{"type":"text","id":"stat2_value","label":"Stat 2 value","default":"Sweden"},{"type":"text","id":"stat2_label","label":"Stat 2 label","default":"Headquarters"},{"type":"text","id":"stat3_value","label":"Stat 3 value","default":"5yr"},{"type":"text","id":"stat3_label","label":"Stat 3 label","default":"Product warranty"}],"presets":[{"name":"About Page"}]}{% endschema %}

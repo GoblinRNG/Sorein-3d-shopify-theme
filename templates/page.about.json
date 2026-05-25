@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "about-hero": {
+      "type": "sorein-page-about",
+      "settings": {
+        "heading": "Built for serious energy independence",
+        "subheading": "Sorein designs and distributes premium portable power systems for homeowners, off-grid enthusiasts, and anyone who values energy independence."
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "sorein-trust": {
+      "type": "sorein-trust-comparison",
+      "settings": {
+        "heading": "Why Sorein?",
+        "show_comparison": false
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": ["header", "about-hero", "sorein-trust", "footer"]
+}

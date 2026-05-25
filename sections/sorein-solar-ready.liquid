@@ -1,0 +1,372 @@
+<style>
+  #srn-solar-{{ section.id }} {
+    background: #090b0f;
+    padding: 88px 0 100px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Warm gradient edges */
+  #srn-solar-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 0% 50%, rgba(234,179,8,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 100% 20%, rgba(234,179,8,0.03) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #srn-solar-{{ section.id }} > .srn-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    #srn-solar-{{ section.id }} .srn-solar__layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+    }
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__h2 {
+    font-size: clamp(2rem, 4vw, 2.875rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: #f4f6fa;
+    margin: 0;
+    line-height: 1.12;
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__sub {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: rgba(244,246,250,0.60);
+    margin: 0;
+    max-width: 440px;
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 4px 0 8px;
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__spec-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__spec-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22d3ee;
+    flex-shrink: 0;
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__spec-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(244,246,250,0.80);
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  /* Image side */
+  #srn-solar-{{ section.id }} .srn-solar__image-wrap {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__image-wrap:hover img {
+    transform: scale(1.03);
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    color: rgba(244,246,250,0.10);
+  }
+
+  /* Floating badge on image */
+  #srn-solar-{{ section.id }} .srn-solar__image-badge {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: rgba(9,11,15,0.80);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(34,211,238,0.25);
+    border-radius: 10px;
+    padding: 10px 16px;
+    z-index: 2;
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__image-badge-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #22d3ee;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__image-badge-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: rgba(244,246,250,0.55);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  /* Fade-in for content */
+  #srn-solar-{{ section.id }} .srn-solar__content,
+  #srn-solar-{{ section.id }} .srn-solar__image-wrap {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__content.srn-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1),
+                transform 0.65s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  #srn-solar-{{ section.id }} .srn-solar__image-wrap.srn-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.65s 0.15s cubic-bezier(0.22,1,0.36,1),
+                transform 0.65s 0.15s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #srn-solar-{{ section.id }} .srn-solar__content,
+    #srn-solar-{{ section.id }} .srn-solar__image-wrap {
+      opacity: 1;
+      transform: none;
+    }
+    #srn-solar-{{ section.id }} .srn-solar__image-wrap:hover img {
+      transform: none;
+    }
+  }
+</style>
+
+<section id="srn-solar-{{ section.id }}" aria-labelledby="srn-solar-h2-{{ section.id }}">
+  <div class="srn-container">
+    <div class="srn-solar__layout">
+      <div class="srn-solar__content">
+        {% if section.settings.eyebrow != blank %}
+          <p class="srn-eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+        <h2 class="srn-solar__h2" id="srn-solar-h2-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {% if section.settings.subheading != blank %}
+          <p class="srn-solar__sub">{{ section.settings.subheading }}</p>
+        {% endif %}
+
+        <div class="srn-solar__specs" aria-label="Solar specifications">
+          {% assign spec_ids = "spec1,spec2,spec3,spec4" | split: "," %}
+          {% for sid in spec_ids %}
+            {% assign sval = section.settings[sid] %}
+            {% if sval != blank %}
+              <div class="srn-solar__spec-item">
+                <div class="srn-solar__spec-dot" aria-hidden="true"></div>
+                <span class="srn-solar__spec-text">{{ sval }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <div class="srn-solar__ctas">
+          {% if section.settings.cta_primary_label != blank %}
+            <a href="{{ section.settings.cta_primary_url | default: '#' }}" class="srn-btn srn-btn--primary">
+              {{ section.settings.cta_primary_label }}
+            </a>
+          {% endif %}
+          {% if section.settings.cta_secondary_label != blank %}
+            <a href="{{ section.settings.cta_secondary_url | default: '#' }}" class="srn-btn srn-btn--ghost">
+              {{ section.settings.cta_secondary_label }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="srn-solar__image-wrap">
+        {% if section.settings.hero_image != blank %}
+          <img
+            src="{{ section.settings.hero_image | image_url: width: 900 }}"
+            alt="{{ section.settings.hero_image_alt | escape | default: 'Sorein solar charging' }}"
+            width="900"
+            height="675"
+            loading="lazy"
+          >
+        {% else %}
+          <div class="srn-solar__image-placeholder" aria-hidden="true">☀️</div>
+        {% endif %}
+        <div class="srn-solar__image-badge">
+          <span class="srn-solar__image-badge-value">1000W</span>
+          <span class="srn-solar__image-badge-label">Max solar input</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var section = document.getElementById('srn-solar-{{ section.id }}');
+  if (!section) return;
+
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  var targets = section.querySelectorAll('.srn-solar__content, .srn-solar__image-wrap');
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('srn-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  targets.forEach(function(el) { observer.observe(el); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Solar Ready",
+  "tag": "section",
+  "class": "srn-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Solar Ready"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Charge from the sun. Anywhere."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Connect up to 1000W of solar panels (100V / 20A). Built-in MPPT controller maximises harvest efficiency. Designed for cabins, RVs, and off-grid life."
+    },
+    {
+      "type": "text",
+      "id": "spec1",
+      "label": "Spec 1",
+      "default": "1000W max solar input (100V / 20A)"
+    },
+    {
+      "type": "text",
+      "id": "spec2",
+      "label": "Spec 2",
+      "default": "MPPT controller built-in"
+    },
+    {
+      "type": "text",
+      "id": "spec3",
+      "label": "Spec 3",
+      "default": "MC4 compatible connectors"
+    },
+    {
+      "type": "text",
+      "id": "spec4",
+      "label": "Spec 4",
+      "default": "Works with any solar panel"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_image_alt",
+      "label": "Image alt text",
+      "default": "Sorein solar charging system"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Primary CTA label",
+      "default": "View solar panels"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Primary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Secondary CTA label",
+      "default": "Solar compatibility guide"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Secondary CTA link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Solar Ready"
+    }
+  ]
+}
+{% endschema %}
