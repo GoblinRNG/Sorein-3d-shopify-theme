@@ -340,10 +340,18 @@
       <nav class="srn-header-nav" aria-label="Main navigation">
         {%- for block in section.blocks -%}
           {%- if block.type == 'nav_link' -%}
+            {%- liquid
+              assign _label_lc = block.settings.label | downcase | strip
+              if _label_lc == 'home' or _label_lc == 'homepage' or _label_lc == 'hem' or _label_lc == 'start'
+                assign _nav_url = routes.root_url
+              else
+                assign _nav_url = block.settings.url | default: '#'
+              endif
+            -%}
             <a
-              href="{{ block.settings.url | default: '#' }}"
+              href="{{ _nav_url }}"
               class="srn-nav-link"
-              {% if request.path == block.settings.url %}aria-current="page"{% endif %}
+              {% if request.path == _nav_url %}aria-current="page"{% endif %}
               {{ block.shopify_attributes }}
             >
               {{ block.settings.label }}
@@ -445,7 +453,15 @@
     <nav class="srn-mobile-menu-nav" aria-label="Mobile navigation">
       {%- for block in section.blocks -%}
         {%- if block.type == 'nav_link' -%}
-          <a href="{{ block.settings.url | default: '#' }}" class="srn-mobile-nav-link">
+          {%- liquid
+            assign _label_lc = block.settings.label | downcase | strip
+            if _label_lc == 'home' or _label_lc == 'homepage' or _label_lc == 'hem' or _label_lc == 'start'
+              assign _nav_url = routes.root_url
+            else
+              assign _nav_url = block.settings.url | default: '#'
+            endif
+          -%}
+          <a href="{{ _nav_url }}" class="srn-mobile-nav-link">
             {{ block.settings.label }}
           </a>
         {%- endif -%}
