@@ -77,25 +77,25 @@
 
   {%- comment -%} Shopify font picker support {%- endcomment -%}
   {%- if settings.type_header_font -%}
-    {%- style -%}
+    <style>
+      {{ settings.type_header_font | font_face: font_display: 'swap' }}
       :root {
         --srn-font-heading: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
         --srn-font-heading-weight: {{ settings.type_header_font.weight }};
         --srn-font-heading-style: {{ settings.type_header_font.style }};
       }
-    {%- endstyle -%}
-    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    </style>
   {%- endif -%}
 
   {%- if settings.type_body_font -%}
-    {%- style -%}
+    <style>
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
       :root {
         --srn-font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
         --srn-font-body-weight: {{ settings.type_body_font.weight }};
         --srn-font-body-style: {{ settings.type_body_font.style }};
       }
-    {%- endstyle -%}
-    {{ settings.type_body_font | font_face: font_display: 'swap' }}
+    </style>
   {%- endif -%}
 </head>
 

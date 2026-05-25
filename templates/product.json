@@ -1,9 +1,5 @@
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "product-hero": {
       "type": "sorein-product-hero",
       "settings": {
@@ -38,18 +34,12 @@
       },
       "blocks": {},
       "block_order": []
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
   "order": [
-    "header",
     "product-hero",
     "product-specs",
     "product-tabs",
-    "sorein-faq",
-    "footer"
+    "sorein-faq"
   ]
 }

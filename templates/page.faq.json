@@ -1,9 +1,5 @@
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "faq-main": {
       "type": "sorein-faq",
       "settings": {
@@ -26,11 +22,10 @@
       },
       "blocks": {},
       "block_order": []
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
-  "order": ["header", "faq-main", "sorein-contact-cta", "footer"]
+  "order": [
+    "faq-main",
+    "sorein-contact-cta"
+  ]
 }

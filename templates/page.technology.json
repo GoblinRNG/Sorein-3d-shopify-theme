@@ -1,9 +1,5 @@
 {
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {}
-    },
     "technology": {
       "type": "sorein-page-technology",
       "settings": {
@@ -21,11 +17,10 @@
       },
       "blocks": {},
       "block_order": []
-    },
-    "footer": {
-      "type": "footer",
-      "settings": {}
     }
   },
-  "order": ["header", "technology", "sorein-faq", "footer"]
+  "order": [
+    "technology",
+    "sorein-faq"
+  ]
 }
